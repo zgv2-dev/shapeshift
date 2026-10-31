@@ -4,7 +4,6 @@ import { useStore } from '../state/store'
 import type { ParamDef, ParamValue } from '../core/types'
 import { ParamControl } from './ParamControl'
 import { MaterialPicker } from './MaterialPicker'
-import { TEXTURE_VERSION } from '../core/versions'
 import { ExportPanel } from './ExportPanel'
 import { FreeformPanel } from './FreeformPanel'
 
@@ -21,11 +20,6 @@ export function Inspector() {
   const detail = useStore((s) => s.detail)
   const setDetail = useStore((s) => s.setDetail)
   const model = useStore((s) => s.model)
-  const textures = useStore((s) => s.textures)
-  const textureStatus = useStore((s) => s.textureStatus)
-  const textureLoaded = useStore((s) => s.textureLoaded)
-  const textureTotal = useStore((s) => s.textureTotal)
-  const setTextures = useStore((s) => s.setTextures)
   const status = useStore((s) => s.status)
   const error = useStore((s) => s.error)
   const shape = getShape(shapeId)
@@ -163,39 +157,7 @@ export function Inspector() {
           </>
         ) : null}
 
-        {tab === 'blocks' ? (
-          <>
-            <div className={`texture-settings ${textures ? 'on' : ''} ${textureStatus === 'error' ? 'has-error' : ''}`}>
-              <span className="tex-icon big" aria-hidden="true">
-                <i />
-                <i />
-                <i />
-                <i />
-              </span>
-              <div className="texture-settings-copy">
-                <strong>Minecraft textures</strong>
-                <p>
-                  {textureStatus === 'loading'
-                    ? `Loading ${textureLoaded}/${textureTotal || '…'}`
-                    : textureStatus === 'error'
-                      ? 'Mirror unavailable — flat colors'
-                      : textures
-                        ? `On · real ${TEXTURE_VERSION} block textures`
-                        : `Use the real ${TEXTURE_VERSION} block textures`}
-                </p>
-              </div>
-              <button
-                className={`switch ${textures ? 'on' : ''}`}
-                onClick={() => setTextures(!textures)}
-                aria-pressed={textures}
-                aria-label="Toggle Minecraft textures"
-              >
-                <span />
-              </button>
-            </div>
-            <MaterialPicker />
-          </>
-        ) : null}
+        {tab === 'blocks' ? <MaterialPicker /> : null}
         {tab === 'export' ? <ExportPanel /> : null}
         {tab === 'freeform' ? <FreeformPanel /> : null}
       </div>
