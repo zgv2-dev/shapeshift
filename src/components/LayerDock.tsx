@@ -97,15 +97,24 @@ export function LayerDock() {
             />
           ) : null}
         </div>
-        <input
-          className="layer-range"
-          type="range"
-          min={0}
-          max={Math.max(0, count - 1)}
-          value={Math.min(layer, Math.max(0, count - 1))}
-          onChange={(e) => setLayer(Number(e.target.value))}
-          aria-label="Build layer"
-        />
+        <div className="layer-slider-wrap">
+          <input
+            className="layer-range"
+            type="range"
+            min={0}
+            max={Math.max(0, count - 1)}
+            value={Math.min(layer, Math.max(0, count - 1))}
+            onChange={(e) => setLayer(Number(e.target.value))}
+            aria-label="Build layer"
+          />
+          {count > 0 ? (
+            <span
+              className="layer-knob"
+              style={{ left: `${((Math.min(layer, count - 1) + 0.5) / count) * 100}%` }}
+              aria-hidden="true"
+            />
+          ) : null}
+        </div>
         <div className="layer-scale">
           <span>1</span>
           <span>top</span>
