@@ -1,4 +1,4 @@
-import { Copy, Download, Loader2, Menu, PanelRight, Shapes, TriangleAlert } from 'lucide-react'
+import { Bug, Copy, Download, Loader2, Menu, PanelRight, Shapes, TriangleAlert } from 'lucide-react'
 import { getShape } from '../core/shapes'
 import { buildShareUrl } from '../lib/stateUrl'
 import { useStore } from '../state/store'
@@ -128,6 +128,16 @@ export function TopBar() {
             </small>
           </span>
         </button>
+        <a
+          className="icon-btn topbar-bug"
+          href="https://github.com/zgv2-dev/shapeshift/issues/new"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Report a bug"
+          aria-label="Report a bug"
+        >
+          <Bug size={16} />
+        </a>
         <button className="btn ghost icon-only-mobile" onClick={share} title="Copy share link">
           <Copy size={15} />
           <span className="hide-small">Share</span>

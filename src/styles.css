@@ -256,6 +256,17 @@ p {
   flex: 0 0 auto;
 }
 
+.topbar-bug {
+  flex: 0 0 auto;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.topbar-bug:hover {
+  border-color: rgba(217, 255, 107, 0.32);
+  color: var(--lime);
+}
+
 .slab-toggle {
   display: flex;
   align-items: center;
@@ -861,24 +872,6 @@ p {
   border-top: 1px solid var(--line);
   color: var(--faint);
   font-size: 8.5px;
-}
-
-.library-report {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 5px;
-  color: var(--faint);
-  font-size: 8px;
-}
-
-.library-report a {
-  color: var(--faint);
-  text-decoration: none;
-}
-
-.library-report a:hover {
-  color: var(--lime);
 }
 
 .library-foot p {
