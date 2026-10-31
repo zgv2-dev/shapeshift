@@ -938,28 +938,43 @@ function geodesicDome(): ShapeDef {
     'geodesic',
     'Geodesic dome',
     'structures',
-    'A triangulated dome made of struts.',
-    'A true subdivided-icosahedron dome. Choose the frequency for more (or fewer) triangles, and the strut thickness for your block budget.',
+    'A triangulated dome with optional panel fill.',
+    'A hemispherical geodesic frame built from a subdivided icosahedron. Solid panels fill the triangles by default; turn them off for an open strut frame, and switch on the glowing nodes for lights at the joints.',
     [
       intParam('diameter', 'Diameter', 64, 16, 200, { group: 'Dimensions' }),
       intParam('frequency', 'Frequency', 4, 1, 6, { group: 'Style' }),
       intParam('strut', 'Strut thickness', 2, 1, 6, { group: 'Style' }),
-      boolParam('nodes', 'Glowing nodes', true, { group: 'Details' }),
+      boolParam('panels', 'Panels', true, { group: 'Details' }),
+      boolParam('nodes', 'Glowing nodes', false, { group: 'Details' }),
     ],
     roles(
       ['primary', 'Struts', 'minecraft:smooth_stone'],
-      ['accent', 'Nodes', 'minecraft:sea_lantern'],
+      ['accent', 'Panels', 'minecraft:purple_concrete'],
+      ['detail', 'Nodes', 'minecraft:sea_lantern'],
     ),
     (ctx) => {
       const d = clamp(num(ctx, 'diameter'), 16, 200)
       const f = Math.round(clamp(num(ctx, 'frequency'), 1, 6))
       const strut = clamp(num(ctx, 'strut'), 1, 6)
+      const panels = flag(ctx, 'panels')
       const nodes = flag(ctx, 'nodes')
       const R = d / 2
       const dimsY = Math.ceil(R + strut + 2)
       const b = builderFor(ctx, d, dimsY, d)
       const cx = d / 2
       const cz = d / 2
+
+      // Glass panel shell: the struts are stamped over this, so the triangular
+      // frame stays visible through (or against) the panels.
+      if (panels) {
+        b.rasterize((x, y, z) => {
+          const dx = x - cx
+          const dy = y - 0.5
+          const dz = z - cz
+          if (dy < -0.05) return 0
+          return Math.abs(Math.hypot(dx, dy, dz) - R) <= 0.85 ? R_ACCENT : 0
+        })
+      }
 
       const phi = (1 + Math.sqrt(5)) / 2
       const base: Vec3[] = [
@@ -1092,7 +1107,7 @@ function geodesicDome(): ShapeDef {
             const vk = `${p.x.toFixed(3)},${p.y.toFixed(3)},${p.z.toFixed(3)}`
             if (!seenVertices.has(vk)) {
               seenVertices.add(vk)
-              b.stampBall(p.x, p.y, p.z, strut / 2 + 0.35, R_ACCENT)
+              b.stampBall(p.x, p.y, p.z, strut / 2 + 0.35, R_DETAIL)
             }
           }
         }

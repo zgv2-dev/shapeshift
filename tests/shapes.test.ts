@@ -80,6 +80,18 @@ describe('shape generators', () => {
     }
   })
 
+  it('fills geodesic panels by default and can open the frame', () => {
+    const panelled = build('geodesic', true, {}).model
+    const panelledNames = new Set(panelled.palette.map((p) => p.name))
+    expect(panelledNames.has('minecraft:purple_concrete')).toBe(true)
+    expect(panelledNames.has('minecraft:sea_lantern')).toBe(false)
+
+    const frame = build('geodesic', true, { panels: false, nodes: true }).model
+    const frameNames = new Set(frame.palette.map((p) => p.name))
+    expect(frameNames.has('minecraft:purple_concrete')).toBe(false)
+    expect(frameNames.has('minecraft:sea_lantern')).toBe(true)
+  })
+
   it('builds the meme tower, with and without its house base', () => {
     const tower = build('dope-tower', true, { house: false }).model
     const withHouse = build('dope-tower', true, { house: true }).model
