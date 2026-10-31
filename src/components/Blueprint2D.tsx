@@ -4,6 +4,7 @@ import { useStore } from '../state/store'
 import { downloadBlob, modelFileName } from '../core/export/download'
 import type { BlockState, VoxelModel } from '../core/types'
 import { ATLAS_COLS, TILE_SIZE, tileIndicesForState } from '../three/textures'
+import { blockStateLabel } from '../lib/blockLabels'
 
 interface Hover {
   x: number
@@ -11,10 +12,6 @@ interface Hover {
   px: number
   py: number
   block: BlockState
-}
-
-function pretty(name: string): string {
-  return name.replace(/^minecraft:/, '').replace(/_/g, ' ').replace(/\b[a-z]/g, (c) => c.toUpperCase())
 }
 
 function symmetryOf(model: VoxelModel, layer: number) {
@@ -514,8 +511,7 @@ export function Blueprint2D() {
             x {hover.x - Math.floor(nx / 2) + worldOrigin.x} · y {layer + worldOrigin.y} · z {hover.z - Math.floor(nz / 2) + worldOrigin.z}
           </div>
           <div>
-            {pretty(hover.block.name)}
-            {hover.block.kind !== 'block' ? ` · ${hover.block.kind} slab` : ''}
+            {blockStateLabel(hover.block)}
           </div>
         </div>
       ) : null}
@@ -606,8 +602,9 @@ function exportPng(
     ctx.fillRect(x, legendY, 14, 14)
     ctx.fillStyle = '#cfd7c8'
     ctx.font = '400 12px "Inter Variable", sans-serif'
-    ctx.fillText(`${pretty(state.name)} · ${count}`, x + 21, legendY + 12)
-    x += Math.max(180, ctx.measureText(`${pretty(state.name)} · ${count}`).width + 70)
+    const text = `${blockStateLabel(state)} · ${count}`
+    ctx.fillText(text, x + 21, legendY + 12)
+    x += Math.max(180, ctx.measureText(text).width + 70)
     if (x > targetW - 260) break
   }
   ctx.fillStyle = '#5e6b57'
