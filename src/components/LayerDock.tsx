@@ -52,67 +52,69 @@ export function LayerDock() {
       </div>
 
       <div className="layer-track">
-        <div className="layer-chart-wrap">
-          <svg
-            className="layer-chart"
-            viewBox={`0 0 ${Math.max(count, 1)} 100`}
-            preserveAspectRatio="none"
-            onClick={(e) => {
-              if (!count) return
-              const rect = e.currentTarget.getBoundingClientRect()
-              const t = (e.clientX - rect.left) / rect.width
-              setLayer(Math.floor(t * count))
-            }}
-            role="presentation"
-          >
-            {layers.map((l, i) => {
-              const h = (l.items / max) * 96
-              const slabH = l.items ? (l.slabs / Math.max(1, l.items)) * h : 0
-              const current = i === layer
-              return (
-                <g key={i}>
-                  <rect
-                    x={i}
-                    y={100 - h}
-                    width={0.86}
-                    height={h}
-                    fill={current ? '#5f7a33' : '#33402d'}
-                  />
-                  <rect
-                    x={i}
-                    y={100 - h}
-                    width={0.86}
-                    height={slabH}
-                    fill={current ? '#d9ff6b' : '#6f8d38'}
-                  />
-                </g>
-              )
-            })}
-          </svg>
-          {count > 0 ? (
-            <span
-              className="layer-cursor"
-              style={{ left: `${((Math.min(layer, count - 1) + 0.5) / count) * 100}%` }}
-              aria-hidden="true"
+        <div className="layer-stage">
+          <div className="layer-chart-wrap">
+            <svg
+              className="layer-chart"
+              viewBox={`0 0 ${Math.max(count, 1)} 100`}
+              preserveAspectRatio="none"
+              onClick={(e) => {
+                if (!count) return
+                const rect = e.currentTarget.getBoundingClientRect()
+                const t = (e.clientX - rect.left) / rect.width
+                setLayer(Math.floor(t * count))
+              }}
+              role="presentation"
+            >
+              {layers.map((l, i) => {
+                const h = (l.items / max) * 96
+                const slabH = l.items ? (l.slabs / Math.max(1, l.items)) * h : 0
+                const current = i === layer
+                return (
+                  <g key={i}>
+                    <rect
+                      x={i}
+                      y={100 - h}
+                      width={0.86}
+                      height={h}
+                      fill={current ? '#5f7a33' : '#33402d'}
+                    />
+                    <rect
+                      x={i}
+                      y={100 - h}
+                      width={0.86}
+                      height={slabH}
+                      fill={current ? '#d9ff6b' : '#6f8d38'}
+                    />
+                  </g>
+                )
+              })}
+            </svg>
+          </div>
+          <div className="layer-slider-wrap">
+            <input
+              className="layer-range"
+              type="range"
+              min={0}
+              max={Math.max(0, count - 1)}
+              value={Math.min(layer, Math.max(0, count - 1))}
+              onChange={(e) => setLayer(Number(e.target.value))}
+              aria-label="Build layer"
             />
-          ) : null}
-        </div>
-        <div className="layer-slider-wrap">
-          <input
-            className="layer-range"
-            type="range"
-            min={0}
-            max={Math.max(0, count - 1)}
-            value={Math.min(layer, Math.max(0, count - 1))}
-            onChange={(e) => setLayer(Number(e.target.value))}
-            aria-label="Build layer"
-          />
+          </div>
           {count > 0 ? (
-            <span
-              className="layer-knob"
-              style={{ left: `${((Math.min(layer, count - 1) + 0.5) / count) * 100}%` }}
-              aria-hidden="true"
-            />
+            <>
+              <span
+                className="layer-cursor"
+                style={{ left: `${((Math.min(layer, count - 1) + 0.5) / count) * 100}%` }}
+                aria-hidden="true"
+              />
+              <span
+                className="layer-knob"
+                style={{ left: `${((Math.min(layer, count - 1) + 0.5) / count) * 100}%` }}
+                aria-hidden="true"
+              />
+            </>
           ) : null}
         </div>
         <div className="layer-scale">

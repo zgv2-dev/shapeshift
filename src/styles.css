@@ -1309,16 +1309,24 @@ kbd {
   min-width: 80px;
 }
 
+.layer-stage {
+  --layer-chart-h: 32px;
+  position: relative;
+  width: 100%;
+}
+
 .layer-chart-wrap {
   position: relative;
-  height: 32px;
+  width: 100%;
+  height: var(--layer-chart-h);
 }
 
 .layer-cursor {
   position: absolute;
   top: 0;
-  bottom: 0;
+  z-index: 2;
   width: 1px;
+  height: var(--layer-chart-h);
   background: var(--lime);
   box-shadow: 0 0 7px rgba(217, 255, 107, 0.55);
   pointer-events: none;
@@ -1349,6 +1357,7 @@ kbd {
 
 .layer-slider-wrap {
   position: relative;
+  width: 100%;
   height: 16px;
   margin-top: 3px;
 }
@@ -1379,7 +1388,8 @@ kbd {
 
 .layer-knob {
   position: absolute;
-  top: 50%;
+  top: calc(var(--layer-chart-h) + 11px);
+  z-index: 2;
   width: 11px;
   height: 11px;
   border: 2px solid #0b0f0c;
@@ -2648,6 +2658,9 @@ kbd {
   .layer-track {
     order: 3;
     flex-basis: 100%;
+  }
+  .layer-stage {
+    --layer-chart-h: 22px;
   }
   .layer-chart,
   .layer-chart-wrap {
