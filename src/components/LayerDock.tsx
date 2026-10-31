@@ -2,6 +2,9 @@ import { useMemo } from 'react'
 import { ChevronDown, ChevronUp, Layers, Pencil } from 'lucide-react'
 import { useStore } from '../state/store'
 
+const BAR_WIDTH = 0.86
+const BAR_INSET = (1 - BAR_WIDTH) / 2
+
 export function LayerDock() {
   const model = useStore((s) => s.model)
   const layer = useStore((s) => s.layer)
@@ -73,16 +76,16 @@ export function LayerDock() {
                 return (
                   <g key={i}>
                     <rect
-                      x={i}
+                      x={i + BAR_INSET}
                       y={100 - h}
-                      width={0.86}
+                      width={BAR_WIDTH}
                       height={h}
                       fill={current ? '#5f7a33' : '#33402d'}
                     />
                     <rect
-                      x={i}
+                      x={i + BAR_INSET}
                       y={100 - h}
-                      width={0.86}
+                      width={BAR_WIDTH}
                       height={slabH}
                       fill={current ? '#d9ff6b' : '#6f8d38'}
                     />
