@@ -52,43 +52,51 @@ export function LayerDock() {
       </div>
 
       <div className="layer-track">
-        <svg
-          className="layer-chart"
-          viewBox={`0 0 ${Math.max(count, 1)} 100`}
-          preserveAspectRatio="none"
-          onClick={(e) => {
-            if (!count) return
-            const rect = e.currentTarget.getBoundingClientRect()
-            const t = (e.clientX - rect.left) / rect.width
-            setLayer(Math.floor(t * count))
-          }}
-          role="presentation"
-        >
-          {layers.map((l, i) => {
-            const h = (l.items / max) * 96
-            const slabH = l.items ? (l.slabs / Math.max(1, l.items)) * h : 0
-            return (
-              <g key={i}>
-                <rect x={i} y={100 - h} width={0.86} height={h} fill="#33402d" />
-                <rect
-                  x={i}
-                  y={100 - h}
-                  width={0.86}
-                  height={slabH}
-                  fill={i === layer ? '#d9ff6b' : '#6f8d38'}
-                />
-              </g>
-            )
-          })}
-          <rect
-            x={layer}
-            y={0}
-            width={1}
-            height={100}
-            fill="#d9ff6b"
-            opacity={0.9}
-          />
-        </svg>
+        <div className="layer-chart-wrap">
+          <svg
+            className="layer-chart"
+            viewBox={`0 0 ${Math.max(count, 1)} 100`}
+            preserveAspectRatio="none"
+            onClick={(e) => {
+              if (!count) return
+              const rect = e.currentTarget.getBoundingClientRect()
+              const t = (e.clientX - rect.left) / rect.width
+              setLayer(Math.floor(t * count))
+            }}
+            role="presentation"
+          >
+            {layers.map((l, i) => {
+              const h = (l.items / max) * 96
+              const slabH = l.items ? (l.slabs / Math.max(1, l.items)) * h : 0
+              const current = i === layer
+              return (
+                <g key={i}>
+                  <rect
+                    x={i}
+                    y={100 - h}
+                    width={0.86}
+                    height={h}
+                    fill={current ? '#5f7a33' : '#33402d'}
+                  />
+                  <rect
+                    x={i}
+                    y={100 - h}
+                    width={0.86}
+                    height={slabH}
+                    fill={current ? '#d9ff6b' : '#6f8d38'}
+                  />
+                </g>
+              )
+            })}
+          </svg>
+          {count > 0 ? (
+            <span
+              className="layer-cursor"
+              style={{ left: `${((Math.min(layer, count - 1) + 0.5) / count) * 100}%` }}
+              aria-hidden="true"
+            />
+          ) : null}
+        </div>
         <input
           className="layer-range"
           type="range"
