@@ -809,7 +809,11 @@ export class VoxelViewer {
     for (let guard = 0; guard < nx + ny + nz + 8; guard++) {
       if (x < 0 || y < 0 || z < 0 || x >= nx || y >= ny || z >= nz) return null
       const palette = model.data[(y * nz + z) * nx + x]
-      if (palette !== 0) {
+      // In build mode, layers above the active layer are shown as ghosts (or
+      // hidden entirely). They must not intercept hover/click picking; skip
+      // them and keep marching until we reach a solid selected layer.
+      const pickable = !this.view.buildMode || y <= this.view.layer
+      if (palette !== 0 && pickable) {
         const state = model.palette[palette]
         const kind = state.kind === 'bottom' ? 1 : state.kind === 'top' ? 2 : 0
         const tExit = Math.min(tMaxX, tMaxY, tMaxZ)
