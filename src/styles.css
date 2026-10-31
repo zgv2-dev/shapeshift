@@ -700,11 +700,14 @@ p {
 }
 
 .shape-item-copy small {
+  display: -webkit-box;
   overflow: hidden;
   color: var(--faint);
   font-size: 9.5px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.35;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .shape-item.active .shape-item-copy small {
@@ -1480,6 +1483,14 @@ kbd {
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.02em;
+}
+
+.inspector-tagline {
+  max-width: 230px;
+  margin: 3px 0 0;
+  color: var(--faint);
+  font-size: 9.5px;
+  line-height: 1.4;
 }
 
 .inspector-tabs {

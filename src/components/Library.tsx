@@ -103,7 +103,7 @@ export function Library() {
                   setShape(shape.id)
                   setOpen(false)
                 }}
-                title={shape.description}
+                title={`${shape.tagline}\n\n${shape.description}`}
               >
                 <span className="shape-glyph-wrap">
                   <ShapeGlyph id={shape.id} size={34} />

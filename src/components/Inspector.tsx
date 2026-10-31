@@ -44,6 +44,7 @@ export function Inspector() {
         <div>
           <p className="eyebrow">Design</p>
           <h2>{shape.name}</h2>
+          <p className="inspector-tagline">{shape.tagline}</p>
         </div>
         <button className="icon-btn mobile-only" onClick={() => setOpen(false)} aria-label="Close controls">
           <X size={18} />
