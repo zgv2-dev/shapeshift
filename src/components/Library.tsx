@@ -94,6 +94,22 @@ export function Library() {
         })}
       </div>
 
+        <a
+          className="codex-ad"
+          href="https://enchantments.mc.zgv2.dev/#aqua_affinity"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Read the Aqua Affinity entry in The Enchantment Codex"
+        >
+          <span className="codex-ad-icon" aria-hidden="true">
+            <Droplets size={14} />
+          </span>
+          <span className="codex-ad-copy">
+            <strong>Aqua Affinity</strong>
+            <small>The Enchantment Codex <span aria-hidden="true">→</span></small>
+          </span>
+        </a>
+
       <div className="shape-list">
         {groups.map((group) => (
           <section key={group.id} className="shape-group">
@@ -134,21 +150,6 @@ export function Library() {
       </div>
 
       <footer className="library-foot">
-        <a
-          className="codex-ad"
-          href="https://enchantments.mc.zgv2.dev/#aqua_affinity"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Read the Aqua Affinity entry in The Enchantment Codex"
-        >
-          <span className="codex-ad-icon" aria-hidden="true">
-            <Droplets size={14} />
-          </span>
-          <span className="codex-ad-copy">
-            <strong>Aqua Affinity</strong>
-            <small>The Enchantment Codex <span aria-hidden="true">→</span></small>
-          </span>
-        </a>
         <div className="library-utility">
           <LanguageSelect />
           <a
