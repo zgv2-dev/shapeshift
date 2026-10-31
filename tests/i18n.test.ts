@@ -38,6 +38,8 @@ describe('language support', () => {
     const landing = readFileSync('index.html', 'utf8')
     expect((landing.match(/hreflang=/g) ?? []).length).toBeGreaterThanOrEqual(9)
     expect(landing).toContain('https://enchantments.mc.zgv2.dev/')
+    expect(landing).toContain('https://enchantments.mc.zgv2.dev/#aqua_affinity')
+    expect(landing).toContain('From the same workshop')
     expect(landing).toContain('id="language-select"')
   })
 

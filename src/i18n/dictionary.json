@@ -752,7 +752,15 @@
     "texture mirror unreachable": "дзеркало текстур недоступне",
     "using flat colors": "використовуються плоскі кольори",
     "Share link copied": "Посилання скопійовано",
-    "Blueprint PNG downloaded": "PNG-креслення завантажено"
+    "Blueprint PNG downloaded": "PNG-креслення завантажено",
+    "From the same workshop": "З тієї ж майстерні",
+    "Aqua Affinity": "Рідність води",
+    "Aqua Affinity: mine underwater, at full speed.": "Рідність води: копайте під водою на повній швидкості.",
+    "The Enchantment Codex breaks down all 43 Java 26.3 enchantments — what they do, where to get them and what conflicts.": "Кодекс зачарувань розбирає всі 43 зачарування Java 26.3 — що вони роблять, де їх отримати та з чим вони конфліктують.",
+    "Read the Aqua Affinity entry": "Читати про Рідність води",
+    "Aqua Affinity · Enchantment Codex": "Рідність води · Кодекс зачарувань",
+    "Read the Aqua Affinity entry in The Enchantment Codex": "Читати про Рідність води в Кодексі зачарувань",
+    "The Enchantment Codex": "Кодекс зачарувань"
   },
   "zh-Hans": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。即使查看者剔除内部块，它们也会包含在文件中。",
@@ -1507,7 +1515,15 @@
     "using flat colors": "使用纯色",
     "Share link copied": "分享链接已复制",
     "Blueprint PNG downloaded": "蓝图 PNG 已下载",
-    "Build spheres, ovals, domes and unhinged wizard spires with real textures, half-slab curves and layer-by-layer blueprints. Then export straight to your world.": "用真实材质、半砖曲线和逐层蓝图，建造球体、椭圆、圆顶和天马行空的巫师尖塔。然后直接导出到你的世界。"
+    "Build spheres, ovals, domes and unhinged wizard spires with real textures, half-slab curves and layer-by-layer blueprints. Then export straight to your world.": "用真实材质、半砖曲线和逐层蓝图，建造球体、椭圆、圆顶和天马行空的巫师尖塔。然后直接导出到你的世界。",
+    "From the same workshop": "来自同一个工作室",
+    "Aqua Affinity": "水下速掘",
+    "Aqua Affinity: mine underwater, at full speed.": "水下速掘：在水下全速挖掘。",
+    "The Enchantment Codex breaks down all 43 Java 26.3 enchantments — what they do, where to get them and what conflicts.": "附魔图鉴详解全部 43 个 Java 26.3 附魔——效果、获取方式与冲突。",
+    "Read the Aqua Affinity entry": "阅读水下速掘条目",
+    "Aqua Affinity · Enchantment Codex": "水下速掘 · 附魔图鉴",
+    "Read the Aqua Affinity entry in The Enchantment Codex": "在附魔图鉴中阅读水下速掘条目",
+    "The Enchantment Codex": "附魔图鉴"
   },
   "zh-Hant": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。即使查看者剔除內部區塊，它們也會包含在檔案中。",
@@ -2262,7 +2278,15 @@
     "using flat colors": "使用純色",
     "Share link copied": "分享連結已複製",
     "Blueprint PNG downloaded": "藍圖 PNG 已下載",
-    "Build spheres, ovals, domes and unhinged wizard spires with real textures, half-slab curves and layer-by-layer blueprints. Then export straight to your world.": "用真實材質、半磚曲線和逐層藍圖，建造球體、橢圓、圓頂和天馬行空的巫師尖塔。然後直接匯出到你的世界。"
+    "Build spheres, ovals, domes and unhinged wizard spires with real textures, half-slab curves and layer-by-layer blueprints. Then export straight to your world.": "用真實材質、半磚曲線和逐層藍圖，建造球體、橢圓、圓頂和天馬行空的巫師尖塔。然後直接匯出到你的世界。",
+    "From the same workshop": "來自同一個工作室",
+    "Aqua Affinity": "親水性",
+    "Aqua Affinity: mine underwater, at full speed.": "親水性：在水下全速挖掘。",
+    "The Enchantment Codex breaks down all 43 Java 26.3 enchantments — what they do, where to get them and what conflicts.": "附魔圖鑑詳解全部 43 個 Java 26.3 附魔——效果、取得方式與衝突。",
+    "Read the Aqua Affinity entry": "閱讀親水性條目",
+    "Aqua Affinity · Enchantment Codex": "親水性 · 附魔圖鑑",
+    "Read the Aqua Affinity entry in The Enchantment Codex": "在附魔圖鑑中閱讀親水性條目",
+    "The Enchantment Codex": "附魔圖鑑"
   },
   "de": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Innenblöcke werden in die Datei einbezogen, auch wenn der Betrachter sie aussortiert.",
@@ -3016,7 +3040,15 @@
     "texture mirror unreachable": "Texturspiegel nicht erreichbar",
     "using flat colors": "flache Farben werden verwendet",
     "Share link copied": "Link kopiert",
-    "Blueprint PNG downloaded": "Bauplan-PNG heruntergeladen"
+    "Blueprint PNG downloaded": "Bauplan-PNG heruntergeladen",
+    "From the same workshop": "Aus derselben Werkstatt",
+    "Aqua Affinity": "Wasseraffinität",
+    "Aqua Affinity: mine underwater, at full speed.": "Wasseraffinität: Unter Wasser mit voller Geschwindigkeit abbauen.",
+    "The Enchantment Codex breaks down all 43 Java 26.3 enchantments — what they do, where to get them and what conflicts.": "Der Verzauberungskodex erklärt alle 43 Java-26.3-Verzauberungen — Wirkung, Fundort und Konflikte.",
+    "Read the Aqua Affinity entry": "Wasseraffinität lesen",
+    "Aqua Affinity · Enchantment Codex": "Wasseraffinität · Verzauberungskodex",
+    "Read the Aqua Affinity entry in The Enchantment Codex": "Wasseraffinität im Verzauberungskodex lesen",
+    "The Enchantment Codex": "Der Verzauberungskodex"
   },
   "fr": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Les blocs intérieurs sont inclus dans le fichier même si le spectateur les supprime.",
@@ -3770,7 +3802,15 @@
     "texture mirror unreachable": "miroir de textures inaccessible",
     "using flat colors": "couleurs unies utilisées",
     "Share link copied": "Lien copié",
-    "Blueprint PNG downloaded": "PNG du plan téléchargé"
+    "Blueprint PNG downloaded": "PNG du plan téléchargé",
+    "From the same workshop": "Du même atelier",
+    "Aqua Affinity": "Affinité aquatique",
+    "Aqua Affinity: mine underwater, at full speed.": "Affinité aquatique : miner sous l'eau à pleine vitesse.",
+    "The Enchantment Codex breaks down all 43 Java 26.3 enchantments — what they do, where to get them and what conflicts.": "Le Codex des enchantements détaille les 43 enchantements Java 26.3 — effets, obtention et conflits.",
+    "Read the Aqua Affinity entry": "Lire l'article Affinité aquatique",
+    "Aqua Affinity · Enchantment Codex": "Affinité aquatique · Codex des enchantements",
+    "Read the Aqua Affinity entry in The Enchantment Codex": "Lire l'article Affinité aquatique dans le Codex des enchantements",
+    "The Enchantment Codex": "Le Codex des enchantements"
   },
   "it": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". I blocchi interni sono inclusi nel file anche se lo spettatore li seleziona.",
@@ -4524,7 +4564,15 @@
     "texture mirror unreachable": "mirror delle texture non raggiungibile",
     "using flat colors": "colori piatti in uso",
     "Share link copied": "Link copiato",
-    "Blueprint PNG downloaded": "PNG del progetto scaricato"
+    "Blueprint PNG downloaded": "PNG del progetto scaricato",
+    "From the same workshop": "Dalla stessa bottega",
+    "Aqua Affinity": "Affinità all'acqua",
+    "Aqua Affinity: mine underwater, at full speed.": "Affinità all'acqua: scava sott'acqua a piena velocità.",
+    "The Enchantment Codex breaks down all 43 Java 26.3 enchantments — what they do, where to get them and what conflicts.": "Il Codice degli incantesimi spiega tutti i 43 incantesimi Java 26.3: effetti, provenienza e conflitti.",
+    "Read the Aqua Affinity entry": "Leggi la voce Affinità all'acqua",
+    "Aqua Affinity · Enchantment Codex": "Affinità all'acqua · Codice degli incantesimi",
+    "Read the Aqua Affinity entry in The Enchantment Codex": "Leggi la voce Affinità all'acqua nel Codice degli incantesimi",
+    "The Enchantment Codex": "Il Codice degli incantesimi"
   },
   "es": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Los bloques interiores se incluyen en el archivo aunque el espectador los seleccione.",
@@ -5278,7 +5326,15 @@
     "texture mirror unreachable": "servidor de texturas inaccesible",
     "using flat colors": "usando colores planos",
     "Share link copied": "Enlace copiado",
-    "Blueprint PNG downloaded": "PNG del plano descargado"
+    "Blueprint PNG downloaded": "PNG del plano descargado",
+    "From the same workshop": "Del mismo taller",
+    "Aqua Affinity": "Afinidad acuática",
+    "Aqua Affinity: mine underwater, at full speed.": "Afinidad acuática: mina bajo el agua a toda velocidad.",
+    "The Enchantment Codex breaks down all 43 Java 26.3 enchantments — what they do, where to get them and what conflicts.": "El Códice de encantamientos explica los 43 encantamientos de Java 26.3: efectos, obtención y conflictos.",
+    "Read the Aqua Affinity entry": "Leer la entrada de Afinidad acuática",
+    "Aqua Affinity · Enchantment Codex": "Afinidad acuática · Códice de encantamientos",
+    "Read the Aqua Affinity entry in The Enchantment Codex": "Leer la entrada de Afinidad acuática en el Códice de encantamientos",
+    "The Enchantment Codex": "El Códice de encantamientos"
   },
   "ja": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。内部ブロックは、ビューアがそれらをカリングしても、ファイルに含まれます。",
@@ -6033,6 +6089,14 @@
     "using flat colors": "単色で表示します",
     "Share link copied": "共有リンクをコピーしました",
     "Blueprint PNG downloaded": "設計図 PNG をダウンロードしました",
-    "Build spheres, ovals, domes and unhinged wizard spires with real textures, half-slab curves and layer-by-layer blueprints. Then export straight to your world.": "リアルなテクスチャ、ハーフスラブの曲線、レイヤーごとの設計図を使って、球体、楕円、ドーム、ぶっ飛んだ魔法使いの塔を作りましょう。そのままワールドへエクスポートできます。"
+    "Build spheres, ovals, domes and unhinged wizard spires with real textures, half-slab curves and layer-by-layer blueprints. Then export straight to your world.": "リアルなテクスチャ、ハーフスラブの曲線、レイヤーごとの設計図を使って、球体、楕円、ドーム、ぶっ飛んだ魔法使いの塔を作りましょう。そのままワールドへエクスポートできます。",
+    "From the same workshop": "同じ工房から",
+    "Aqua Affinity": "水中採掘",
+    "Aqua Affinity: mine underwater, at full speed.": "水中採掘：水中でも全速力で採掘。",
+    "The Enchantment Codex breaks down all 43 Java 26.3 enchantments — what they do, where to get them and what conflicts.": "エンチャント図鑑では、Java 26.3 の全43エンチャントの効果・入手方法・競合を解説しています。",
+    "Read the Aqua Affinity entry": "水中採掘の記事を読む",
+    "Aqua Affinity · Enchantment Codex": "水中採掘 · エンチャント図鑑",
+    "Read the Aqua Affinity entry in The Enchantment Codex": "エンチャント図鑑で水中採掘の記事を読む",
+    "The Enchantment Codex": "エンチャント図鑑"
   }
 }

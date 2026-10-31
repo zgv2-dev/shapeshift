@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { BookOpen, Search, X } from 'lucide-react'
+import { BookOpen, Droplets, Search, X } from 'lucide-react'
 import { CATEGORIES, SHAPES } from '../core/shapes'
 import { useStore } from '../state/store'
 import { ShapeGlyph } from './ShapeGlyph'
@@ -134,6 +134,21 @@ export function Library() {
       </div>
 
       <footer className="library-foot">
+        <a
+          className="codex-ad"
+          href="https://enchantments.mc.zgv2.dev/#aqua_affinity"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Read the Aqua Affinity entry in The Enchantment Codex"
+        >
+          <span className="codex-ad-icon" aria-hidden="true">
+            <Droplets size={14} />
+          </span>
+          <span className="codex-ad-copy">
+            <strong>Aqua Affinity</strong>
+            <small>The Enchantment Codex <span aria-hidden="true">→</span></small>
+          </span>
+        </a>
         <div className="library-utility">
           <LanguageSelect />
           <a

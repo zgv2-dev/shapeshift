@@ -740,6 +740,65 @@ p {
   box-shadow: 0 0 10px rgba(217, 255, 107, 0.55);
 }
 
+.codex-ad {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding: 7px 8px;
+  border: 1px solid rgba(121, 231, 255, 0.18);
+  border-radius: 8px;
+  background: linear-gradient(100deg, rgba(121, 231, 255, 0.06), rgba(217, 255, 107, 0.02));
+  text-decoration: none;
+  transition: border-color 0.14s ease, background 0.14s ease;
+}
+
+.codex-ad:hover {
+  border-color: rgba(121, 231, 255, 0.34);
+  background: linear-gradient(100deg, rgba(121, 231, 255, 0.09), rgba(217, 255, 107, 0.03));
+}
+
+.codex-ad-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 27px;
+  height: 27px;
+  border: 1px solid rgba(121, 231, 255, 0.22);
+  border-radius: 6px;
+  background: rgba(121, 231, 255, 0.06);
+  color: #79e7ff;
+}
+
+.codex-ad-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.codex-ad-copy strong {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.codex-ad-copy small {
+  overflow: hidden;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 7.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.codex-ad:hover .codex-ad-copy small {
+  color: #79e7ff;
+}
+
 .library-utility {
   display: flex;
   align-items: center;
