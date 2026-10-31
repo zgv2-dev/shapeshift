@@ -96,7 +96,7 @@ export function Library() {
 
         <a
           className="codex-ad"
-          href="https://enchantments.mc.zgv2.dev/#aqua_affinity"
+          href="https://enchantments.mc.zgv2.dev/"
           target="_blank"
           rel="noopener noreferrer"
           title="Read the Aqua Affinity entry in The Enchantment Codex"

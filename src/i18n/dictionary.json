@@ -760,7 +760,8 @@
     "Read the Aqua Affinity entry": "Читати про Рідність води",
     "Aqua Affinity · Enchantment Codex": "Рідність води · Кодекс зачарувань",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Читати про Рідність води в Кодексі зачарувань",
-    "The Enchantment Codex": "Кодекс зачарувань"
+    "The Enchantment Codex": "Кодекс зачарувань",
+    "Explore The Enchantment Codex": "Дослідити Кодекс зачарувань"
   },
   "zh-Hans": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。即使查看者剔除内部块，它们也会包含在文件中。",
@@ -1523,7 +1524,8 @@
     "Read the Aqua Affinity entry": "阅读水下速掘条目",
     "Aqua Affinity · Enchantment Codex": "水下速掘 · 附魔图鉴",
     "Read the Aqua Affinity entry in The Enchantment Codex": "在附魔图鉴中阅读水下速掘条目",
-    "The Enchantment Codex": "附魔图鉴"
+    "The Enchantment Codex": "附魔图鉴",
+    "Explore The Enchantment Codex": "探索附魔图鉴"
   },
   "zh-Hant": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。即使查看者剔除內部區塊，它們也會包含在檔案中。",
@@ -2286,7 +2288,8 @@
     "Read the Aqua Affinity entry": "閱讀親水性條目",
     "Aqua Affinity · Enchantment Codex": "親水性 · 附魔圖鑑",
     "Read the Aqua Affinity entry in The Enchantment Codex": "在附魔圖鑑中閱讀親水性條目",
-    "The Enchantment Codex": "附魔圖鑑"
+    "The Enchantment Codex": "附魔圖鑑",
+    "Explore The Enchantment Codex": "探索附魔圖鑑"
   },
   "de": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Innenblöcke werden in die Datei einbezogen, auch wenn der Betrachter sie aussortiert.",
@@ -3048,7 +3051,8 @@
     "Read the Aqua Affinity entry": "Wasseraffinität lesen",
     "Aqua Affinity · Enchantment Codex": "Wasseraffinität · Verzauberungskodex",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Wasseraffinität im Verzauberungskodex lesen",
-    "The Enchantment Codex": "Der Verzauberungskodex"
+    "The Enchantment Codex": "Der Verzauberungskodex",
+    "Explore The Enchantment Codex": "Den Verzauberungskodex erkunden"
   },
   "fr": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Les blocs intérieurs sont inclus dans le fichier même si le spectateur les supprime.",
@@ -3810,7 +3814,8 @@
     "Read the Aqua Affinity entry": "Lire l'article Affinité aquatique",
     "Aqua Affinity · Enchantment Codex": "Affinité aquatique · Codex des enchantements",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Lire l'article Affinité aquatique dans le Codex des enchantements",
-    "The Enchantment Codex": "Le Codex des enchantements"
+    "The Enchantment Codex": "Le Codex des enchantements",
+    "Explore The Enchantment Codex": "Explorer le Codex des enchantements"
   },
   "it": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". I blocchi interni sono inclusi nel file anche se lo spettatore li seleziona.",
@@ -4572,7 +4577,8 @@
     "Read the Aqua Affinity entry": "Leggi la voce Affinità all'acqua",
     "Aqua Affinity · Enchantment Codex": "Affinità all'acqua · Codice degli incantesimi",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Leggi la voce Affinità all'acqua nel Codice degli incantesimi",
-    "The Enchantment Codex": "Il Codice degli incantesimi"
+    "The Enchantment Codex": "Il Codice degli incantesimi",
+    "Explore The Enchantment Codex": "Esplora il Codice degli incantesimi"
   },
   "es": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Los bloques interiores se incluyen en el archivo aunque el espectador los seleccione.",
@@ -5334,7 +5340,8 @@
     "Read the Aqua Affinity entry": "Leer la entrada de Afinidad acuática",
     "Aqua Affinity · Enchantment Codex": "Afinidad acuática · Códice de encantamientos",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Leer la entrada de Afinidad acuática en el Códice de encantamientos",
-    "The Enchantment Codex": "El Códice de encantamientos"
+    "The Enchantment Codex": "El Códice de encantamientos",
+    "Explore The Enchantment Codex": "Explorar el Códice de encantamientos"
   },
   "ja": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。内部ブロックは、ビューアがそれらをカリングしても、ファイルに含まれます。",
@@ -6097,6 +6104,7 @@
     "Read the Aqua Affinity entry": "水中採掘の記事を読む",
     "Aqua Affinity · Enchantment Codex": "水中採掘 · エンチャント図鑑",
     "Read the Aqua Affinity entry in The Enchantment Codex": "エンチャント図鑑で水中採掘の記事を読む",
-    "The Enchantment Codex": "エンチャント図鑑"
+    "The Enchantment Codex": "エンチャント図鑑",
+    "Explore The Enchantment Codex": "エンチャント図鑑を見る"
   }
 }
