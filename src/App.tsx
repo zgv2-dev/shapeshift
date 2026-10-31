@@ -7,6 +7,7 @@ import { Blueprint2D } from './components/Blueprint2D'
 import { LayerDock } from './components/LayerDock'
 import { Inspector } from './components/Inspector'
 import { useStore } from './state/store'
+import { getShape } from './core/shapes'
 import type { ModelPayload } from './core/types'
 import { persistState } from './lib/stateUrl'
 import { getCachedAtlas, loadBlockAtlas } from './three/textures'
@@ -99,6 +100,20 @@ function useTextureLoader() {
 export default function App() {
   useGenerator()
   useTextureLoader()
+  const shapeId = useStore((s) => s.shapeId)
+  const shape = getShape(shapeId)
+
+  useEffect(() => {
+    const structural = shape.category === 'structures'
+    document.title = structural ? `${shape.name} — Shapeshift` : `${shape.name} Generator — Shapeshift`
+    const description = document.querySelector('meta[name="description"]')
+    if (description) {
+      description.setAttribute(
+        'content',
+        `${shape.name}: ${shape.tagline} Build it with half-slab detail, real textures and layer blueprints, then export to Litematica, WorldEdit or a structure block.`,
+      )
+    }
+  }, [shape])
   const mode = useStore((s) => s.mode)
   const setMode = useStore((s) => s.setMode)
   const status = useStore((s) => s.status)

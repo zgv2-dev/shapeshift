@@ -127,10 +127,17 @@ function readQuery(): PersistedState {
   if (mp && BLOCK_MAP.has(mp)) materials.primary = mp
   if (ma && BLOCK_MAP.has(ma)) materials.accent = ma
   if (md && BLOCK_MAP.has(md)) materials.detail = md
-  const ox = Number(q.get('ox'))
-  const oy = Number(q.get('oy'))
-  const oz = Number(q.get('oz'))
-  const layer = Number(q.get('layer'))
+  const numberOrNull = (key: string): number | null => {
+    const raw = q.get(key)
+    if (raw === null || raw.trim() === '') return null
+    const value = Number(raw)
+    return Number.isFinite(value) ? value : null
+  }
+  const ox = numberOrNull('ox')
+  const oy = numberOrNull('oy')
+  const oz = numberOrNull('oz')
+  const layer = numberOrNull('layer')
+  const hasOrigin = ox !== null || oy !== null || oz !== null
   return {
     shapeId,
     params,
@@ -138,11 +145,10 @@ function readQuery(): PersistedState {
     detail: q.get('slabs') === '0' ? false : true,
     textures: q.get('tex') === '1' ? true : q.get('tex') === '0' ? false : undefined,
     mode: q.get('view') === '2d' ? '2d' : '3d',
-    layer: Number.isFinite(layer) ? layer : undefined,
-    worldOrigin:
-      Number.isFinite(ox) && Number.isFinite(oy) && Number.isFinite(oz)
-        ? { x: ox, y: oy, z: oz }
-        : undefined,
+    layer: layer ?? undefined,
+    worldOrigin: hasOrigin
+      ? { x: ox ?? 0, y: oy ?? 64, z: oz ?? 0 }
+      : undefined,
   }
 }
 
@@ -290,7 +296,7 @@ export const useStore = create<AppState>((set, get) => ({
     set((s) => {
       const oldTop = topNonEmpty(s.model)
       const newTop = topNonEmpty(m)
-      const wasTop = s.layer >= oldTop - 1
+      const wasTop = s.model !== null && s.layer >= oldTop - 1
       return {
         model: m,
         status: 'ready',

@@ -2,17 +2,502 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0a0d0b" />
+    <title>Shapeshift — Minecraft Shape Generator That Isn't Boxy</title>
     <meta
       name="description"
-      content="Shapeshift is a Minecraft shape studio: 31 parametric shapes, half-slab detail, a real-time 3D voxel viewer, layered build blueprints and litematic / schematic exports."
+      content="Build 37 Minecraft shapes with real textures, half-slab curves, 3D previews and layer blueprints. Export to Litematica, WorldEdit or structure blocks — free."
     />
-    <title>Shapeshift — Minecraft Shape Studio</title>
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://shapeshift.mc.zgv2.dev/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" as="image" href="/preview.webp" fetchpriority="high" />
+    <meta name="theme-color" content="#0a0d0b" />
+    <meta name="author" content="Shapeshift" />
+    <meta name="application-name" content="Shapeshift" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Shapeshift" />
+    <meta property="og:title" content="Minecraft shapes that don't look like boxes." />
+    <meta
+      property="og:description"
+      content="37 buildable Minecraft shapes, real textures, half-slab curves and layer-by-layer blueprints. Export straight to Litematica, WorldEdit or a structure block."
+    />
+    <meta property="og:url" content="https://shapeshift.mc.zgv2.dev/" />
+    <meta property="og:image" content="https://shapeshift.mc.zgv2.dev/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Shapeshift studio showing a purple Minecraft wizard tower rendered with real block textures" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Minecraft shapes that don't look like boxes." />
+    <meta
+      name="twitter:description"
+      content="37 parametric Minecraft shapes with half-slab curves, real textures, layer blueprints and schematic exports."
+    />
+    <meta name="twitter:image" content="https://shapeshift.mc.zgv2.dev/og.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://shapeshift.mc.zgv2.dev/#website",
+            "url": "https://shapeshift.mc.zgv2.dev/",
+            "name": "Shapeshift",
+            "description": "A Minecraft shape generator with half-slab detail, real textures, layer blueprints and schematic exports.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://shapeshift.mc.zgv2.dev/#app",
+            "name": "Shapeshift — Minecraft Shape Generator",
+            "url": "https://shapeshift.mc.zgv2.dev/",
+            "applicationCategory": "DesignApplication",
+            "operatingSystem": "Any modern web browser",
+            "browserRequirements": "Requires WebGL 2 and JavaScript",
+            "isAccessibleForFree": true,
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "description": "Design 37 parametric Minecraft shapes with real 1.20.1 textures, half-slab curves, a 3D voxel viewer, 2D layer blueprints and Litematica, Sponge or structure-block exports.",
+            "screenshot": "https://shapeshift.mc.zgv2.dev/preview.png",
+            "featureList": [
+              "37 parametric Minecraft shapes",
+              "Half-slab detail for smoother curves",
+              "Real Minecraft 1.20.1 block textures",
+              "Real-time 3D voxel viewer",
+              "2D layer blueprints with block counts",
+              "Litematica, Sponge schematic and structure NBT exports"
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://shapeshift.mc.zgv2.dev/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is Shapeshift free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Shapeshift runs entirely in your browser, with no account, download or paywall."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is half-slab detail?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Curved shapes are sampled twice per block vertically. When a curve cuts through a block, Shapeshift places a bottom or top slab instead of a full block, halving the stair-stepping. Exports keep the exact slab block state."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I export to Litematica or WorldEdit?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Shapeshift exports Litematica .litematic files, Sponge v2 .schem files for WorldEdit and FAWE, vanilla structure block .nbt files, block lists and layer PNGs."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are the Minecraft textures included?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No texture files are bundled. The texture toggle loads Minecraft 1.20.1 block textures at runtime from a public asset mirror. If the mirror is unavailable, Shapeshift falls back to flat colours."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which Minecraft version does Shapeshift target?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Block states target Minecraft 1.20.1, data version 3465. Litematica, Sponge and structure-block exports include the appropriate slab properties."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        if (params.has('shape')) {
+          window.location.replace('/studio/' + window.location.search);
+        }
+      })();
+    </script>
   </head>
+
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-head">
+      <div class="shell head-inner">
+        <a class="logo" href="/" aria-label="Shapeshift home">
+          <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M20 3 35 11 20 19 5 11Z" fill="#d9ff6b" />
+            <path d="M5 11v18l15 8V19Z" fill="#7da437" />
+            <path d="M35 11v18l-15 8V19Z" fill="#4d7122" />
+          </svg>
+          <span class="logo-type">Shapeshift<small>Minecraft shape studio</small></span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#shapes">Shapes</a>
+          <a href="#blueprints">Blueprints</a>
+          <a href="#exports">Exports</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <a class="btn btn-primary head-cta" href="/studio/">
+          Open studio
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero shell">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="live-dot"></span> 37 shapes · Minecraft 1.20.1</p>
+          <h1>Minecraft shapes<br />that <em>don't look like boxes.</em></h1>
+          <p class="lede">
+            Build spheres, ovals, domes and unhinged wizard spires with real textures, half-slab
+            curves and layer-by-layer blueprints. Then export straight to your world.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary btn-lg" href="/studio/">
+              Open the studio
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn-ghost btn-lg" href="#shapes">Browse the shapes</a>
+          </div>
+          <ul class="trust-row">
+            <li>Free</li>
+            <li>No account</li>
+            <li>Runs in your browser</li>
+          </ul>
+        </div>
+
+        <figure class="hero-visual">
+          <div class="browser-frame">
+            <div class="browser-bar" aria-hidden="true">
+              <span class="browser-dots"><i></i><i></i><i></i></span>
+              <span class="browser-url">shapeshift.mc.zgv2.dev/studio</span>
+              <span class="live-tag"><i></i>live</span>
+            </div>
+            <img
+              src="/preview.webp"
+              width="1440"
+              height="900"
+              alt="Shapeshift studio showing a purple wizard tower on a house, rendered with real Minecraft textures and half-slab geometry"
+              fetchpriority="high"
+            />
+          </div>
+          <span class="float-tag tag-a">37 shapes</span>
+          <span class="float-tag tag-b">½-slab curves</span>
+          <span class="glow"></span>
+        </figure>
+      </section>
+
+      <section class="metrics shell" aria-label="Shapeshift at a glance">
+        <div class="metric"><strong>37</strong><span>parametric shapes</span></div>
+        <div class="metric"><strong>256</strong><span>block max dimension</span></div>
+        <div class="metric"><strong>6</strong><span>export formats</span></div>
+        <div class="metric"><strong>0</strong><span>installs required</span></div>
+      </section>
+
+      <section class="section shell" id="why">
+        <div class="section-head">
+          <p class="eyebrow">Why Shapeshift</p>
+          <h2>Built for people who care where the blocks land.</h2>
+          <p>
+            Most shape tools give you a pretty preview and a count. Shapeshift gives you the
+            curve, the slab, the layer plan and the file — without leaving the browser.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="8" ry="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            </span>
+            <h3>37 shapes, zero filler</h3>
+            <p>Spheres, ovals, domes, hearts, knots, spires and more. Every shape is parametric — dial in the size instead of hunting for a fixed blueprint.</p>
+          </article>
+          <article class="feature">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="4" y="13" width="16" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/></svg>
+            </span>
+            <h3>Half-slab curves</h3>
+            <p>Curves are sampled twice per block and become bottom or top slabs where they cut through. The silhouette gets smoother; the export keeps the exact slab state.</p>
+          </article>
+          <article class="feature">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="m10 7 4 0M7 10v4M17 10v4M10 17h4" stroke="currentColor" stroke-width="1.3"/></svg>
+            </span>
+            <h3>Real Minecraft textures</h3>
+            <p>Flip on the vanilla 1.20.1 block textures and preview your palette before you place a block. Textures load at runtime; flat colours remain the offline fallback.</p>
+          </article>
+          <article class="feature">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3 21 8l-9 5-9-5 9-5Z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            </span>
+            <h3>A viewer that thinks in layers</h3>
+            <p>Build mode, ghosted future layers, section cuts, an aligned top view and a layer timeline. Stop eyeballing the y-axis.</p>
+          </article>
+          <article class="feature">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h18M9 3v18M15 3v18M3 15h18" stroke="currentColor" stroke-width="1" opacity=".55"/></svg>
+            </span>
+            <h3>Blueprints for humans</h3>
+            <p>2D layer plans with slab halves, previous-layer ghosts, symmetry checks, quadrant counts and row and column totals. Build it right the first time.</p>
+          </article>
+          <article class="feature">
+            <span class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 3v11m0 0 4-4m-4 4-4-4M4 17v3h16v-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Exports that paste</h3>
+            <p>Litematica, Sponge, vanilla structure blocks, block lists and layer PNGs. Slabs are written with the right block state, not approximated.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section shell" id="blueprints">
+        <div class="split">
+          <div class="split-copy">
+            <p class="eyebrow">Blueprint mode</p>
+            <h2>The 3D view sells the dream.<br /><em>The layer plan builds it.</em></h2>
+            <p>
+              Step through every Y-level with ghosted context, slab-aware cells, symmetry badges
+              and quadrant counts. Row and column totals tell you how many blocks belong where,
+              before you place the first one.
+            </p>
+            <ul class="check-list">
+              <li>Top-down layer by layer, with the previous layer ghosted</li>
+              <li>Bottom and top slabs drawn as half-cells</li>
+              <li>X/Z symmetry checks and a build-once, mirror-often quadrant count</li>
+              <li>Hover any cell for its exact world coordinates</li>
+            </ul>
+            <a class="text-link" href="/studio/?shape=sphere&amp;view=2d">Try a layer plan <span>→</span></a>
+          </div>
+          <figure class="split-media">
+            <img
+              src="/screens/blueprint.webp"
+              width="936"
+              height="1008"
+              loading="lazy"
+              alt="Shapeshift 2D layer blueprint showing a textured Minecraft torus with slab cells and block counts"
+            />
+            <figcaption>Layer 16 of a slab-detailed torus, with previous-layer ghosting.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section shell" id="textures">
+        <div class="split split-reverse">
+          <figure class="split-media">
+            <img
+              src="/screens/tower.webp"
+              width="936"
+              height="1008"
+              loading="lazy"
+              alt="A purple Minecraft wizard tower on a flat-roof house, rendered with real block textures"
+            />
+            <figcaption>The dope wizard tower, with real 1.20.1 textures.</figcaption>
+          </figure>
+          <div class="split-copy">
+            <p class="eyebrow">Slabs + textures</p>
+            <h2>Curves that actually curve.<br /><em>Blocks that look like blocks.</em></h2>
+            <p>
+              Half-slab detail doubles the vertical resolution of every curved shape. Turn on
+              Minecraft textures and the same model reads like something already built — stone,
+              quartz, obsidian, glass and all.
+            </p>
+            <ul class="check-list">
+              <li>Slabs wherever a curve cuts a block in half</li>
+              <li>Materials pair with their matching slab block automatically</li>
+              <li>Real 1.20.1 textures in the 3D viewer and the 2D blueprint</li>
+              <li>No texture files bundled; flat colours if the mirror is unreachable</li>
+            </ul>
+            <a class="text-link" href="/studio/?shape=dope-tower&amp;tex=1">Meet the meme tower <span>→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section shell" id="shapes">
+        <div class="section-head">
+          <p class="eyebrow">The shape library</p>
+          <h2>37 shapes. None of them are a dirt cube.</h2>
+          <p>Start with a form, then make it yours. Every card opens the studio with that shape ready to edit.</p>
+        </div>
+
+        <div class="shape-grid">
+          <a class="shape-card" href="/studio/?shape=sphere">
+            <span class="shape-tag">Round</span><h3>Sphere</h3><p>The classic, with actual curves.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=ellipsoid">
+            <span class="shape-tag">Round</span><h3>Ellipsoid</h3><p>Planets, pods and airship hulls.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=torus">
+            <span class="shape-tag">Round</span><h3>Torus</h3><p>Round, upright or stretched into an oval.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=dome">
+            <span class="shape-tag">Round</span><h3>Dome</h3><p>Half a sphere. All the drama.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=arch">
+            <span class="shape-tag">Solid</span><h3>Arch</h3><p>Gates, bridges and portal frames.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=dope-tower">
+            <span class="shape-tag">Structure</span><h3>Dope wizard tower</h3><p>The house-topping meme spire.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=heart">
+            <span class="shape-tag">Round</span><h3>Heart</h3><p>A proper 3D heart, not a decal.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=mobius">
+            <span class="shape-tag">Curve</span><h3>Möbius ring</h3><p>A ribbon with one side and no chill.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=spiral-stair">
+            <span class="shape-tag">Curve</span><h3>Spiral stair</h3><p>A climbable helix with a central pole.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=geodesic">
+            <span class="shape-tag">Structure</span><h3>Geodesic dome</h3><p>Struts, triangles and big dome energy.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=lighthouse">
+            <span class="shape-tag">Structure</span><h3>Lighthouse</h3><p>Stripes, glass and a working lantern.</p><span class="shape-arrow">Open →</span>
+          </a>
+          <a class="shape-card" href="/studio/?shape=observatory">
+            <span class="shape-tag">Structure</span><h3>Observatory</h3><p>A dome, a slit and a telescope.</p><span class="shape-arrow">Open →</span>
+          </a>
+        </div>
+        <div class="section-cta">
+          <a class="btn btn-ghost" href="/studio/">See all 37 in the studio <span>→</span></a>
+        </div>
+      </section>
+
+      <section class="section shell" id="exports">
+        <div class="section-head">
+          <p class="eyebrow">Exports</p>
+          <h2>Screenshots are nice. Schematics are better.</h2>
+          <p>Take the shape into your world with the format your toolchain already speaks.</p>
+        </div>
+        <div class="export-grid">
+          <article class="export-card"><span class="export-ext">.litematic</span><h3>Litematica</h3><p>Slab-safe, 1.20.1 block states, packed long arrays. The default for big builds.</p></article>
+          <article class="export-card"><span class="export-ext">.schem</span><h3>Sponge schematic</h3><p>WorldEdit, FAWE and Amulet. The most widely supported modern schematic format.</p></article>
+          <article class="export-card"><span class="export-ext">.nbt</span><h3>Structure block</h3><p>Vanilla structure file. Load it into a structure block and drop it in-world.</p></article>
+          <article class="export-card"><span class="export-ext">.csv</span><h3>Block list</h3><p>A shopping list with full blocks, half slabs and full-block equivalents counted separately.</p></article>
+          <article class="export-card"><span class="export-ext">.csv</span><h3>Coordinates</h3><p>Every block's world coordinates for commands, spreadsheets or a custom builder.</p></article>
+          <article class="export-card"><span class="export-ext">.png</span><h3>Layer blueprint</h3><p>Print the current layer with counts, coordinates and a legend for the workshop wall.</p></article>
+        </div>
+      </section>
+
+      <section class="section shell" id="how">
+        <div class="section-head">
+          <p class="eyebrow">How it works</p>
+          <h2>From “what if” to WorldEdit in three steps.</h2>
+        </div>
+        <ol class="steps">
+          <li><span class="step-num">01</span><h3>Shape it</h3><p>Pick a form and dial in the dimensions. Slab detail is one switch; materials are a click.</p></li>
+          <li><span class="step-num">02</span><h3>Slice it</h3><p>Walk the layer plan, ghost the layer below and copy exact coordinates as you go.</p></li>
+          <li><span class="step-num">03</span><h3>Ship it</h3><p>Download a litematic, a schematic, a structure file or a blueprint — and go place blocks.</p></li>
+        </ol>
+      </section>
+
+      <section class="section shell" id="faq">
+        <div class="section-head">
+          <p class="eyebrow">FAQ</p>
+          <h2>Questions, answered.</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary><span>Is Shapeshift free?</span><span class="faq-mark">+</span></summary>
+            <p>Yes. Shapeshift runs entirely in your browser with no account, download or paywall.</p>
+          </details>
+          <details>
+            <summary><span>What is half-slab detail?</span><span class="faq-mark">+</span></summary>
+            <p>Curves are sampled twice per block vertically. When a curve cuts through a block, Shapeshift places a bottom or top slab instead of a full block, halving the stair-stepping. Exports keep the exact slab block state.</p>
+          </details>
+          <details>
+            <summary><span>Can I export to Litematica or WorldEdit?</span><span class="faq-mark">+</span></summary>
+            <p>Yes. Shapeshift exports Litematica <code>.litematic</code> files, Sponge v2 <code>.schem</code> files for WorldEdit and FAWE, vanilla structure block <code>.nbt</code> files, block lists and layer PNGs.</p>
+          </details>
+          <details>
+            <summary><span>Are the Minecraft textures included?</span><span class="faq-mark">+</span></summary>
+            <p>No texture files are bundled. The texture toggle loads Minecraft 1.20.1 block textures at runtime from a public asset mirror. If the mirror is unavailable, Shapeshift falls back to flat colours.</p>
+          </details>
+          <details>
+            <summary><span>Which Minecraft version does Shapeshift target?</span><span class="faq-mark">+</span></summary>
+            <p>Block states target Minecraft 1.20.1, data version 3465. Litematica, Sponge and structure-block exports include the appropriate slab properties.</p>
+          </details>
+          <details>
+            <summary><span>Does it work on mobile?</span><span class="faq-mark">+</span></summary>
+            <p>Yes. The viewer supports touch orbit and pinch zoom, and the controls collapse into drawers. It is still happiest on a tablet or desktop.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="final-cta shell">
+        <div class="final-inner">
+          <div>
+            <p class="eyebrow">Your next build</p>
+            <h2>Don't build another dirt cube.</h2>
+            <p>Design something with a silhouette. It takes about thirty seconds.</p>
+          </div>
+          <a class="btn btn-primary btn-lg" href="/studio/">
+            Open the shape studio
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-foot">
+      <div class="shell foot-grid">
+        <div class="foot-brand">
+          <a class="logo" href="/" aria-label="Shapeshift home">
+            <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+              <path d="M20 3 35 11 20 19 5 11Z" fill="#d9ff6b" />
+              <path d="M5 11v18l15 8V19Z" fill="#7da437" />
+              <path d="M35 11v18l-15 8V19Z" fill="#4d7122" />
+            </svg>
+            <span class="logo-type">Shapeshift<small>Minecraft shape studio</small></span>
+          </a>
+          <p>Precise Minecraft shapes with real curves, real slabs and real exports.</p>
+        </div>
+        <div>
+          <h3>Studio</h3>
+          <a href="/studio/">Open Shapeshift</a>
+          <a href="/studio/?shape=sphere">Sphere generator</a>
+          <a href="/studio/?shape=torus">Torus generator</a>
+          <a href="/studio/?shape=dope-tower">Dope wizard tower</a>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <a href="#shapes">All shapes</a>
+          <a href="#blueprints">Blueprints</a>
+          <a href="#exports">Exports</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div>
+          <h3>Project</h3>
+          <a href="https://github.com/zgv2-dev/shapeshift" rel="noopener">GitHub</a>
+          <a href="/sitemap.xml">Sitemap</a>
+          <a href="/robots.txt">Robots</a>
+        </div>
+      </div>
+      <div class="shell foot-bottom">
+        <p>© 2026 Shapeshift. Not affiliated with Mojang or Microsoft.</p>
+        <p>Block textures load from a public Minecraft 1.20.1 asset mirror and are not bundled.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/landing.ts"></script>
   </body>
 </html>

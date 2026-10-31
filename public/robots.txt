@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shapeshift.mc.zgv2.dev/sitemap.xml

@@ -1,0 +1,18 @@
+{
+  "name": "Shapeshift — Minecraft Shape Studio",
+  "short_name": "Shapeshift",
+  "description": "Design Minecraft shapes with slabs, textures, blueprints and schematic exports.",
+  "start_url": "/studio/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0d0b",
+  "theme_color": "#0a0d0b",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
