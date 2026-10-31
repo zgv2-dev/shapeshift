@@ -16,6 +16,7 @@ export interface HoverInfo {
   kind: number
   palette: number
   label: string
+  normal: { x: number; y: number; z: number }
 }
 
 export interface ViewState {
@@ -27,11 +28,13 @@ export interface ViewState {
   cutaway: number
   backdrop: 'studio' | 'sky' | 'nether' | 'end'
   active: boolean
+  editMode: boolean
   origin: { x: number; y: number; z: number }
 }
 
 interface ViewerOptions {
   onToast: (message: string) => void
+  onEdit?: (hit: HoverInfo) => void
 }
 
 const BACKDROPS = {
@@ -195,6 +198,7 @@ export class VoxelViewer {
     cutaway: 0,
     backdrop: 'studio',
     active: true,
+    editMode: false,
     origin: { x: 0, y: 64, z: 0 },
   }
   private raf = 0
@@ -205,6 +209,7 @@ export class VoxelViewer {
   private pointerDown = { x: 0, y: 0 }
   private dragging = false
   private hover: HoverInfo | null = null
+  private lastPick: HoverInfo | null = null
   private tween:
     | {
         t: number
@@ -360,6 +365,9 @@ export class VoxelViewer {
     if (prev.grid !== this.view.grid) this.env.visible = this.view.grid
     if (prev.autoRotate !== this.view.autoRotate) this.controls.autoRotate = this.view.autoRotate
     if (prev.cutaway !== this.view.cutaway) this.updateCutaway()
+    if (prev.editMode !== this.view.editMode) {
+      this.renderer.domElement.style.cursor = this.view.editMode ? 'crosshair' : 'grab'
+    }
     if (!prev.active && this.view.active) this.resize()
   }
 
@@ -702,6 +710,7 @@ export class VoxelViewer {
       return
     }
     this.hover = hit
+    this.lastPick = hit
     const model = this.model!
     const [nx] = model.dims
     const localX = hit.x - Math.floor(nx / 2)
@@ -737,14 +746,19 @@ export class VoxelViewer {
 
   private onPointerUp = (event: PointerEvent): void => {
     const moved = Math.hypot(event.clientX - this.pointerDown.x, event.clientY - this.pointerDown.y)
-    if (moved > 5 || !this.hover) return
+    const hit = this.hover ?? this.lastPick
+    if (moved > 5 || !hit) return
+    if (this.view.editMode) {
+      this.options.onEdit?.(hit)
+      return
+    }
     const model = this.model
     if (!model) return
     const nx = model.dims[0]
     const nz = model.dims[2]
-    const wx = this.hover.x - Math.floor(nx / 2) + this.view.origin.x
-    const wy = this.hover.y + this.view.origin.y
-    const wz = this.hover.z - Math.floor(nz / 2) + this.view.origin.z
+    const wx = hit.x - Math.floor(nx / 2) + this.view.origin.x
+    const wy = hit.y + this.view.origin.y
+    const wz = hit.z - Math.floor(nz / 2) + this.view.origin.z
     const text = `${wx} ${wy} ${wz}`
     navigator.clipboard
       ?.writeText(text)
@@ -753,6 +767,7 @@ export class VoxelViewer {
   }
 
   private onPointerLeave = (): void => {
+    this.lastPick = null
     this.hideTooltip()
   }
 
@@ -793,6 +808,10 @@ export class VoxelViewer {
     let x = Math.max(0, Math.min(nx - 1, Math.floor(p.x)))
     let y = Math.max(0, Math.min(ny - 1, Math.floor(p.y)))
     let z = Math.max(0, Math.min(nz - 1, Math.floor(p.z)))
+    let lastAxis: 'x' | 'y' | 'z' = 'y'
+    let lastSign = 1
+    let stepped = false
+    const entry = p.clone()
     const stepX = dir.x > 0 ? 1 : -1
     const stepY = dir.y > 0 ? 1 : -1
     const stepZ = dir.z > 0 ? 1 : -1
@@ -824,6 +843,28 @@ export class VoxelViewer {
         const slabLo = kind === 2 ? y + 0.5 : y
         const slabHi = kind === 1 ? y + 0.5 : y + 1
         if (kind === 0 || (yHi >= slabLo && yLo <= slabHi)) {
+          const normal = { x: 0, y: 0, z: 0 }
+          if (stepped) {
+            normal[lastAxis] = -lastSign
+          } else {
+            // The camera can start inside the model; use the nearest bbox face.
+            let best = Infinity
+            const axes: Array<['x' | 'y' | 'z', number, number]> = [
+              ['x', entry.x, dir.x],
+              ['y', entry.y, dir.y],
+              ['z', entry.z, dir.z],
+            ]
+            for (const [axis, value, direction] of axes) {
+              const dist = Math.abs(value - Math.round(value))
+              if (dist < best) {
+                best = dist
+                normal.x = 0
+                normal.y = 0
+                normal.z = 0
+                normal[axis] = -(Math.sign(direction) || 1)
+              }
+            }
+          }
           return {
             x,
             y,
@@ -831,6 +872,7 @@ export class VoxelViewer {
             kind,
             palette,
             label: state.name,
+            normal,
           }
         }
       }
@@ -838,15 +880,22 @@ export class VoxelViewer {
         x += stepX
         t = tMaxX
         tMaxX += tDeltaX
+        lastAxis = 'x'
+        lastSign = stepX
       } else if (tMaxY < tMaxZ) {
         y += stepY
         t = tMaxY
         tMaxY += tDeltaY
+        lastAxis = 'y'
+        lastSign = stepY
       } else {
         z += stepZ
         t = tMaxZ
         tMaxZ += tDeltaZ
+        lastAxis = 'z'
+        lastSign = stepZ
       }
+      stepped = true
       if (t > tmax) return null
     }
     return null

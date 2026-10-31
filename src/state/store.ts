@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 import { BLOCK_MAP } from '../core/blocks'
+import { buildFreeformModel, freeformBlockState, modelToBlocks, stampModel, freeformBounds, type FreeformBlocks, type FreeformOrigin } from '../core/freeform'
+import { buildRenderData } from '../core/renderData'
 import { defaultMaterials, defaultParams, getShape, SHAPES } from '../core/shapes'
 import type { BlockAtlas } from '../three/textures'
 import type { MaterialSet, ModelPayload, ParamValue, RoleKey, ShapeCategory } from '../core/types'
@@ -13,8 +15,16 @@ import {
 } from '../i18n/languages'
 
 export type ViewMode = '3d' | '2d'
-export type InspectorTab = 'shape' | 'blocks' | 'export'
+export type InspectorTab = 'shape' | 'blocks' | 'export' | 'freeform'
+export type FreeformTool = 'place' | 'remove'
 export type Backdrop = 'studio' | 'sky' | 'nether' | 'end'
+
+export interface FreeformEditHit {
+  x: number
+  y: number
+  z: number
+  normal: { x: number; y: number; z: number }
+}
 
 export interface WorldOrigin {
   x: number
@@ -70,6 +80,13 @@ export interface AppState {
   pngNonce: number
   language: Language
   toast: { message: string; id: number } | null
+  freeformActive: boolean
+  freeformBlocks: FreeformBlocks | null
+  freeformOrigin: FreeformOrigin
+  freeformTool: FreeformTool
+  freeformBlock: string
+  freeformHistory: FreeformBlocks[]
+  freeformFuture: FreeformBlocks[]
 
   setShape: (id: string) => void
   setParam: (key: string, value: ParamValue) => void
@@ -99,6 +116,14 @@ export interface AppState {
   requestPng: () => void
   setLanguage: (v: Language) => void
   showToast: (message: string) => void
+  startFreeform: () => void
+  exitFreeform: () => void
+  setFreeformTool: (tool: FreeformTool) => void
+  setFreeformBlock: (block: string) => void
+  addShapeToFreeform: () => void
+  editFreeform: (hit: FreeformEditHit) => void
+  undoFreeform: () => void
+  redoFreeform: () => void
 }
 
 const STORAGE_KEY = 'shapeshift:v1'
@@ -195,6 +220,14 @@ function initialState(): Omit<
   | 'requestPng'
   | 'setLanguage'
   | 'showToast'
+  | 'startFreeform'
+  | 'exitFreeform'
+  | 'setFreeformTool'
+  | 'setFreeformBlock'
+  | 'addShapeToFreeform'
+  | 'editFreeform'
+  | 'undoFreeform'
+  | 'redoFreeform'
 > {
   const stored = readStored()
   const query = readQuery()
@@ -249,6 +282,13 @@ function initialState(): Omit<
     pngNonce: 0,
     language: query.language ?? storedLanguage,
     toast: null,
+    freeformActive: false,
+    freeformBlocks: null,
+    freeformOrigin: { x: 0, y: 0, z: 0 },
+    freeformTool: 'place',
+    freeformBlock: materials.primary,
+    freeformHistory: [],
+    freeformFuture: [],
   }
 }
 
@@ -262,7 +302,61 @@ function topNonEmpty(model: ModelPayload | null): number {
 
 let toastId = 0
 
-export const useStore = create<AppState>((set, get) => ({
+export const useStore = create<AppState>((set, get) => {
+  const commitFreeform = (
+    blocks: FreeformBlocks,
+    history: FreeformBlocks[],
+    future: FreeformBlocks[],
+  ): void => {
+    const started = performance.now()
+    const built = buildFreeformModel(blocks, Math.round(performance.now() - started))
+    const state = get()
+    const oldTop = topNonEmpty(state.model)
+    const newTop = topNonEmpty(built.model)
+    const wasTop = state.layer >= oldTop || !state.buildMode
+    set({
+      freeformBlocks: built.blocks,
+      freeformOrigin: built.origin,
+      model: built.model,
+      status: 'ready',
+      error: null,
+      layer: wasTop ? newTop : Math.min(state.layer, newTop),
+      fitLayer: false,
+      freeformHistory: history,
+      freeformFuture: future,
+    })
+  }
+
+  const sourceModel = (state: AppState): ModelPayload => {
+    const shape = getShape(state.shapeId)
+    const voxel = shape.generate({
+      p: state.params,
+      detail: state.detail,
+      materials: state.materials,
+      roleBlockNames: [state.materials.primary, state.materials.accent, state.materials.detail],
+    }).finish()
+    const render = buildRenderData(voxel)
+    return {
+      ...voxel,
+      shapeId: state.shapeId,
+      blocks: render.blocks,
+      world: { genMs: 0 },
+    }
+  }
+
+  const withHistory = (
+    blocks: FreeformBlocks,
+    state: AppState,
+    previous: FreeformBlocks,
+  ): void => {
+    commitFreeform(
+      blocks,
+      [...state.freeformHistory, previous].slice(-40),
+      [],
+    )
+  }
+
+  return {
   ...initialState(),
 
   setShape: (id) => {
@@ -349,5 +443,97 @@ export const useStore = create<AppState>((set, get) => ({
       if (get().toast?.id === id) set({ toast: null })
     }, 2600)
   },
-}))
+
+  startFreeform: () => {
+    const state = get()
+    if (state.freeformActive) return
+    if (!state.model || state.model.counts.total === 0) {
+      state.showToast('Generate a shape before opening the freeform editor')
+      return
+    }
+    const blocks = modelToBlocks(state.model)
+    const built = buildFreeformModel(blocks)
+    set({
+      freeformActive: true,
+      freeformBlocks: built.blocks,
+      freeformOrigin: built.origin,
+      freeformBlock: state.materials.primary,
+      freeformHistory: [],
+      freeformFuture: [],
+      model: built.model,
+      status: 'ready',
+      error: null,
+      layer: topNonEmpty(built.model),
+      fitLayer: false,
+      buildMode: false,
+      tab: 'freeform',
+    })
+  },
+
+  exitFreeform: () =>
+    set({
+      freeformActive: false,
+      freeformBlocks: null,
+      freeformHistory: [],
+      freeformFuture: [],
+      layer: 0,
+      fitLayer: true,
+      buildMode: true,
+      tab: 'shape',
+    }),
+
+  setFreeformTool: (tool) => set({ freeformTool: tool }),
+
+  setFreeformBlock: (block) => {
+    if (BLOCK_MAP.has(block)) set({ freeformBlock: block })
+  },
+
+  addShapeToFreeform: () => {
+    const state = get()
+    if (!state.freeformActive || !state.freeformBlocks) return
+    const bounds = freeformBounds(state.freeformBlocks)
+    const offset = { x: 0, y: bounds ? bounds.max.y + 1 : 0, z: 0 }
+    const next = stampModel(state.freeformBlocks, sourceModel(state), offset)
+    withHistory(next, state, new Map(state.freeformBlocks))
+    state.showToast('Shape added above')
+  },
+
+  editFreeform: (hit) => {
+    const state = get()
+    if (!state.freeformActive || !state.freeformBlocks) return
+    const blocks = new Map(state.freeformBlocks)
+    const origin = state.freeformOrigin
+    const gx = hit.x + origin.x
+    const gy = hit.y + origin.y
+    const gz = hit.z + origin.z
+    if (state.freeformTool === 'remove') {
+      blocks.delete(`${gx},${gy},${gz}`)
+    } else {
+      const nx = hit.normal?.x ?? 0
+      const ny = hit.normal?.y ?? 1
+      const nz = hit.normal?.z ?? 0
+      blocks.set(`${gx + nx},${gy + ny},${gz + nz}`, freeformBlockState(state.freeformBlock))
+    }
+    withHistory(blocks, state, new Map(state.freeformBlocks))
+  },
+
+  undoFreeform: () => {
+    const state = get()
+    if (!state.freeformActive || !state.freeformBlocks || state.freeformHistory.length === 0) return
+    const history = [...state.freeformHistory]
+    const previous = history.pop()!
+    const future = [...state.freeformFuture, new Map(state.freeformBlocks)].slice(-40)
+    commitFreeform(previous, history, future)
+  },
+
+  redoFreeform: () => {
+    const state = get()
+    if (!state.freeformActive || !state.freeformBlocks || state.freeformFuture.length === 0) return
+    const future = [...state.freeformFuture]
+    const next = future.pop()!
+    const history = [...state.freeformHistory, new Map(state.freeformBlocks)].slice(-40)
+    commitFreeform(next, history, future)
+  },
+  }
+})
 

@@ -21,6 +21,7 @@ export function TopBar() {
   const setInspectorOpen = useStore((s) => s.setInspectorOpen)
   const setLibraryOpen = useStore((s) => s.setLibraryOpen)
   const showToast = useStore((s) => s.showToast)
+  const freeformActive = useStore((s) => s.freeformActive)
   const shape = getShape(shapeId)
   const counts = model?.counts
   const dims = model?.dims
@@ -60,8 +61,8 @@ export function TopBar() {
 
       <div className="topbar-center">
         <div className="shape-heading">
-          <span className="shape-kicker">{shape.category}</span>
-          <h1>{shape.name}</h1>
+          <span className="shape-kicker">{freeformActive ? 'Editor' : shape.category}</span>
+          <h1>{freeformActive ? 'Freeform' : shape.name}</h1>
         </div>
         <div className="topbar-stats">
           <span title="Model dimensions">

@@ -1,10 +1,12 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Check, RotateCcw, Search } from 'lucide-react'
 import { BLOCK_GROUPS, BLOCKS, getBlock, slabFor } from '../core/blocks'
 import { getShape } from '../core/shapes'
 import { TEXTURE_VERSION } from '../core/versions'
 import { useStore } from '../state/store'
 import { translateText } from '../i18n/translate'
+import { loadBlockAtlas } from '../three/textures'
+import { IsoBlock } from './IsoBlock'
 import type { RoleKey } from '../core/types'
 
 export function MaterialPicker() {
@@ -14,9 +16,28 @@ export function MaterialPicker() {
   const resetMaterials = useStore((s) => s.resetMaterials)
   const shape = getShape(shapeId)
   const language = useStore((s) => s.language)
+  const atlas = useStore((s) => s.atlas)
+  const setAtlas = useStore((s) => s.setAtlas)
   const [role, setRole] = useState<RoleKey>('primary')
   const [search, setSearch] = useState('')
   const activeRole = shape.roles.some((r) => r.key === role) ? role : shape.roles[0].key
+
+  // The block browser should show real textures even when the 3D texture toggle
+  // is off. The atlas is shared with the viewer and cached after the first load.
+  useEffect(() => {
+    if (atlas) return
+    let cancelled = false
+    loadBlockAtlas()
+      .then((loaded) => {
+        if (!cancelled) setAtlas(loaded)
+      })
+      .catch(() => {
+        /* flat-colour cubes are the offline fallback */
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [atlas, setAtlas])
   const activeBlock = getBlock(materials[activeRole])
   const activeSlab = slabFor(materials[activeRole])
 
@@ -51,7 +72,7 @@ export function MaterialPicker() {
               className={`role-card ${activeRole === r.key ? 'active' : ''}`}
               onClick={() => setRole(r.key)}
             >
-              <span className="role-swatch" style={{ background: block.color }} />
+              <IsoBlock block={block.id} size={28} />
               <span>
                 <small>{r.label}</small>
                 <strong>{block.label}</strong>
@@ -62,7 +83,7 @@ export function MaterialPicker() {
       </div>
 
       <div className="active-block-note">
-        <span className="swatch" style={{ background: activeBlock.color }} />
+        <IsoBlock block={activeBlock.id} size={26} />
         <div>
           <strong>{activeBlock.label}</strong>
           <small>
@@ -95,12 +116,12 @@ export function MaterialPicker() {
                   <button
                     key={b.id}
                     className={`block-swatch ${materials[activeRole] === b.id ? 'active' : ''}`}
-                    style={{ ['--swatch' as string]: b.color }}
                     onClick={() => setMaterial(activeRole, b.id)}
                     title={`${b.label}${b.slab ? ' · has slab' : ''}`}
                     aria-label={b.label}
                   >
-                    {materials[activeRole] === b.id ? <Check size={12} /> : null}
+                    <IsoBlock block={b.id} size={30} />
+                    {materials[activeRole] === b.id ? <Check size={11} /> : null}
                     {b.slab ? <i className="slab-flag">½</i> : null}
                   </button>
                 ))}
@@ -115,8 +136,8 @@ export function MaterialPicker() {
         materials stay as full blocks so the export remains valid.
       </p>
       <p className="fine-print texture-note">
-        Textures are fetched at runtime from a public Minecraft {TEXTURE_VERSION} asset mirror — they
-        are not bundled with ShapeShiftMC. Turn them on above or from the top bar.
+        Block previews use real Minecraft {TEXTURE_VERSION} textures when the atlas is available.
+        Textures are fetched at runtime from a public asset mirror and are not bundled.
       </p>
     </div>
   )

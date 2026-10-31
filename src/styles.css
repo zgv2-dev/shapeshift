@@ -974,7 +974,7 @@ kbd {
   border-radius: 7px;
   background: transparent;
   color: var(--faint);
-  font-size: 10.5px;
+  font-size: 9.5px;
   font-weight: 550;
   transition: 0.14s ease;
 }
@@ -1041,6 +1041,10 @@ kbd {
 .viewer3d.active {
   opacity: 1;
   pointer-events: auto;
+}
+
+.viewer3d.edit-mode canvas {
+  cursor: crosshair;
 }
 
 .webgl-canvas {
@@ -1636,7 +1640,7 @@ kbd {
 
 .inspector-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   padding: 0 12px;
   border-bottom: 1px solid var(--line);
 }
@@ -1646,7 +1650,7 @@ kbd {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 4px;
   height: 36px;
   border: 0;
   background: transparent;
@@ -2150,6 +2154,147 @@ kbd {
 
 /* ---------- materials ---------- */
 
+.freeform-panel h3 {
+  margin-top: 2px;
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.freeform-lede {
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.freeform-start {
+  width: 100%;
+  justify-content: center;
+  margin: 15px 0 11px;
+}
+
+.freeform-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 13px;
+}
+
+.freeform-tools {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.freeform-tool {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 550;
+}
+
+.freeform-tool:hover {
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.freeform-tool.active {
+  border-color: rgba(217, 255, 107, 0.34);
+  background: rgba(217, 255, 107, 0.07);
+  color: var(--lime);
+}
+
+.freeform-block-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 12px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #0a0e0b;
+}
+
+.freeform-block-row label {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  gap: 3px;
+}
+
+.freeform-block-row label > span {
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 7.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.freeform-select {
+  width: 100%;
+  min-width: 0;
+  height: 26px;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 10px;
+}
+
+.freeform-add {
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.freeform-actions {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.freeform-actions .btn {
+  flex: 1;
+  justify-content: center;
+}
+
+.freeform-hint {
+  margin: 14px 0 0;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.freeform-hint b {
+  color: var(--lime);
+}
+
+.freeform-hint-secondary {
+  margin-top: 6px;
+  color: var(--faint);
+}
+
+.freeform-panel .fine-print .iso-block {
+  display: inline-block;
+  margin: 0 3px;
+  vertical-align: middle;
+}
+
 .material-picker {
   padding-top: 2px;
 }
@@ -2194,12 +2339,14 @@ kbd {
   background: rgba(217, 255, 107, 0.055);
 }
 
-.role-swatch {
-  width: 24px;
-  height: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 5px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+.iso-block {
+  display: block;
+  flex: 0 0 auto;
+  image-rendering: pixelated;
+}
+
+.role-card .iso-block {
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.35));
 }
 
 .role-card span:last-child {
@@ -2232,11 +2379,8 @@ kbd {
   background: #0a0e0b;
 }
 
-.active-block-note .swatch {
-  width: 26px;
-  height: 26px;
-  border-radius: 5px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+.active-block-note .iso-block {
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.35));
 }
 
 .active-block-note div {
@@ -2277,11 +2421,14 @@ kbd {
 
 .block-swatch {
   position: relative;
+  display: grid;
+  place-items: center;
   aspect-ratio: 1;
+  padding: 1px;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 5px;
-  background: var(--swatch);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), inset 0 -2px 0 rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.025);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   transition: 0.12s ease;
 }
 
@@ -2298,11 +2445,13 @@ kbd {
 
 .block-swatch svg {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  color: rgba(10, 14, 9, 0.8);
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.3));
-  transform: translate(-50%, -50%);
+  top: 2px;
+  left: 2px;
+  color: #0a0e09;
+  background: var(--lime);
+  border-radius: 50%;
+  padding: 1px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
 }
 
 .slab-flag {

@@ -25,6 +25,8 @@ export function Viewer3D() {
   const [sectionOpen, setSectionOpen] = useState(false)
 
   const model = useStore((s) => s.model)
+  const freeformActive = useStore((s) => s.freeformActive)
+  const freeformTool = useStore((s) => s.freeformTool)
   const layer = useStore((s) => s.layer)
   const buildMode = useStore((s) => s.buildMode)
   const ghost = useStore((s) => s.ghost)
@@ -46,6 +48,7 @@ export function Viewer3D() {
     if (!hostRef.current) return
     const viewer = new VoxelViewer(hostRef.current, {
       onToast: (msg) => useStore.getState().showToast(msg),
+      onEdit: (hit) => useStore.getState().editFreeform(hit),
     })
     viewerRef.current = viewer
     return () => {
@@ -75,15 +78,16 @@ export function Viewer3D() {
       cutaway,
       backdrop,
       active: mode === '3d',
+      editMode: freeformActive,
       origin: worldOrigin,
     })
-  }, [layer, buildMode, ghost, grid, autoRotate, cutaway, backdrop, mode, worldOrigin])
+  }, [layer, buildMode, ghost, grid, autoRotate, cutaway, backdrop, mode, freeformActive, worldOrigin])
 
   const themeIcon =
     backdrop === 'studio' ? <Sun size={15} /> : backdrop === 'sky' ? <Moon size={15} /> : <Sun size={15} />
 
   return (
-    <div className={`viewer3d ${mode === '3d' ? 'active' : ''}`} ref={hostRef}>
+    <div className={`viewer3d ${mode === '3d' ? 'active' : ''} ${freeformActive ? 'edit-mode' : ''}`} ref={hostRef}>
       <div className="camera-tools" aria-label="Camera views">
         <button className="tool-btn" onClick={() => viewerRef.current?.setCamera('iso')} title="Isometric view">
           <Box size={16} />
@@ -168,7 +172,14 @@ export function Viewer3D() {
         <span><b>Drag</b> orbit</span>
         <span><b>Scroll</b> zoom</span>
         <span><b>Shift-drag</b> pan</span>
-        <span><b>Click</b> copy coords</span>
+        <span>
+          <b>Click</b>{' '}
+          {freeformActive
+            ? freeformTool === 'place'
+              ? 'place block'
+              : 'remove block'
+            : 'copy coords'}
+        </span>
       </div>
 
       {!model ? <div className="viewer-loader">Preparing voxels…</div> : null}

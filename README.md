@@ -20,6 +20,8 @@ Built as a modern answer to Plotz / McGic — with the one thing those generator
 - **Dope wizard tower**: a meme-inspired tiered purple spire with an optional flat-roof house base, so you can recreate the “put a wizard tower on your house” bit. The shaft is fluted light stone; swap the spire material to obsidian for the darker original look.
 - **Nine languages**: English, Ukrainian, Simplified Chinese, Traditional Chinese, German, French, Italian, Spanish and Japanese — the same set as [EnchantMC](https://enchantments.mc.zgv2.dev/). Pick a language from the landing header or the studio library footer; the choice persists and follows the browser on first visit.
 - **Cross-links**: ShapeShiftMC and EnchantMC link to each other from their landing pages and studios.
+- **Freeform editor**: turn any generated shape into editable voxels, combine multiple shapes, and place or remove blocks directly in the 3D view. Undo/redo and all normal exports are included.
+- **Textured block picker**: materials are shown as real-texture isometric Minecraft cubes, using the same runtime 26.3 atlas as the 3D view.
 
 All generation and export happens in the browser. No files are uploaded.
 

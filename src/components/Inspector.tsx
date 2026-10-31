@@ -1,4 +1,4 @@
-import { Download, Paintbrush, SlidersHorizontal, Sparkles, X } from 'lucide-react'
+import { Download, Hammer, Paintbrush, SlidersHorizontal, Sparkles, X } from 'lucide-react'
 import { getShape } from '../core/shapes'
 import { useStore } from '../state/store'
 import type { ParamDef, ParamValue } from '../core/types'
@@ -6,6 +6,7 @@ import { ParamControl } from './ParamControl'
 import { MaterialPicker } from './MaterialPicker'
 import { TEXTURE_VERSION } from '../core/versions'
 import { ExportPanel } from './ExportPanel'
+import { FreeformPanel } from './FreeformPanel'
 
 const GROUP_ORDER = ['Dimensions', 'Style', 'Details', 'Generation']
 
@@ -60,6 +61,9 @@ export function Inspector() {
         </button>
         <button role="tab" aria-selected={tab === 'export'} className={tab === 'export' ? 'active' : ''} onClick={() => setTab('export')}>
           <Download size={15} /> Export
+        </button>
+        <button role="tab" aria-selected={tab === 'freeform'} className={tab === 'freeform' ? 'active' : ''} onClick={() => setTab('freeform')}>
+          <Hammer size={15} /> Edit
         </button>
       </div>
 
@@ -193,6 +197,7 @@ export function Inspector() {
           </>
         ) : null}
         {tab === 'export' ? <ExportPanel /> : null}
+        {tab === 'freeform' ? <FreeformPanel /> : null}
       </div>
     </aside>
   )

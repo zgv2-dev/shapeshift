@@ -21,6 +21,7 @@ function useGenerator() {
   const params = useStore((s) => s.params)
   const materials = useStore((s) => s.materials)
   const detail = useStore((s) => s.detail)
+  const freeformActive = useStore((s) => s.freeformActive)
 
   useEffect(() => {
     const w = new Worker(new URL('./worker/generator.worker.ts', import.meta.url), {
@@ -28,6 +29,7 @@ function useGenerator() {
     })
     w.onmessage = (event: MessageEvent<{ id: number; ok: boolean; model?: unknown; error?: string }>) => {
       const data = event.data
+      if (useStore.getState().freeformActive) return
       if (!data.ok) {
         useStore.getState().setStatus('error', data.error ?? 'Unknown generation error')
         return
@@ -42,13 +44,13 @@ function useGenerator() {
   }, [])
 
   useEffect(() => {
-    if (!worker) return
+    if (!worker || freeformActive) return
     const timer = window.setTimeout(() => {
       useStore.getState().setStatus('generating')
       worker.postMessage({ shapeId, params, materials, detail })
     }, 90)
     return () => window.clearTimeout(timer)
-  }, [worker, shapeId, params, materials, detail])
+  }, [worker, shapeId, params, materials, detail, freeformActive])
 }
 
 function useTextureLoader() {
@@ -106,6 +108,7 @@ export default function App() {
   const shapeId = useStore((s) => s.shapeId)
   const shape = getShape(shapeId)
   const language = useStore((s) => s.language)
+  const freeformActive = useStore((s) => s.freeformActive)
 
   useEffect(() => {
     startPageTranslator(language)
@@ -118,6 +121,12 @@ export default function App() {
   }, [language])
 
   useEffect(() => {
+    if (freeformActive) {
+      document.title = `Freeform — ShapeShiftMC`
+      const description = document.querySelector('meta[name="description"]')
+      if (description) description.setAttribute('content', 'A freeform Minecraft voxel editor: combine shapes, place and remove blocks, then export.')
+      return
+    }
     const structural = shape.category === 'structures'
     const name = translateText(language, shape.name)
     const generator = translateText(language, 'Generator')
@@ -126,7 +135,7 @@ export default function App() {
     if (description) {
       description.setAttribute('content', translateText(language, shape.description).slice(0, 160))
     }
-  }, [shape, language])
+  }, [shape, language, freeformActive])
   const mode = useStore((s) => s.mode)
   const setMode = useStore((s) => s.setMode)
   const status = useStore((s) => s.status)
