@@ -935,12 +935,12 @@ function geodesicDome(): ShapeDef {
     'Geodesic dome',
     'structures',
     'A triangulated dome with optional panel fill.',
-    'A hemispherical dome built from stacked triangular rings. Solid panels fill the triangles by default; turn them off for an open strut frame, and switch on the glowing nodes for lights at the joints.',
+    'A true geodesic frame built from a subdivided icosahedron and clipped at the equator. Panels and glowing joints are optional; the bare frame shows the full triangular lattice.',
     [
       intParam('diameter', 'Diameter', 64, 16, 200, { group: 'Dimensions' }),
-      intParam('frequency', 'Rings', 4, 1, 6, { group: 'Style' }),
-      intParam('strut', 'Strut thickness', 2, 1, 6, { group: 'Style' }),
-      boolParam('panels', 'Panels', true, { group: 'Details' }),
+      intParam('frequency', 'Frequency', 4, 2, 6, { group: 'Style' }),
+      intParam('strut', 'Strut thickness', 1, 1, 6, { group: 'Style' }),
+      boolParam('panels', 'Panels', false, { group: 'Details' }),
       boolParam('nodes', 'Glowing nodes', false, { group: 'Details' }),
     ],
     roles(
@@ -950,7 +950,7 @@ function geodesicDome(): ShapeDef {
     ),
     (ctx) => {
       const d = clamp(num(ctx, 'diameter'), 16, 200)
-      const f = Math.round(clamp(num(ctx, 'frequency'), 1, 6))
+      const f = Math.round(clamp(num(ctx, 'frequency'), 2, 6))
       const strut = clamp(num(ctx, 'strut'), 1, 6)
       const panels = flag(ctx, 'panels')
       const nodes = flag(ctx, 'nodes')
@@ -960,11 +960,168 @@ function geodesicDome(): ShapeDef {
       const cx = d / 2
       const cz = d / 2
       const baseY = 0.5
-      const segments = Math.max(8, f * 3)
 
-      // Panels sit just inside the struts so the frame stays legible.
+      const normalizePoint = (v: Vec3): Vec3 => {
+        const len = Math.hypot(v.x, v.y, v.z) || 1
+        return { x: v.x / len, y: v.y / len, z: v.z / len }
+      }
+      const keyOf = (v: Vec3): string =>
+        `${v.x.toFixed(5)},${v.y.toFixed(5)},${v.z.toFixed(5)}`
+
+      const phi = (1 + Math.sqrt(5)) / 2
+      const base: Vec3[] = [
+        { x: 0, y: 1, z: phi },
+        { x: 0, y: -1, z: phi },
+        { x: 0, y: 1, z: -phi },
+        { x: 0, y: -1, z: -phi },
+        { x: 1, y: phi, z: 0 },
+        { x: -1, y: phi, z: 0 },
+        { x: 1, y: -phi, z: 0 },
+        { x: -1, y: -phi, z: 0 },
+        { x: phi, y: 0, z: 1 },
+        { x: phi, y: 0, z: -1 },
+        { x: -phi, y: 0, z: 1 },
+        { x: -phi, y: 0, z: -1 },
+      ].map(normalizePoint)
+      const faces = [
+        [0, 1, 8], [0, 8, 4], [0, 4, 5], [0, 5, 10], [0, 10, 1],
+        [1, 10, 7], [1, 7, 6], [1, 6, 8], [8, 6, 9], [8, 9, 4],
+        [4, 9, 2], [4, 2, 5], [5, 2, 11], [5, 11, 10], [10, 11, 7],
+        [3, 7, 11], [3, 11, 2], [3, 2, 9], [3, 9, 6], [3, 6, 7],
+      ]
+
+      // rotate the icosahedron so vertex 0 is the apex
+      const up: Vec3 = { x: 0, y: 1, z: 0 }
+      const v0 = base[0]
+      const axis = normalizePoint({
+        x: v0.y * up.z - v0.z * up.y,
+        y: v0.z * up.x - v0.x * up.z,
+        z: v0.x * up.y - v0.y * up.x,
+      })
+      const angle = Math.acos(Math.max(-1, Math.min(1, v0.y)))
+      const cosA = Math.cos(angle)
+      const sinA = Math.sin(angle)
+      const rotate = (v: Vec3): Vec3 => {
+        const dot = axis.x * v.x + axis.y * v.y + axis.z * v.z
+        const cross: Vec3 = {
+          x: axis.y * v.z - axis.z * v.y,
+          y: axis.z * v.x - axis.x * v.z,
+          z: axis.x * v.y - axis.y * v.x,
+        }
+        return {
+          x: v.x * cosA + cross.x * sinA + axis.x * dot * (1 - cosA),
+          y: v.y * cosA + cross.y * sinA + axis.y * dot * (1 - cosA),
+          z: v.z * cosA + cross.z * sinA + axis.z * dot * (1 - cosA),
+        }
+      }
+      const verts = base.map(rotate)
+
+      const vertexIndex = new Map<string, number>()
+      const vertices: Vec3[] = []
+      const getVertex = (v: Vec3): number => {
+        const k = keyOf(v)
+        const prior = vertexIndex.get(k)
+        if (prior !== undefined) return prior
+        vertices.push(v)
+        vertexIndex.set(k, vertices.length - 1)
+        return vertices.length - 1
+      }
+
+      // Subdivide each face into a triangular grid, then project to the sphere.
+      const triangles: Array<[number, number, number]> = []
+      const seenTriangle = new Set<string>()
+      for (const [ai, bi, ci] of faces) {
+        const a = verts[ai]
+        const bb = verts[bi]
+        const cc = verts[ci]
+        const grid = new Map<string, number>()
+        for (let i = 0; i <= f; i++) {
+          for (let j = 0; j <= f - i; j++) {
+            const k = f - i - j
+            grid.set(`${i},${j}`, getVertex(normalizePoint({
+              x: (a.x * i + bb.x * j + cc.x * k) / f,
+              y: (a.y * i + bb.y * j + cc.y * k) / f,
+              z: (a.z * i + bb.z * j + cc.z * k) / f,
+            })))
+          }
+        }
+        const addTriangle = (aIdx: number, bIdx: number, cIdx: number): void => {
+          const k = [aIdx, bIdx, cIdx].sort((x, y) => x - y).join('-')
+          if (seenTriangle.has(k)) return
+          seenTriangle.add(k)
+          triangles.push([aIdx, bIdx, cIdx])
+        }
+        for (let i = 0; i < f; i++) {
+          for (let j = 0; j < f - i; j++) {
+            addTriangle(
+              grid.get(`${i},${j}`)!,
+              grid.get(`${i + 1},${j}`)!,
+              grid.get(`${i},${j + 1}`)!,
+            )
+            if (i + j <= f - 2) {
+              addTriangle(
+                grid.get(`${i + 1},${j}`)!,
+                grid.get(`${i + 1},${j + 1}`)!,
+                grid.get(`${i},${j + 1}`)!,
+              )
+            }
+          }
+        }
+      }
+
+      // Clip every triangle at the equator and collect the resulting edges.
+      const edges = new Map<string, [Vec3, Vec3]>()
+      const addEdge = (p: Vec3, q: Vec3): void => {
+        if (p.y < -1e-6 || q.y < -1e-6) return
+        const k1 = keyOf(p)
+        const k2 = keyOf(q)
+        const key = k1 < k2 ? `${k1}|${k2}` : `${k2}|${k1}`
+        if (!edges.has(key)) edges.set(key, [p, q])
+      }
+      const clip = (poly: Vec3[]): Vec3[] => {
+        const out: Vec3[] = []
+        for (let i = 0; i < poly.length; i++) {
+          const p = poly[i]
+          const q = poly[(i + 1) % poly.length]
+          const pin = p.y >= 0
+          const qin = q.y >= 0
+          if (pin) out.push(p)
+          if (pin !== qin) {
+            const t = p.y / (p.y - q.y)
+            out.push(normalizePoint({
+              x: p.x + (q.x - p.x) * t,
+              y: 0,
+              z: p.z + (q.z - p.z) * t,
+            }))
+          }
+        }
+        // remove duplicate consecutive points
+        return out.filter((p, i) => {
+          const q = out[(i + out.length - 1) % out.length]
+          return Math.hypot(p.x - q.x, p.y - q.y, p.z - q.z) > 1e-6
+        })
+      }
+      const nodePoints: Vec3[] = []
+      for (const [ai, bi, ci] of triangles) {
+        const clipped = clip([vertices[ai], vertices[bi], vertices[ci]])
+        if (clipped.length < 3) continue
+        for (let i = 1; i < clipped.length - 1; i++) {
+          const tri = [clipped[0], clipped[i], clipped[i + 1]]
+          addEdge(tri[0], tri[1])
+          addEdge(tri[1], tri[2])
+          addEdge(tri[2], tri[0])
+          if (nodes) nodePoints.push(...tri)
+        }
+      }
+
+      const toWorld = (v: Vec3): Vec3 => ({
+        x: cx + v.x * R,
+        y: baseY + v.y * R,
+        z: cz + v.z * R,
+      })
+
       if (panels) {
-        const panelRadius = R - Math.max(1.0, strut * 0.7)
+        const panelRadius = R - Math.max(1, strut * 0.7)
         b.rasterize((x, y, z) => {
           const dx = x - cx
           const dy = y - baseY
@@ -974,49 +1131,38 @@ function geodesicDome(): ShapeDef {
         })
       }
 
-      const apex: Vec3 = { x: cx, y: baseY + R, z: cz }
-      const rings: Vec3[][] = []
-      for (let i = 1; i <= f; i++) {
-        const theta = (Math.PI / 2) * (i / f)
-        const radius = R * Math.sin(theta)
-        const y = baseY + R * Math.cos(theta)
-        const ring: Vec3[] = []
-        for (let j = 0; j < segments; j++) {
-          const phi = (j / segments) * Math.PI * 2
-          ring.push({
-            x: cx + Math.cos(phi) * radius,
-            y,
-            z: cz + Math.sin(phi) * radius,
-          })
-        }
-        rings.push(ring)
+      for (const [p, q] of edges.values()) {
+        const a = toWorld(p)
+        const c = toWorld(q)
+        b.stampLine(a.x, a.y, a.z, c.x, c.y, c.z, strut / 2 + 0.08, R_PRIMARY, 0.1)
       }
-
-      const edge = (a: Vec3, c: Vec3) =>
-        b.stampLine(a.x, a.y, a.z, c.x, c.y, c.z, strut / 2 + 0.02, R_PRIMARY, 0.2)
-
-      // Top ring; the cap itself is a panel. At one ring this becomes a cone.
-      for (let j = 0; j < segments; j++) {
-        if (f === 1) edge(apex, rings[0][j])
-        edge(rings[0][j], rings[0][(j + 1) % segments])
-      }
-
-      // Triangular strips between rings
-      for (let i = 1; i < f; i++) {
-        const upper = rings[i - 1]
-        const lower = rings[i]
-        for (let j = 0; j < segments; j++) {
-          edge(upper[j], lower[j])
-          edge(upper[j], lower[(j + 1) % segments])
-          edge(lower[j], lower[(j + 1) % segments])
-        }
-      }
-
       if (nodes) {
-        const points = f === 1 ? [apex, ...rings.flat()] : rings.flat()
-        for (const point of points) {
-          b.stampBall(point.x, point.y, point.z, strut / 2 + 0.35, R_DETAIL)
+        const seen = new Set<string>()
+        for (const p of nodePoints) {
+          const w = toWorld(p)
+          const k = `${w.x.toFixed(2)},${w.y.toFixed(2)},${w.z.toFixed(2)}`
+          if (seen.has(k)) continue
+          seen.add(k)
+          b.stampBall(w.x, w.y, w.z, strut / 2 + 0.35, R_DETAIL)
         }
+      }
+
+      // base ring
+      const steps = Math.max(64, Math.ceil((Math.PI * 2 * R) / 0.7))
+      for (let i = 0; i < steps; i++) {
+        const a0 = (i / steps) * Math.PI * 2
+        const a1 = ((i + 1) / steps) * Math.PI * 2
+        b.stampLine(
+          cx + R * 0.995 * Math.cos(a0),
+          baseY,
+          cz + R * 0.995 * Math.sin(a0),
+          cx + R * 0.995 * Math.cos(a1),
+          baseY,
+          cz + R * 0.995 * Math.sin(a1),
+          strut / 2 + 0.2,
+          R_PRIMARY,
+          0.6,
+        )
       }
 
       return b
