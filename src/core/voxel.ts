@@ -326,11 +326,31 @@ export class VoxelBuilder {
       }
     }
 
+    // Empty Y planes are not build layers. Compact the occupied layers so
+    // layer numbers, build mode and exports never point at an all-air slice.
+    const occupied = perLayer
+      .map((layer, y) => (layer.items > 0 ? y : -1))
+      .filter((y) => y >= 0)
+    let finalDims: [number, number, number] = [nx, ny, nz]
+    let finalData = data
+    let finalPerLayer = perLayer
+    if (occupied.length > 0 && occupied.length !== ny) {
+      const plane = nx * nz
+      const compact = new Uint8Array(nx * occupied.length * nz)
+      for (let y = 0; y < occupied.length; y++) {
+        const src = occupied[y] * plane
+        compact.set(data.subarray(src, src + plane), y * plane)
+      }
+      finalDims = [nx, occupied.length, nz]
+      finalData = compact
+      finalPerLayer = occupied.map((y) => perLayer[y])
+    }
+
     return {
-      dims: [nx, ny, nz],
-      data,
+      dims: finalDims,
+      data: finalData,
       palette,
-      perLayer,
+      perLayer: finalPerLayer,
       counts: {
         total,
         full,

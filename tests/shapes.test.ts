@@ -37,6 +37,8 @@ describe('shape generators', () => {
         model.counts.full + model.counts.bottom + model.counts.top,
       )
       expect(model.perLayer.reduce((a, l) => a + l.items, 0)).toBe(model.counts.total)
+      expect(model.perLayer.every((l) => l.items > 0)).toBe(true)
+      expect(model.dims[1]).toBe(model.perLayer.length)
       expect(model.counts.equivalents).toBeCloseTo(model.counts.total - model.counts.slabs / 2)
       expect(ms).toBeLessThan(15000)
     })
