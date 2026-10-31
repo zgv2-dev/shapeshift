@@ -647,7 +647,7 @@ export class VoxelViewer {
       iso: new THREE.Vector3(1, 0.82, 1.12),
       front: new THREE.Vector3(0, 0.18, 1),
       side: new THREE.Vector3(1, 0.18, 0),
-      top: new THREE.Vector3(0.001, 1, 0.001),
+      top: new THREE.Vector3(0, 1, 0.0001),
       fit: new THREE.Vector3(1, 0.82, 1.12),
     }
     const pos = target.clone().addScaledVector(dirs[preset].normalize(), dist)
