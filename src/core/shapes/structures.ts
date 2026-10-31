@@ -390,6 +390,286 @@ function lighthouse(): ShapeDef {
   )
 }
 
+function dopeTower(): ShapeDef {
+  return shapeMeta(
+    'dope-tower',
+    'Dope wizard tower',
+    'structures',
+    'The house-topping meme spire.',
+    'A fluted light-stone shaft crowned by a jagged, tiered purple spire — the “put a wizard tower on your house” meme. The House base is on by default; turn it off to drop just the tower onto your own build.',
+    [
+      intParam('diameter', 'Shaft diameter', 6, 4, 16, { group: 'Dimensions' }),
+      intParam('base', 'Shaft height', 14, 3, 24),
+      intParam('height', 'Spire height', 44, 16, 80),
+      intParam('tiers', 'Spire tiers', 5, 3, 9, { group: 'Style' }),
+      intParam('flare', 'Tier flare', 3, 1, 4, { group: 'Style' }),
+      intParam('top', 'Needle height', 10, 3, 20, { group: 'Dimensions' }),
+      intParam('wall', 'Spire wall', 1, 1, 3, { group: 'Style' }),
+      boolParam('windows', 'Glow windows', true, { group: 'Details' }),
+      boolParam('spikes', 'Jagged rims', true, { group: 'Details' }),
+      boolParam('house', 'House base', true, { group: 'Details' }),
+    ],
+    roles(
+      ['primary', 'Shaft & house', 'minecraft:smooth_stone'],
+      ['accent', 'Purple spire', 'minecraft:purple_concrete'],
+      ['detail', 'Amethyst glow', 'minecraft:amethyst_block'],
+    ),
+    (ctx) => {
+      const shaftD = clamp(num(ctx, 'diameter'), 4, 16)
+      const shaftR = shaftD / 2
+      const baseH = clamp(num(ctx, 'base'), 3, 24)
+      const spireH = clamp(num(ctx, 'height'), 16, 80)
+      const tiers = Math.round(clamp(num(ctx, 'tiers'), 3, 9))
+      const flare = clamp(num(ctx, 'flare'), 1, 4)
+      const topH = clamp(num(ctx, 'top'), 3, 20)
+      const wall = clamp(num(ctx, 'wall'), 1, 3)
+      const windows = flag(ctx, 'windows')
+      const spikes = flag(ctx, 'spikes')
+      const house = flag(ctx, 'house')
+
+      const widest = shaftR + 2 + flare
+      const maxR = widest + 3
+      const houseW = house ? Math.max(20, Math.ceil(shaftD * 3.4)) : 0
+      const houseD = house ? Math.max(16, Math.ceil(shaftD * 3)) : 0
+      const houseH = house ? Math.max(7, Math.min(12, Math.ceil(shaftD + 2))) : 0
+      const width = Math.max(Math.ceil(maxR * 2 + 2), houseW + 4)
+      const depth = Math.max(Math.ceil(maxR * 2 + 2), houseD + 4)
+      const ground = house ? houseH : 0
+      const baseEnd = ground + baseH
+      const totalH = baseEnd + spireH + topH + 2
+      const b = builderFor(ctx, width, totalH, depth)
+      const cx = width / 2
+      const cz = depth / 2
+
+      // ---- the house (optional) ----------------------------------------
+      if (house) {
+        const hx0 = Math.floor(cx - houseW / 2)
+        const hx1 = hx0 + houseW - 1
+        const hz0 = Math.floor(cz - houseD / 2)
+        const hz1 = hz0 + houseD - 1
+
+        for (let y = 0; y < houseH; y++) {
+          for (let z = hz0; z <= hz1; z++) {
+            for (let x = hx0; x <= hx1; x++) {
+              const edge = x === hx0 || x === hx1 || z === hz0 || z === hz1
+              if (edge || y === 0) b.setFull(x, y, z, R_PRIMARY)
+            }
+          }
+        }
+
+        // flat roof with a one-block eave
+        for (let z = hz0 - 1; z <= hz1 + 1; z++) {
+          for (let x = hx0 - 1; x <= hx1 + 1; x++) {
+            b.setFull(x, houseH - 1, z, R_PRIMARY)
+          }
+        }
+        // dark roof border
+        for (let z = hz0 - 1; z <= hz1 + 1; z++) {
+          for (let x = hx0 - 1; x <= hx1 + 1; x++) {
+            if (x === hx0 - 1 || x === hx1 + 1 || z === hz0 - 1 || z === hz1 + 1) {
+              b.setFull(x, houseH - 1, z, R_ACCENT)
+            }
+          }
+        }
+
+        // door at the front
+        const doorX = Math.floor(cx) - 1
+        for (let y = 0; y < 3; y++) {
+          for (let x = doorX; x <= doorX + 1; x++) {
+            for (let z = hz1 - 1; z <= hz1; z++) b.clear(x, y, z)
+          }
+        }
+        for (let y = 0; y < 4; y++) {
+          b.setFull(doorX - 1, y, hz1, R_ACCENT)
+          b.setFull(doorX + 2, y, hz1, R_ACCENT)
+        }
+        for (let x = doorX - 1; x <= doorX + 2; x++) b.setFull(x, 3, hz1, R_ACCENT)
+        b.setFull(doorX, 4, hz1, R_DETAIL)
+
+        // dark windows on the front and sides
+        for (let y = 2; y <= 3; y++) {
+          for (const x of [hx0 + 2, hx0 + 3, hx1 - 3, hx1 - 2]) {
+            b.setFull(x, y, hz1, R_ACCENT)
+          }
+          b.setFull(hx0, y, hz0 + 3, R_ACCENT)
+          b.setFull(hx0, y, hz0 + 4, R_ACCENT)
+          b.setFull(hx1, y, hz0 + 3, R_ACCENT)
+          b.setFull(hx1, y, hz0 + 4, R_ACCENT)
+        }
+      }
+
+      // ---- fluted quartz shaft -----------------------------------------
+      for (let y = ground; y < baseEnd; y++) {
+        const plinth = y < ground + 2
+        for (let z = 0; z < depth; z++) {
+          for (let x = 0; x < width; x++) {
+            const rho = Math.hypot(x + 0.5 - cx, z + 0.5 - cz)
+            if (plinth && rho <= shaftR + 1.4) {
+              b.setFull(x, y, z, R_PRIMARY)
+              continue
+            }
+            if (rho <= shaftR && (rho >= shaftR - 2 || y === ground || y === baseEnd - 1)) {
+              b.setFull(x, y, z, R_PRIMARY)
+            }
+          }
+        }
+      }
+
+      // recessed dark flutes down the shaft
+      for (let y = ground; y < baseEnd; y++) {
+        for (let z = 0; z < depth; z++) {
+          for (let x = 0; x < width; x++) {
+            const rho = Math.hypot(x + 0.5 - cx, z + 0.5 - cz)
+            if (rho < shaftR - 1.2 || rho > shaftR + 0.7) continue
+            const theta = Math.atan2(z + 0.5 - cz, x + 0.5 - cx)
+            let fluted = false
+            for (let k = 0; k < 4; k++) {
+              let diff = theta - (Math.PI / 4 + (k * Math.PI) / 2)
+              diff = Math.atan2(Math.sin(diff), Math.cos(diff))
+              if (Math.abs(diff) < 0.11) fluted = true
+            }
+            if (fluted) b.setFull(x, y, z, R_ACCENT)
+          }
+        }
+      }
+
+      // shaft windows
+      if (windows) {
+        const bands = baseH >= 10 ? [ground + 3, baseEnd - 3] : [ground + 3]
+        for (const wy of bands) {
+          for (let k = 0; k < 4; k++) {
+            const a = (k * Math.PI) / 2
+            for (let y = wy; y <= wy + 1; y++) {
+              for (let z = 0; z < depth; z++) {
+                for (let x = 0; x < width; x++) {
+                  const rho = Math.hypot(x + 0.5 - cx, z + 0.5 - cz)
+                  if (rho < shaftR - 1.2 || rho > shaftR + 0.5) continue
+                  let diff = Math.atan2(z + 0.5 - cz, x + 0.5 - cx) - a
+                  diff = Math.atan2(Math.sin(diff), Math.cos(diff))
+                  if (Math.abs(diff) < 0.12) b.setFull(x, y, z, R_DETAIL)
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // doorway when the tower stands on its own
+      if (!house) {
+        const doorX = Math.floor(cx) - 1
+        for (let y = ground; y < ground + 3; y++) {
+          for (let x = doorX; x <= doorX + 1; x++) {
+            for (let z = Math.floor(cz + shaftR - 2); z <= Math.floor(cz + shaftR + 1); z++) {
+              b.clear(x, y, z)
+            }
+          }
+        }
+      }
+
+      // deck / crown
+      for (let z = 0; z < depth; z++) {
+        for (let x = 0; x < width; x++) {
+          const rho = Math.hypot(x + 0.5 - cx, z + 0.5 - cz)
+          if (rho <= shaftR + 1.3) b.setFull(x, baseEnd - 1, z, rho > shaftR ? R_ACCENT : R_PRIMARY)
+        }
+      }
+
+      // ---- stacked, flared obsidian spire ------------------------------
+      const spireY0 = baseEnd
+      const step = Math.max(0.75, (widest - 2.2) / tiers)
+      const tierH = spireH / tiers
+      const profile = (y: number): { r: number; i: number } => {
+        const t = clamp((y - spireY0) / spireH, 0, 0.999999)
+        const tierT = t * tiers
+        const i = Math.min(tiers - 1, Math.floor(tierT))
+        const local = tierT - i
+        const rBase = widest - i * step
+        const rTop = Math.max(1.15, rBase - step - flare * 0.8)
+        return { r: rBase + (rTop - rBase) * local, i }
+      }
+
+      for (let y = spireY0; y < spireY0 + spireH; y++) {
+        const p = profile(y)
+        for (let z = 0; z < depth; z++) {
+          for (let x = 0; x < width; x++) {
+            const dx = x + 0.5 - cx
+            const dz = z + 0.5 - cz
+            const rho = Math.hypot(dx, dz)
+            if (rho > p.r + 2.2) continue
+            const theta = Math.atan2(dz, dx)
+            const outer = p.r * (1 + 0.055 * Math.cos(6 * theta + p.i * 0.8))
+            const inner = Math.max(0.75, outer - wall)
+            if (rho <= outer && rho >= inner) b.setFull(x, y, z, R_ACCENT)
+          }
+        }
+      }
+
+      // jagged petal spikes around every tier rim
+      if (spikes) {
+        for (let i = 0; i < tiers; i++) {
+          const y = Math.round(spireY0 + i * tierH)
+          const rBase = widest - i * step
+          for (let k = 0; k < 8; k++) {
+            const a = (k * Math.PI) / 4 + (i % 2) * (Math.PI / 8)
+            const len = 1 + ((i + k) % 3 === 0 ? 1 : 0)
+            for (let j = 0; j <= len; j++) {
+              const x = Math.floor(cx + Math.cos(a) * (rBase - 0.4 + j))
+              const z = Math.floor(cz + Math.sin(a) * (rBase - 0.4 + j))
+              b.setFull(x, y, z, R_ACCENT)
+            }
+          }
+        }
+      }
+
+      // glowing windows on alternating tiers
+      if (windows) {
+        for (let i = 0; i < tiers; i += 2) {
+          const wy = Math.round(spireY0 + (i + 0.5) * tierH)
+          for (let k = 0; k < 4; k++) {
+            const a = (k * Math.PI) / 2
+            for (let y = wy; y <= wy + 1; y++) {
+              const p = profile(y)
+              for (let z = 0; z < depth; z++) {
+                for (let x = 0; x < width; x++) {
+                  const dx = x + 0.5 - cx
+                  const dz = z + 0.5 - cz
+                  const rho = Math.hypot(dx, dz)
+                  if (rho < p.r - 1.3 || rho > p.r + 0.7) continue
+                  let diff = Math.atan2(dz, dx) - a
+                  diff = Math.atan2(Math.sin(diff), Math.cos(diff))
+                  if (Math.abs(diff) < 0.13) b.setFull(x, y, z, R_DETAIL)
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // ---- needle and finial -------------------------------------------
+      const topStart = spireY0 + spireH
+      for (let z = 0; z < depth; z++) {
+        for (let x = 0; x < width; x++) {
+          const rho = Math.hypot(x + 0.5 - cx, z + 0.5 - cz)
+          if (rho <= 2.3) b.setFull(x, topStart - 1, z, R_ACCENT)
+        }
+      }
+      for (let y = topStart; y < topStart + topH; y++) {
+        const t = (y - topStart) / Math.max(1, topH)
+        const r = 1.35 - 0.5 * t
+        for (let z = 0; z < depth; z++) {
+          for (let x = 0; x < width; x++) {
+            if (Math.hypot(x + 0.5 - cx, z + 0.5 - cz) <= r) {
+              b.setFull(x, y, z, y >= topStart + topH - 2 ? R_DETAIL : R_ACCENT)
+            }
+          }
+        }
+      }
+
+      return b
+    },
+  )
+}
+
 function snowman(): ShapeDef {
   return shapeMeta(
     'snowman',
@@ -845,6 +1125,7 @@ export const STRUCTURE_SHAPES: ShapeDef[] = [
   observatory(),
   wizardTower(),
   lighthouse(),
+  dopeTower(),
   snowman(),
   igloo(),
   geodesicDome(),

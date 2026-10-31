@@ -208,6 +208,13 @@ const ICONS: Record<string, JSX.Element> = {
       <path d="M25 25h8v8" opacity=".4" {...common} />
     </>
   ),
+  'dope-tower': (
+    <>
+      <path d="M15 34V17h10v17M15 34h10" {...common} />
+      <path d="M13 17l2.5-3 1 1.5 2.5-6.5 2.5 6.5 1-1.5 2.5 3-2 2h-8Z" {...ga} />
+      <path d="M20 6v3" {...common} />
+    </>
+  ),
   lighthouse: (
     <>
       <path d="M14 33 16 10h8l2 23" {...common} />

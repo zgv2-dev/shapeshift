@@ -68,6 +68,17 @@ describe('shape generators', () => {
     expect(model.perLayer[0].items).toBe(model.perLayer[ny - 1].items)
   })
 
+  it('builds the meme tower, with and without its house base', () => {
+    const tower = build('dope-tower', true, { house: false }).model
+    const withHouse = build('dope-tower', true, { house: true }).model
+    expect(tower.dims[1]).toBeGreaterThan(tower.dims[0])
+    expect(withHouse.dims[1]).toBeGreaterThan(tower.dims[1])
+    expect(withHouse.counts.total).toBeGreaterThan(tower.counts.total)
+    const palette = new Set(tower.palette.map((p) => p.name))
+    expect(palette.has('minecraft:purple_concrete')).toBe(true)
+    expect(palette.has('minecraft:amethyst_block')).toBe(true)
+  })
+
   it('supports flat and upright torus axes', () => {
     const flat = build('torus', true, { diameter: 40, tube: 10, axis: 'y' }).model
     const uprightX = build('torus', true, { diameter: 40, tube: 10, axis: 'x' }).model
