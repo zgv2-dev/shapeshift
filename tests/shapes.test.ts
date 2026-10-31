@@ -68,6 +68,18 @@ describe('shape generators', () => {
     expect(model.perLayer[0].items).toBe(model.perLayer[ny - 1].items)
   })
 
+  it('stretches the torus into an ellipse', () => {
+    const ovalY = build('torus', true, { diameter: 40, tube: 10, axis: 'y', stretch: 1.8 }).model
+    const ovalX = build('torus', true, { diameter: 40, tube: 10, axis: 'x', stretch: 1.8 }).model
+    const ovalZ = build('torus', true, { diameter: 40, tube: 10, axis: 'z', stretch: 1.8 }).model
+    expect(ovalY.dims).toEqual([72, 10, 40])
+    expect(ovalX.dims).toEqual([10, 72, 40])
+    expect(ovalZ.dims).toEqual([72, 40, 10])
+    for (const model of [ovalY, ovalX, ovalZ]) {
+      expect(model.counts.total).toBeGreaterThan(0)
+    }
+  })
+
   it('builds the meme tower, with and without its house base', () => {
     const tower = build('dope-tower', true, { house: false }).model
     const withHouse = build('dope-tower', true, { house: true }).model

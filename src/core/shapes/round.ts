@@ -148,8 +148,8 @@ function torus(): ShapeDef {
     'torus',
     'Torus',
     'round',
-    'Doughnuts, rings and portal frames.',
-    'A ring with a round tube. Lay it flat or stand it upright on X or Z, and optionally hollow the tube itself.',
+    'Doughnuts, oval rings and portal frames.',
+    'A ring with a round tube. Lay it flat or stand it upright on X or Z, stretch it into an oval, and optionally hollow the tube itself.',
     [
       intParam('diameter', 'Overall diameter', 64, 8, 256),
       intParam('tube', 'Tube diameter', 16, 2, 128),
@@ -164,6 +164,11 @@ function torus(): ShapeDef {
         ],
         { group: 'Style', hint: 'Y lies flat like a doughnut; X and Z stand it upright.' },
       ),
+      floatParam('stretch', 'Elliptical stretch', 1, 1, 2.5, {
+        step: 0.05,
+        group: 'Style',
+        hint: '1 = round. 2 = twice as wide on one plane axis. Capped at large diameters by the 256-block limit.',
+      }),
       boolParam('hollow', 'Hollow tube', false),
       intParam('wall', 'Tube wall', 2, 1, 16, { showIf: { key: 'hollow', equals: true } }),
     ],
@@ -175,13 +180,13 @@ function torus(): ShapeDef {
       const axis = str(ctx, 'axis')
       const hollow = flag(ctx, 'hollow')
       const wall = num(ctx, 'wall')
+      const stretch = Math.min(clamp(num(ctx, 'stretch'), 1, 2.5), 256 / d)
       const b =
         axis === 'x'
-          ? builderFor(ctx, tube, d, d)
+          ? builderFor(ctx, tube, Math.ceil(d * stretch), d)
           : axis === 'z'
-            ? builderFor(ctx, d, d, tube)
-            : builderFor(ctx, d, tube, d)
-      const c = d / 2
+            ? builderFor(ctx, Math.ceil(d * stretch), d, tube)
+            : builderFor(ctx, Math.ceil(d * stretch), tube, d)
       const major = (d - tube) / 2
       const r = tube / 2
       const ri = Math.max(0, r - wall)
@@ -189,13 +194,19 @@ function torus(): ShapeDef {
         let dr: number
         let cross: number
         if (axis === 'x') {
-          dr = Math.hypot(y - c, z - c) - major
+          const cy = b.ny / 2
+          const cz = d / 2
+          dr = Math.hypot((y - cy) / stretch, z - cz) - major
           cross = x - tube / 2
         } else if (axis === 'z') {
-          dr = Math.hypot(x - c, y - c) - major
+          const cx = b.nx / 2
+          const cy = d / 2
+          dr = Math.hypot((x - cx) / stretch, y - cy) - major
           cross = z - tube / 2
         } else {
-          dr = Math.hypot(x - c, z - c) - major
+          const cx = b.nx / 2
+          const cz = d / 2
+          dr = Math.hypot((x - cx) / stretch, z - cz) - major
           cross = y - tube / 2
         }
         const q = dr * dr + cross * cross
