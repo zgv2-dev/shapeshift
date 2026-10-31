@@ -98,6 +98,20 @@ describe('shape generators', () => {
     expect(litNames.has('minecraft:sea_lantern')).toBe(true)
   })
 
+  it('keeps the igloo tunnel roof closed', () => {
+    const { model } = build('igloo', true, {
+      diameter: 32,
+      entrance: 12,
+      wall: 2,
+      trim: true,
+    })
+    const [nx, , nz] = model.dims
+    const cx = Math.floor(nx / 2)
+    // A point inside the tunnel, not at the open mouth.
+    const z = Math.floor(nz * 0.8)
+    expect(model.data[(4 * nz + z) * nx + cx]).not.toBe(0)
+  })
+
   it('keeps the hollow heart shell watertight', () => {
     const { model } = build('heart', true, {
       width: 32,

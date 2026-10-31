@@ -882,15 +882,14 @@ function igloo(): ShapeDef {
         }
       }
 
-      // doorway through the dome
-      for (let y = 0; y < 5; y++) {
+      // doorway through the dome (leave the y=4 tunnel roof intact)
+      for (let y = 0; y < 4; y++) {
         for (let z = 0; z < dimsZ; z++) {
           for (let x = 0; x < dimsX; x++) {
             if (
               Math.abs(x + 0.5 - cx) < 2 &&
               z + 0.5 - cz > R * 0.45 &&
-              z + 0.5 - cz < R + 1 &&
-              y < 5
+              z + 0.5 - cz < R + 1
             ) {
               b.clear(x, y, z)
             }
