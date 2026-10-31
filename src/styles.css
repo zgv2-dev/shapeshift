@@ -234,6 +234,20 @@ p {
   color: var(--lime);
 }
 
+.topbar-language {
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .topbar-language {
+    display: block;
+  }
+  .topbar-language .language-select {
+    height: 34px;
+    padding: 0 7px;
+  }
+}
+
 .topbar-actions {
   display: flex;
   align-items: center;
@@ -724,6 +738,63 @@ p {
 .shape-item.active .shape-item-dot {
   background: var(--lime);
   box-shadow: 0 0 10px rgba(217, 255, 107, 0.55);
+}
+
+.library-utility {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 9px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.language-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--faint);
+}
+
+.language-select select {
+  min-width: 0;
+  max-width: 92px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 8px;
+  cursor: pointer;
+}
+
+.language-select select option {
+  background: #0b110c;
+  color: var(--text);
+}
+
+.codex-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.14s ease;
+}
+
+.codex-link:hover {
+  color: var(--lime);
 }
 
 .library-foot {
@@ -2504,7 +2575,21 @@ kbd {
   .brand-text {
     display: none;
   }
-  .topbar-actions {
+  .topbar-language {
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .topbar-language {
+    display: block;
+  }
+  .topbar-language .language-select {
+    height: 34px;
+    padding: 0 7px;
+  }
+}
+
+.topbar-actions {
     flex: 0 0 auto;
   }
   .mobile-only {
@@ -2598,7 +2683,21 @@ kbd {
   .topbar {
     gap: 8px;
   }
-  .topbar-actions {
+  .topbar-language {
+  display: none;
+}
+
+@media (min-width: 1180px) {
+  .topbar-language {
+    display: block;
+  }
+  .topbar-language .language-select {
+    height: 34px;
+    padding: 0 7px;
+  }
+}
+
+.topbar-actions {
     gap: 5px;
   }
   .topbar-actions .btn.ghost {

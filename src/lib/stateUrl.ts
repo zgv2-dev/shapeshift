@@ -13,6 +13,7 @@ export function buildQuery(state: AppState): string {
   q.set('tex', state.textures ? '1' : '0')
   q.set('view', state.mode)
   q.set('layer', String(state.layer))
+  q.set('lang', state.language)
   if (state.worldOrigin.x !== 0 || state.worldOrigin.y !== 64 || state.worldOrigin.z !== 0) {
     q.set('ox', String(state.worldOrigin.x))
     q.set('oy', String(state.worldOrigin.y))
@@ -47,6 +48,7 @@ export function persistState(state: AppState): void {
         buildMode: state.buildMode,
         ghost: state.ghost,
         grid: state.grid,
+        language: state.language,
       }),
     )
   } catch {

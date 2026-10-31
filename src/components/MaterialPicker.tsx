@@ -4,6 +4,7 @@ import { BLOCK_GROUPS, BLOCKS, getBlock, slabFor } from '../core/blocks'
 import { getShape } from '../core/shapes'
 import { TEXTURE_VERSION } from '../core/versions'
 import { useStore } from '../state/store'
+import { translateText } from '../i18n/translate'
 import type { RoleKey } from '../core/types'
 
 export function MaterialPicker() {
@@ -12,6 +13,7 @@ export function MaterialPicker() {
   const setMaterial = useStore((s) => s.setMaterial)
   const resetMaterials = useStore((s) => s.resetMaterials)
   const shape = getShape(shapeId)
+  const language = useStore((s) => s.language)
   const [role, setRole] = useState<RoleKey>('primary')
   const [search, setSearch] = useState('')
   const activeRole = shape.roles.some((r) => r.key === role) ? role : shape.roles[0].key
@@ -20,8 +22,13 @@ export function MaterialPicker() {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
-    return BLOCKS.filter((b) => !q || b.label.toLowerCase().includes(q))
-  }, [search])
+    return BLOCKS.filter(
+      (b) =>
+        !q ||
+        b.label.toLowerCase().includes(q) ||
+        translateText(language, b.label).toLowerCase().includes(q),
+    )
+  }, [search, language])
 
   return (
     <div className="material-picker">

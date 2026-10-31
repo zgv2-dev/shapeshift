@@ -3,6 +3,14 @@ import { BLOCK_MAP } from '../core/blocks'
 import { defaultMaterials, defaultParams, getShape, SHAPES } from '../core/shapes'
 import type { BlockAtlas } from '../three/textures'
 import type { MaterialSet, ModelPayload, ParamValue, RoleKey, ShapeCategory } from '../core/types'
+import {
+  LANGUAGE_STORAGE_KEY,
+  detectLanguage,
+  languageHtml,
+  normalizeLanguage,
+  storeLanguage,
+  type Language,
+} from '../i18n/languages'
 
 export type ViewMode = '3d' | '2d'
 export type InspectorTab = 'shape' | 'blocks' | 'export'
@@ -28,6 +36,7 @@ interface PersistedState {
   ghost?: boolean
   grid?: boolean
   cutaway?: number
+  language?: Language
 }
 
 export interface AppState {
@@ -59,6 +68,7 @@ export interface AppState {
   libraryOpen: boolean
   inspectorOpen: boolean
   pngNonce: number
+  language: Language
   toast: { message: string; id: number } | null
 
   setShape: (id: string) => void
@@ -87,6 +97,7 @@ export interface AppState {
   setLibraryOpen: (v: boolean) => void
   setInspectorOpen: (v: boolean) => void
   requestPng: () => void
+  setLanguage: (v: Language) => void
   showToast: (message: string) => void
 }
 
@@ -137,6 +148,7 @@ function readQuery(): PersistedState {
   const oy = numberOrNull('oy')
   const oz = numberOrNull('oz')
   const layer = numberOrNull('layer')
+  const language = normalizeLanguage(q.get('lang')) ?? undefined
   const hasOrigin = ox !== null || oy !== null || oz !== null
   return {
     shapeId,
@@ -146,6 +158,7 @@ function readQuery(): PersistedState {
     textures: q.get('tex') === '1' ? true : q.get('tex') === '0' ? false : undefined,
     mode: q.get('view') === '2d' ? '2d' : '3d',
     layer: layer ?? undefined,
+    language,
     worldOrigin: hasOrigin
       ? { x: ox ?? 0, y: oy ?? 64, z: oz ?? 0 }
       : undefined,
@@ -180,10 +193,17 @@ function initialState(): Omit<
   | 'setLibraryOpen'
   | 'setInspectorOpen'
   | 'requestPng'
+  | 'setLanguage'
   | 'showToast'
 > {
   const stored = readStored()
   const query = readQuery()
+  const storedLanguage =
+    normalizeLanguage(
+      typeof localStorage === 'undefined' ? null : localStorage.getItem(LANGUAGE_STORAGE_KEY),
+    ) ??
+    stored.language ??
+    detectLanguage()
   const known = SHAPES.some((s) => s.id === (query.shapeId ?? stored.shapeId))
   const shape = getShape(known ? (query.shapeId ?? stored.shapeId)! : 'sphere')
   const baseParams = defaultParams(shape)
@@ -227,6 +247,7 @@ function initialState(): Omit<
     libraryOpen: false,
     inspectorOpen: false,
     pngNonce: 0,
+    language: query.language ?? storedLanguage,
     toast: null,
   }
 }
@@ -313,6 +334,12 @@ export const useStore = create<AppState>((set, get) => ({
   setLibraryOpen: (v) => set({ libraryOpen: v }),
   setInspectorOpen: (v) => set({ inspectorOpen: v }),
   requestPng: () => set((s) => ({ pngNonce: s.pngNonce + 1 })),
+
+  setLanguage: (language) => {
+    set({ language })
+    storeLanguage(language)
+    if (typeof document !== 'undefined') document.documentElement.lang = languageHtml(language)
+  },
 
   showToast: (message) => {
     toastId += 1

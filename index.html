@@ -9,6 +9,16 @@
       content="Build 37 Minecraft shapes with real textures, half-slab curves, 3D previews and layer blueprints. Export to Litematica, WorldEdit or structure blocks — free."
     />
     <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="alternate" hreflang="en" href="https://shapeshift.mc.zgv2.dev/?lang=en" />
+    <link rel="alternate" hreflang="uk" href="https://shapeshift.mc.zgv2.dev/?lang=uk" />
+    <link rel="alternate" hreflang="zh-Hans" href="https://shapeshift.mc.zgv2.dev/?lang=zh-Hans" />
+    <link rel="alternate" hreflang="zh-Hant" href="https://shapeshift.mc.zgv2.dev/?lang=zh-Hant" />
+    <link rel="alternate" hreflang="de" href="https://shapeshift.mc.zgv2.dev/?lang=de" />
+    <link rel="alternate" hreflang="fr" href="https://shapeshift.mc.zgv2.dev/?lang=fr" />
+    <link rel="alternate" hreflang="it" href="https://shapeshift.mc.zgv2.dev/?lang=it" />
+    <link rel="alternate" hreflang="es" href="https://shapeshift.mc.zgv2.dev/?lang=es" />
+    <link rel="alternate" hreflang="ja" href="https://shapeshift.mc.zgv2.dev/?lang=ja" />
+    <link rel="alternate" hreflang="x-default" href="https://shapeshift.mc.zgv2.dev/" />
     <link rel="canonical" href="https://shapeshift.mc.zgv2.dev/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -19,6 +29,15 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="uk_UA" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:locale:alternate" content="zh_TW" />
+    <meta property="og:locale:alternate" content="de_DE" />
+    <meta property="og:locale:alternate" content="fr_FR" />
+    <meta property="og:locale:alternate" content="it_IT" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+
     <meta property="og:site_name" content="Shapeshift" />
     <meta property="og:title" content="Minecraft shapes that don't look like boxes." />
     <meta
@@ -48,7 +67,8 @@
             "url": "https://shapeshift.mc.zgv2.dev/",
             "name": "Shapeshift",
             "description": "A Minecraft shape generator with half-slab detail, real textures, layer blueprints and schematic exports.",
-            "inLanguage": "en"
+            "sameAs": ["https://enchantments.mc.zgv2.dev/"],
+            "inLanguage": ["en", "uk", "zh-Hans", "zh-Hant", "de", "fr", "it", "es", "ja"]
           },
           {
             "@type": "SoftwareApplication",
@@ -66,6 +86,8 @@
             },
             "description": "Design 37 parametric Minecraft shapes with real 26.3 textures, half-slab curves, a 3D voxel viewer, 2D layer blueprints and Litematica, Sponge or structure-block exports.",
             "screenshot": "https://shapeshift.mc.zgv2.dev/preview.png",
+            "sameAs": ["https://enchantments.mc.zgv2.dev/"],
+            "inLanguage": ["en", "uk", "zh-Hans", "zh-Hant", "de", "fr", "it", "es", "ja"],
             "featureList": [
               "37 parametric Minecraft shapes",
               "Half-slab detail for smoother curves",
@@ -154,7 +176,26 @@
           <a href="#blueprints">Blueprints</a>
           <a href="#exports">Exports</a>
           <a href="#faq">FAQ</a>
+          <a href="https://enchantments.mc.zgv2.dev/" target="_blank" rel="noopener noreferrer">Enchantment Codex</a>
         </nav>
+
+        <div class="lang-picker" data-i18n-skip>
+          <svg class="lang-globe" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="8" cy="8" r="5.5" />
+            <path d="M2.5 8h11M8 2.5c1.8 1.7 2.6 3.6 2.6 5.5S9.8 11.8 8 13.5C6.2 11.8 5.4 9.9 5.4 8S6.2 4.2 8 2.5z" />
+          </svg>
+          <select id="language-select" aria-label="Language">
+            <option value="en" lang="en">English</option>
+            <option value="uk" lang="uk">Українська</option>
+            <option value="zh-Hans" lang="zh-Hans">简体中文</option>
+            <option value="zh-Hant" lang="zh-Hant">繁體中文</option>
+            <option value="de" lang="de">Deutsch</option>
+            <option value="fr" lang="fr">Français</option>
+            <option value="it" lang="it">Italiano</option>
+            <option value="es" lang="es">Español</option>
+            <option value="ja" lang="ja">日本語</option>
+          </select>
+        </div>
 
         <a class="btn btn-primary head-cta" href="/studio/">
           Open studio
@@ -167,7 +208,7 @@
       <section class="hero shell">
         <div class="hero-copy">
           <p class="eyebrow"><span class="live-dot"></span> 37 shapes · Minecraft 26.3 textures</p>
-          <h1>Minecraft shapes<br />that <em>don't look like boxes.</em></h1>
+          <h1>Minecraft shapes<br /><em>that don't look like boxes.</em></h1>
           <p class="lede">
             Build spheres, ovals, domes and unhinged wizard spires with real textures, half-slab
             curves and layer-by-layer blueprints. Then export straight to your world.
@@ -488,6 +529,7 @@
         <div>
           <h3>Project</h3>
           <a href="https://github.com/zgv2-dev/shapeshift" rel="noopener">GitHub</a>
+          <a href="https://enchantments.mc.zgv2.dev/" target="_blank" rel="noopener noreferrer">Enchantment Codex</a>
           <a href="/sitemap.xml">Sitemap</a>
           <a href="/robots.txt">Robots</a>
         </div>

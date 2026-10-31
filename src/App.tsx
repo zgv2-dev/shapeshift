@@ -12,6 +12,8 @@ import { TEXTURE_VERSION } from './core/versions'
 import type { ModelPayload } from './core/types'
 import { persistState } from './lib/stateUrl'
 import { getCachedAtlas, loadBlockAtlas } from './three/textures'
+import { setPageLanguage, startPageTranslator } from './i18n/domTranslate'
+import { translateText } from './i18n/translate'
 
 function useGenerator() {
   const [worker, setWorker] = useState<Worker | null>(null)
@@ -103,18 +105,28 @@ export default function App() {
   useTextureLoader()
   const shapeId = useStore((s) => s.shapeId)
   const shape = getShape(shapeId)
+  const language = useStore((s) => s.language)
+
+  useEffect(() => {
+    startPageTranslator(language)
+    // The translator owns the observer for the lifetime of the page.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    setPageLanguage(language)
+  }, [language])
 
   useEffect(() => {
     const structural = shape.category === 'structures'
-    document.title = structural ? `${shape.name} — Shapeshift` : `${shape.name} Generator — Shapeshift`
+    const name = translateText(language, shape.name)
+    const generator = translateText(language, 'Generator')
+    document.title = structural ? `${name} — Shapeshift` : `${name} ${generator} — Shapeshift`
     const description = document.querySelector('meta[name="description"]')
     if (description) {
-      description.setAttribute(
-        'content',
-        `${shape.name}: ${shape.tagline} Build it with half-slab detail, real textures and layer blueprints, then export to Litematica, WorldEdit or a structure block.`,
-      )
+      description.setAttribute('content', translateText(language, shape.description).slice(0, 160))
     }
-  }, [shape])
+  }, [shape, language])
   const mode = useStore((s) => s.mode)
   const setMode = useStore((s) => s.setMode)
   const status = useStore((s) => s.status)
@@ -195,6 +207,7 @@ export default function App() {
       s.buildMode,
       s.ghost,
       s.grid,
+      s.language,
     ].join('|'),
   )
 

@@ -187,6 +187,40 @@ a {
   flex: 0 0 auto;
 }
 
+.lang-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--faint);
+}
+
+.lang-globe {
+  width: 12px;
+  height: 12px;
+}
+
+.lang-picker select {
+  max-width: 92px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 8px;
+  cursor: pointer;
+}
+
+.lang-picker select option {
+  background: #0b110c;
+  color: var(--text);
+}
+
 /* ---------- buttons ---------- */
 
 .btn {
@@ -293,6 +327,11 @@ a {
   gap: 48px;
   padding-top: 80px;
   padding-bottom: 56px;
+}
+
+.hero-copy,
+.hero-visual {
+  min-width: 0;
 }
 
 .hero-copy {
@@ -1027,6 +1066,23 @@ a {
   }
 }
 
+html[lang='ja'] .hero h1 {
+  max-width: 100%;
+  font-size: clamp(2.7rem, 4.8vw, 4.05rem);
+  letter-spacing: -0.045em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+html[lang='zh-Hans'] .hero h1,
+html[lang='zh-Hant'] .hero h1 {
+  max-width: 100%;
+  font-size: clamp(2.8rem, 5.1vw, 4.4rem);
+  letter-spacing: -0.045em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1046,8 +1102,11 @@ a {
   .site-nav {
     display: none;
   }
-  .head-cta {
+  .lang-picker {
     margin-left: auto;
+  }
+  .head-cta {
+    margin-left: 0;
   }
   .hero {
     grid-template-columns: 1fr;
@@ -1086,6 +1145,11 @@ a {
 }
 
 @media (max-width: 700px) {
+  html[lang='ja'] .hero h1,
+  html[lang='zh-Hans'] .hero h1,
+  html[lang='zh-Hant'] .hero h1 {
+    word-break: normal;
+  }
   .shell {
     width: min(calc(100% - 32px), var(--max));
   }
@@ -1202,5 +1266,15 @@ a {
   }
   .browser-url {
     font-size: 7px;
+  }
+  .lang-picker {
+    padding: 0 5px;
+  }
+  .lang-picker select {
+    max-width: 66px;
+    font-size: 7px;
+  }
+  .head-cta {
+    padding-inline: 10px;
   }
 }

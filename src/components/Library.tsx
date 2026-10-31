@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
-import { Search, X } from 'lucide-react'
+import { BookOpen, Search, X } from 'lucide-react'
 import { CATEGORIES, SHAPES } from '../core/shapes'
 import { useStore } from '../state/store'
 import { ShapeGlyph } from './ShapeGlyph'
+import { LanguageSelect } from './LanguageSelect'
+import { translateText } from '../i18n/translate'
 
 export function Library() {
   const shapeId = useStore((s) => s.shapeId)
@@ -13,6 +15,7 @@ export function Library() {
   const setCategory = useStore((s) => s.setCategory)
   const open = useStore((s) => s.libraryOpen)
   const setOpen = useStore((s) => s.setLibraryOpen)
+  const language = useStore((s) => s.language)
 
   const filtered = useMemo(() => {
     const norm = (value: string) =>
@@ -24,13 +27,16 @@ export function Library() {
     return SHAPES.filter((shape) => {
       if (category !== 'all' && shape.category !== category) return false
       if (!q) return true
-      return (
-        norm(shape.name).includes(q) ||
-        norm(shape.tagline).includes(q) ||
-        norm(shape.category).includes(q)
-      )
+      return [
+        shape.name,
+        shape.tagline,
+        shape.category,
+        translateText(language, shape.name),
+        translateText(language, shape.tagline),
+        translateText(language, shape.category),
+      ].some((value) => norm(value).includes(q))
     })
-  }, [search, category])
+  }, [search, category, language])
 
   const groups = CATEGORIES.map((cat) => ({
     ...cat,
@@ -128,6 +134,19 @@ export function Library() {
       </div>
 
       <footer className="library-foot">
+        <div className="library-utility">
+          <LanguageSelect />
+          <a
+            className="codex-link"
+            href="https://enchantments.mc.zgv2.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open the Enchantment Codex"
+          >
+            <BookOpen size={11} aria-hidden="true" />
+            Enchantment Codex
+          </a>
+        </div>
         <p>
           <kbd>1</kbd> 3D <kbd>2</kbd> blueprint <kbd>←</kbd>
           <kbd>→</kbd> layers

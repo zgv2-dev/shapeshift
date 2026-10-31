@@ -18,6 +18,8 @@ Built as a modern answer to Plotz / McGic — with the one thing those generator
 - **Exports**: Litematica (`.litematic`), Sponge v2 (`.schem`), vanilla structure block (`.nbt`), block shopping list CSV, coordinate CSV and blueprint PNG. Slab states are written as `minecraft:*_slab[type=bottom|top]`.
 - **Shareable state**: shape, parameters, materials, layer and build origin are encoded in the URL and persisted locally.
 - **Dope wizard tower**: a meme-inspired tiered purple spire with an optional flat-roof house base, so you can recreate the “put a wizard tower on your house” bit. The shaft is fluted light stone; swap the spire material to obsidian for the darker original look.
+- **Nine languages**: English, Ukrainian, Simplified Chinese, Traditional Chinese, German, French, Italian, Spanish and Japanese — the same set as [The Enchantment Codex](https://enchantments.mc.zgv2.dev/). Pick a language from the landing header or the studio library footer; the choice persists and follows the browser on first visit.
+- **Cross-links**: Shapeshift and the Enchantment Codex link to each other from their landing pages and studios.
 
 All generation and export happens in the browser. No files are uploaded.
 
@@ -32,6 +34,24 @@ npm run build    # type-check + build both static pages
 
 The dev server uses Vite. Generation runs in a Web Worker; the viewer uses Three.js with custom instanced shaders. `/` is a static landing page, `/studio/` is the React app, and both are separate Vite entries so the marketing page never ships Three.js.
 
+## Languages
+
+The UI, shape library, shape descriptions, parameter copy and landing page are available in the same nine languages as The Enchantment Codex:
+
+- English
+- Ukrainian
+- Simplified Chinese
+- Traditional Chinese
+- German
+- French
+- Italian
+- Spanish
+- Japanese
+
+A native language selector lives in the landing header, the studio topbar at wide widths, and the studio library footer. The selection is stored under `shapeshift:language`, is added to shared studio URLs as `lang=…`, and falls back to the browser language on first visit. `src/i18n/` contains the language registry, dictionary and DOM translation layer; block labels use the official Minecraft 26.3 language files.
+
+The long-form copy is a machine-assisted first pass; the UI, shape names and block labels have manual terminology overrides. If you change a source string, add it to `src/i18n/dictionary.json` (or a new generated locale pass) so it does not fall back to English.
+
 ## Landing page & SEO
 
 The public site is deliberately split into two static pages:
@@ -39,7 +59,7 @@ The public site is deliberately split into two static pages:
 - **`/`** — a semantic, crawlable landing page with the shape library, feature copy, FAQ and a one-click route into the studio. No React or Three.js on this page.
 - **`/studio/`** — the interactive generator, with its own canonical URL and a title that updates to the current shape (for example “Torus Generator — Shapeshift”).
 
-SEO details live in `index.html` and `studio/index.html`: descriptive titles, canonical URLs, Open Graph and Twitter cards, `SoftwareApplication` / `FAQPage` / `WebSite` JSON-LD, and a 1200×630 `og.png`. `public/robots.txt` and `public/sitemap.xml` point at the production domain, `https://shapeshift.mc.zgv2.dev/`. Old share links that still use `/?shape=…` redirect to the studio automatically.
+SEO details live in `index.html` and `studio/index.html`: descriptive titles, canonical URLs, `hreflang` alternates for all nine languages, Open Graph and Twitter cards with locale alternates, `SoftwareApplication` / `FAQPage` / `WebSite` JSON-LD, and a 1200×630 `og.png`. `public/robots.txt` and `public/sitemap.xml` point at the production domain, `https://shapeshift.mc.zgv2.dev/`. Old share links that still use `/?shape=…` redirect to the studio automatically.
 
 `npm run build` emits `dist/index.html` plus `dist/studio/index.html`. The landing page's images are pre-sized WebP assets, and its JS is a tiny module just for fonts and the legacy redirect.
 

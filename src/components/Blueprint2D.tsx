@@ -3,8 +3,10 @@ import { Ghost, Maximize, Minus, Plus } from 'lucide-react'
 import { useStore } from '../state/store'
 import { downloadBlob, modelFileName } from '../core/export/download'
 import type { BlockState, VoxelModel } from '../core/types'
-import { ATLAS_COLS, TILE_SIZE, tileIndicesForState } from '../three/textures'
-import { blockStateLabel } from '../lib/blockLabels'
+import { ATLAS_COLS, TILE_SIZE, blockForStateName, tileIndicesForState } from '../three/textures'
+import { prettyBlockName } from '../lib/blockLabels'
+import { translateText } from '../i18n/translate'
+import type { Language } from '../i18n/languages'
 
 interface Hover {
   x: number
@@ -32,6 +34,12 @@ function symmetryOf(model: VoxelModel, layer: number) {
   return { xSym, zSym, quadrant }
 }
 
+function localizedBlock(state: BlockState, language: Language): string {
+  const base = blockForStateName(state.name)?.label ?? prettyBlockName(state.name)
+  const suffix = state.kind === 'block' ? '' : ` (${translateText(language, state.kind)})`
+  return `${translateText(language, base)}${suffix}`
+}
+
 export function Blueprint2D() {
   const model = useStore((s) => s.model)
   const layer = useStore((s) => s.layer)
@@ -39,6 +47,7 @@ export function Blueprint2D() {
   const mode = useStore((s) => s.mode)
   const worldOrigin = useStore((s) => s.worldOrigin)
   const pngNonce = useStore((s) => s.pngNonce)
+  const language = useStore((s) => s.language)
   const atlas = useStore((s) => s.atlas)
   const textures = useStore((s) => s.textures)
   const showToast = useStore((s) => s.showToast)
@@ -430,9 +439,9 @@ export function Blueprint2D() {
     lastPng.current = pngNonce
     const canvas = canvasRef.current
     if (!canvas || !model) return
-    exportPng(canvas, model, layer, stat, sym, top + 1)
+    exportPng(canvas, model, layer, stat, sym, top + 1, language)
     showToast('Blueprint PNG downloaded')
-  }, [pngNonce, model, layer, stat, sym, showToast])
+  }, [pngNonce, model, layer, stat, sym, showToast, language])
 
   return (
     <div className={`blueprint2d ${mode === '2d' ? 'active' : ''}`} ref={wrapRef}>
@@ -511,7 +520,7 @@ export function Blueprint2D() {
             x {hover.x - Math.floor(nx / 2) + worldOrigin.x} · y {layer + worldOrigin.y} · z {hover.z - Math.floor(nz / 2) + worldOrigin.z}
           </div>
           <div>
-            {blockStateLabel(hover.block)}
+            {localizedBlock(hover.block, language)}
           </div>
         </div>
       ) : null}
@@ -532,6 +541,7 @@ function exportPng(
   stat: { items: number; slabs: number; equivalents: number } | undefined,
   sym: { xSym: boolean; zSym: boolean; quadrant: number } | null,
   layerCount: number,
+  language: Language,
 ): void {
   const srcW = canvas.width
   const srcH = canvas.height
@@ -553,20 +563,20 @@ function exportPng(
   ctx.fillText('SHAPESHIFT', 46, 62)
   ctx.fillStyle = '#7d8b74'
   ctx.font = '400 15px "Inter Variable", sans-serif'
-  ctx.fillText('Minecraft build blueprint', 46, 88)
+  ctx.fillText(translateText(language, 'Minecraft build blueprint'), 46, 88)
 
   ctx.textAlign = 'right'
   ctx.fillStyle = '#e9eee4'
   ctx.font = '600 30px "Space Grotesk Variable", sans-serif'
-  ctx.fillText(`Layer ${layer + 1} / ${layerCount}`, targetW - 46, 62)
+  ctx.fillText(`${translateText(language, 'Layer')} ${layer + 1} / ${layerCount}`, targetW - 46, 62)
   ctx.fillStyle = '#93a08a'
   ctx.font = '400 14px "Inter Variable", sans-serif'
-  const symText = sym?.xSym && sym?.zSym ? `quadrant ${sym.quadrant} ×4` : ''
+  const symText = sym?.xSym && sym?.zSym ? `${translateText(language, 'quadrant')} ${sym.quadrant} ×4` : ''
   ctx.fillText(
     [
       `${model.dims[0]} × ${model.dims[1]} × ${model.dims[2]}`,
-      `${stat?.items ?? 0} blocks`,
-      `${stat?.slabs ?? 0} slabs`,
+      `${stat?.items ?? 0} ${translateText(language, 'blocks')}`,
+      `${stat?.slabs ?? 0} ${translateText(language, 'slabs')}`,
       symText,
     ]
       .filter(Boolean)
@@ -588,7 +598,7 @@ function exportPng(
   const legendY = targetH - footer + 34
   ctx.fillStyle = '#7d8b74'
   ctx.font = '600 11px "JetBrains Mono Variable", monospace'
-  ctx.fillText('PALETTE', 46, legendY - 14)
+  ctx.fillText(translateText(language, 'PALETTE'), 46, legendY - 14)
   const counts = new Map<number, number>()
   const baseIndex = layer * model.dims[0] * model.dims[2]
   for (let i = 0; i < model.dims[0] * model.dims[2]; i++) {
@@ -602,7 +612,7 @@ function exportPng(
     ctx.fillRect(x, legendY, 14, 14)
     ctx.fillStyle = '#cfd7c8'
     ctx.font = '400 12px "Inter Variable", sans-serif'
-    const text = `${blockStateLabel(state)} · ${count}`
+    const text = `${localizedBlock(state, language)} · ${count}`
     ctx.fillText(text, x + 21, legendY + 12)
     x += Math.max(180, ctx.measureText(text).width + 70)
     if (x > targetW - 260) break
@@ -610,7 +620,7 @@ function exportPng(
   ctx.fillStyle = '#5e6b57'
   ctx.font = '400 11px "Inter Variable", sans-serif'
   ctx.textAlign = 'right'
-  ctx.fillText('shapeshift · minecraft shape studio', targetW - 46, targetH - 24)
+  ctx.fillText(translateText(language, 'shapeshift · minecraft shape studio'), targetW - 46, targetH - 24)
 
   out.toBlob((blob) => {
     if (blob) downloadBlob(blob, modelFileName(`layer-${layer + 1}`, model, '.png'))

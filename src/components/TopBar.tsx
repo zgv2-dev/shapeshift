@@ -3,6 +3,7 @@ import { getShape } from '../core/shapes'
 import { buildShareUrl } from '../lib/stateUrl'
 import { useStore } from '../state/store'
 import { TEXTURE_VERSION } from '../core/versions'
+import { LanguageSelect } from './LanguageSelect'
 
 const nf = new Intl.NumberFormat('en-US')
 
@@ -79,6 +80,9 @@ export function TopBar() {
       </div>
 
       <div className="topbar-actions">
+        <div className="topbar-language">
+          <LanguageSelect />
+        </div>
         <button
           className={`slab-toggle ${detail ? 'active' : ''}`}
           onClick={() => setDetail(!detail)}
