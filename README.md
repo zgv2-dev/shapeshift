@@ -63,6 +63,10 @@ SEO details live in `index.html` and `studio/index.html`: descriptive titles, ca
 
 `npm run build` emits `dist/index.html` plus `dist/studio/index.html`. The landing page's images are pre-sized WebP assets, and its JS is a tiny module just for fonts and the legacy redirect.
 
+## Feedback
+
+Found a bug or have an issue? [Open an issue on GitHub](https://github.com/zgv2-dev/shapeshift/issues/new).
+
 ## Notes
 
 - Block states in exports target Minecraft **1.20.1** (`DataVersion 3465`) for wide toolchain compatibility. The visual texture preview uses the latest Java release, **26.3**.

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { BookOpen, Heart, Search, X } from 'lucide-react'
+import { BookOpen, Bug, Heart, Search, X } from 'lucide-react'
 import { CATEGORIES, SHAPES } from '../core/shapes'
 import { useStore } from '../state/store'
 import { ShapeGlyph } from './ShapeGlyph'
@@ -163,6 +163,17 @@ export function Library() {
             Enchantment Codex
           </a>
         </div>
+        <p className="library-report">
+          <Bug size={10} aria-hidden="true" />
+          <a
+            href="https://github.com/zgv2-dev/shapeshift/issues/new"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Report bugs and issues on GitHub"
+          >
+            Report a bug
+          </a>
+        </p>
         <p>
           <kbd>1</kbd> 3D <kbd>2</kbd> blueprint <kbd>←</kbd>
           <kbd>→</kbd> layers

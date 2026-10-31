@@ -863,6 +863,24 @@ p {
   font-size: 8.5px;
 }
 
+.library-report {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  color: var(--faint);
+  font-size: 8px;
+}
+
+.library-report a {
+  color: var(--faint);
+  text-decoration: none;
+}
+
+.library-report a:hover {
+  color: var(--lime);
+}
+
 .library-foot p {
   display: flex;
   align-items: center;

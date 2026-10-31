@@ -41,6 +41,8 @@ describe('language support', () => {
     expect(landing).toContain('https://enchantments.mc.zgv2.dev/')
     expect(landing).not.toContain('#aqua_affinity')
     expect(landing).toContain('Mending: repair your gear with experience.')
+    expect(landing).toContain('https://github.com/zgv2-dev/shapeshift/issues/new')
+    expect(landing).toContain('Report a bug')
     expect(landing).not.toContain('Aqua Affinity')
     expect(landing).toContain('From the same workshop')
     expect(landing).toContain('id="language-select"')
