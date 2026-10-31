@@ -4,6 +4,7 @@ import { useStore } from '../state/store'
 import type { ParamDef, ParamValue } from '../core/types'
 import { ParamControl } from './ParamControl'
 import { MaterialPicker } from './MaterialPicker'
+import { TEXTURE_VERSION } from '../core/versions'
 import { ExportPanel } from './ExportPanel'
 
 const GROUP_ORDER = ['Dimensions', 'Style', 'Details', 'Generation']
@@ -174,8 +175,8 @@ export function Inspector() {
                     : textureStatus === 'error'
                       ? 'Mirror unavailable — flat colors'
                       : textures
-                        ? 'On · real 1.20.1 block textures'
-                        : 'Use the real 1.20.1 block textures'}
+                        ? `On · real ${TEXTURE_VERSION} block textures`
+                        : `Use the real ${TEXTURE_VERSION} block textures`}
                 </p>
               </div>
               <button

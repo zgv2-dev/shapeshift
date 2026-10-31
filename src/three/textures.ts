@@ -1,4 +1,5 @@
 import { BLOCKS, BLOCK_MAP, type BlockDef } from '../core/blocks'
+import { TEXTURE_VERSION } from '../core/versions'
 
 export const ATLAS_COLS = 16
 export const ATLAS_ROWS = 16
@@ -103,9 +104,9 @@ export interface BlockAtlas {
 }
 
 const TEXTURE_SOURCES = [
-  'https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@1.20.1/assets/minecraft/textures/block/',
-  'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.1/assets/minecraft/textures/block/',
-  'https://assets.mcasset.cloud/1.20.1/assets/minecraft/textures/block/',
+  `https://cdn.jsdelivr.net/gh/InventivetalentDev/minecraft-assets@${TEXTURE_VERSION}/assets/minecraft/textures/block/`,
+  `https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/${TEXTURE_VERSION}/assets/minecraft/textures/block/`,
+  `https://assets.mcasset.cloud/${TEXTURE_VERSION}/assets/minecraft/textures/block/`,
 ]
 
 let cachedAtlas: BlockAtlas | null = null
@@ -179,7 +180,7 @@ async function fetchTexture(
 }
 
 /**
- * Download one texture per block face from a public Minecraft 1.20.1 asset mirror,
+ * Download one texture per block face from a public Minecraft asset mirror matching TEXTURE_VERSION,
  * compose a 16x16 tile atlas, and return it. Missing textures get a flat fallback
  * tile so one bad file never breaks the whole atlas.
  */

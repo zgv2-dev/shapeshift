@@ -2,6 +2,7 @@ import { Copy, Download, Loader2, Menu, PanelRight, Shapes, TriangleAlert } from
 import { getShape } from '../core/shapes'
 import { buildShareUrl } from '../lib/stateUrl'
 import { useStore } from '../state/store'
+import { TEXTURE_VERSION } from '../core/versions'
 
 const nf = new Intl.NumberFormat('en-US')
 
@@ -96,7 +97,7 @@ export function TopBar() {
           className={`slab-toggle tex-toggle ${textures ? 'active' : ''} ${textureStatus === 'error' ? 'error' : ''}`}
           onClick={() => setTextures(!textures)}
           aria-pressed={textures}
-          title="Use real Minecraft 1.20.1 block textures. Loaded at runtime from a public asset mirror."
+          title={`Use real Minecraft ${TEXTURE_VERSION} block textures. Loaded at runtime from a public asset mirror.`}
         >
           {textureStatus === 'loading' ? (
             <Loader2 size={15} className="spin" />

@@ -1,7 +1,9 @@
 import type { BlockState, VoxelModel } from '../types'
 import { TAG, blockStateKey, nbt, writeNbt, type NbtTag } from './nbt'
 
-const MC_DATA_VERSION = 3465
+import { SCHEMATIC_DATA_VERSION } from '../versions'
+
+const MC_DATA_VERSION = SCHEMATIC_DATA_VERSION
 
 function paletteTag(state: BlockState) {
   const entry: Record<string, NbtTag> = {

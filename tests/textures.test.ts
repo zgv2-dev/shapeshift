@@ -7,8 +7,13 @@ import {
   tileIndicesForState,
 } from '../src/three/textures'
 import { BLOCKS } from '../src/core/blocks'
+import { TEXTURE_VERSION } from '../src/core/versions'
 
 describe('texture atlas layout', () => {
+  it('targets the latest stable texture release', () => {
+    expect(TEXTURE_VERSION).toBe('26.3')
+  })
+
   it('fits every block face into the atlas', () => {
     expect(TEXTURE_COUNT).toBeLessThanOrEqual(ATLAS_COLS * ATLAS_ROWS)
     expect(new Set(UNIQUE_TEXTURES).size).toBe(UNIQUE_TEXTURES.length)

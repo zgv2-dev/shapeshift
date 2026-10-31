@@ -8,6 +8,7 @@ import { LayerDock } from './components/LayerDock'
 import { Inspector } from './components/Inspector'
 import { useStore } from './state/store'
 import { getShape } from './core/shapes'
+import { TEXTURE_VERSION } from './core/versions'
 import type { ModelPayload } from './core/types'
 import { persistState } from './lib/stateUrl'
 import { getCachedAtlas, loadBlockAtlas } from './three/textures'
@@ -80,8 +81,8 @@ function useTextureLoader() {
         current.setTextureStatus('ready', atlas.loaded, atlas.total)
         current.showToast(
           atlas.missing.length
-            ? `Minecraft textures loaded — ${atlas.loaded}/${atlas.total} (${atlas.missing.length} missing)`
-            : `Minecraft textures loaded — ${atlas.loaded} block textures`,
+            ? `Minecraft ${TEXTURE_VERSION} textures loaded — ${atlas.loaded}/${atlas.total} (${atlas.missing.length} missing)`
+            : `Minecraft ${TEXTURE_VERSION} textures loaded — ${atlas.loaded} block textures`,
         )
       })
       .catch(() => {
@@ -89,7 +90,7 @@ function useTextureLoader() {
         const current = useStore.getState()
         current.setTextures(false)
         current.setTextureStatus('error')
-        current.showToast('Texture mirror unreachable — using flat colors')
+        current.showToast(`Minecraft ${TEXTURE_VERSION} texture mirror unreachable — using flat colors`)
       })
     return () => {
       cancelled = true

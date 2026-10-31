@@ -8,6 +8,7 @@ import {
 } from '../core/export/download'
 import { buildShareUrl } from '../lib/stateUrl'
 import { useStore } from '../state/store'
+import { SCHEMATIC_VERSION } from '../core/versions'
 
 const FORMATS: { id: ExportFormat; icon: typeof FileBox }[] = [
   { id: 'litematic', icon: FileBox },
@@ -68,8 +69,8 @@ export function ExportPanel() {
           <p className="eyebrow">Take it in-world</p>
           <h3>Export</h3>
         </div>
-        <span className="data-version" title="Minecraft 1.20.1 block state data version">
-          1.20.1
+        <span className="data-version" title={`Minecraft ${SCHEMATIC_VERSION} block state data version`}>
+          {SCHEMATIC_VERSION}
         </span>
       </div>
 

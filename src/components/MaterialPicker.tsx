@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Check, RotateCcw, Search } from 'lucide-react'
 import { BLOCK_GROUPS, BLOCKS, getBlock, slabFor } from '../core/blocks'
 import { getShape } from '../core/shapes'
+import { TEXTURE_VERSION } from '../core/versions'
 import { useStore } from '../state/store'
 import type { RoleKey } from '../core/types'
 
@@ -107,8 +108,8 @@ export function MaterialPicker() {
         materials stay as full blocks so the export remains valid.
       </p>
       <p className="fine-print texture-note">
-        Textures are fetched at runtime from a public Minecraft 1.20.1 asset mirror — they are not
-        bundled with Shapeshift. Turn them on above or from the top bar.
+        Textures are fetched at runtime from a public Minecraft {TEXTURE_VERSION} asset mirror — they
+        are not bundled with Shapeshift. Turn them on above or from the top bar.
       </p>
     </div>
   )
