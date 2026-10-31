@@ -11,7 +11,7 @@ describe('SEO surface', () => {
   it('has a distinct, searchable title and description', () => {
     const title = landing.match(/<title>([^<]+)<\/title>/)?.[1] ?? ''
     const description = landing.match(/<meta\s+name="description"\s+content="([^"]+)"/s)?.[1] ?? ''
-    expect(title).toBe("Shapeshift — Minecraft Shape Generator That Isn't Boxy")
+    expect(title).toBe("ShapeShiftMC — Minecraft Shape Generator That Isn't Boxy")
     expect(title.length).toBeLessThanOrEqual(60)
     expect(description.length).toBeGreaterThan(120)
     expect(description.length).toBeLessThanOrEqual(170)
@@ -44,7 +44,7 @@ describe('SEO surface', () => {
 
   it('keeps the studio page canonical and similarly distinctive', () => {
     const studio = read('studio/index.html')
-    expect(studio).toContain('<title>Shape Studio — Minecraft Slabs &amp; Blueprints | Shapeshift</title>')
+    expect(studio).toContain('<title>Shape Studio — Minecraft Slabs &amp; Blueprints | ShapeShiftMC</title>')
     expect(studio).toContain('<link rel="canonical" href="https://shapeshift.mc.zgv2.dev/studio/" />')
     expect(studio).toContain('name="description"')
   })

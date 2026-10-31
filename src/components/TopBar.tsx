@@ -45,14 +45,14 @@ export function TopBar() {
         >
           <Menu size={18} />
         </button>
-        <a className="brand-home" href="/" title="Back to the Shapeshift landing page">
+        <a className="brand-home" href="/" title="Back to the ShapeShiftMC landing page">
           <svg className="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
             <path d="M20 3 35 11 20 19 5 11Z" fill="#d9ff6b" />
             <path d="M5 11v18l15 8V19Z" fill="#7da437" />
             <path d="M35 11v18l-15 8V19Z" fill="#4d7122" />
           </svg>
           <div className="brand-text">
-            <span className="brand-name">Shapeshift</span>
+            <span className="brand-name">ShapeShiftMC</span>
             <span className="brand-sub">Minecraft shape studio</span>
           </div>
         </a>

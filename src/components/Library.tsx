@@ -99,14 +99,14 @@ export function Library() {
           href="https://enchantments.mc.zgv2.dev/"
           target="_blank"
           rel="noopener noreferrer"
-          title="Open the Enchantment Codex"
+          title="Open EnchantMC"
         >
           <span className="codex-ad-icon" aria-hidden="true">
             <Heart size={14} />
           </span>
           <span className="codex-ad-copy">
             <strong>Mending</strong>
-            <small>The Enchantment Codex <span aria-hidden="true">→</span></small>
+            <small>EnchantMC <span aria-hidden="true">→</span></small>
           </span>
         </a>
 
@@ -157,10 +157,10 @@ export function Library() {
             href="https://enchantments.mc.zgv2.dev/"
             target="_blank"
             rel="noopener noreferrer"
-            title="Open the Enchantment Codex"
+            title="Open EnchantMC"
           >
             <BookOpen size={11} aria-hidden="true" />
-            Enchantment Codex
+            EnchantMC
           </a>
         </div>
         <p>

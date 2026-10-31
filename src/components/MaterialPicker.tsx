@@ -116,7 +116,7 @@ export function MaterialPicker() {
       </p>
       <p className="fine-print texture-note">
         Textures are fetched at runtime from a public Minecraft {TEXTURE_VERSION} asset mirror — they
-        are not bundled with Shapeshift. Turn them on above or from the top bar.
+        are not bundled with ShapeShiftMC. Turn them on above or from the top bar.
       </p>
     </div>
   )

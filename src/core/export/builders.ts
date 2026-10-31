@@ -25,7 +25,7 @@ function nowLong(): bigint {
  * Litematica schematic. BlockStates are packed LSB-first into 64-bit longs,
  * with x-fastest ordering (x + z * width + y * width * length).
  */
-export function buildLitematic(model: VoxelModel, name = 'Shapeshift'): Uint8Array {
+export function buildLitematic(model: VoxelModel, name = 'ShapeShiftMC'): Uint8Array {
   const [nx, ny, nz] = model.dims
   const total = nx * ny * nz
   const paletteLen = model.palette.length
@@ -60,8 +60,8 @@ export function buildLitematic(model: VoxelModel, name = 'Shapeshift'): Uint8Arr
     Version: nbt.int(6),
     Metadata: nbt.compound({
       Name: nbt.string(name),
-      Author: nbt.string('Shapeshift'),
-      Description: nbt.string('Generated with Shapeshift — minecraft shape studio'),
+      Author: nbt.string('ShapeShiftMC'),
+      Description: nbt.string('Generated with ShapeShiftMC — minecraft shape studio'),
       RegionCount: nbt.int(1),
       TotalVolume: nbt.long(BigInt(total)),
       TotalBlocks: nbt.long(BigInt(model.counts.total)),
@@ -100,7 +100,7 @@ class Uint8Sink {
 }
 
 /** Sponge schematic v2, as used by WorldEdit, FAWE and Amulet. */
-export function buildSchem(model: VoxelModel, name = 'Shapeshift'): Uint8Array {
+export function buildSchem(model: VoxelModel, name = 'ShapeShiftMC'): Uint8Array {
   const [nx, ny, nz] = model.dims
   const palette: Record<string, ReturnType<typeof nbt.int>> = {}
   model.palette.forEach((state, i) => {
@@ -124,7 +124,7 @@ export function buildSchem(model: VoxelModel, name = 'Shapeshift'): Uint8Array {
     Entities: nbt.list(TAG.compound, []),
     Metadata: nbt.compound({
       Name: nbt.string(name),
-      Author: nbt.string('Shapeshift'),
+      Author: nbt.string('ShapeShiftMC'),
     }),
   })
   return writeNbt(root)

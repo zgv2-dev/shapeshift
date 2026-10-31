@@ -35,7 +35,7 @@ function translateTextNode(node: Text): void {
   if (isSkipped(node)) return
   const { leading, core, trailing } = splitWhitespace(node.nodeValue ?? '')
   if (!core || !/\p{L}/u.test(core)) return
-  if (core === 'Shapeshift' || core === 'Minecraft') return
+  if (core === 'ShapeShiftMC' || core === 'Minecraft') return
   const record = textRecords.get(node)
   if (record && core === record.translated && record.language === language) return
   if (record && core === record.original) {

@@ -30,8 +30,8 @@ describe('language support', () => {
   })
 
   it('keeps the brand name intact', () => {
-    expect(translateText('zh-Hans', 'Is Shapeshift free?')).toContain('Shapeshift')
-    expect(translateText('it', 'Observatory — Shapeshift')).toContain('Shapeshift')
+    expect(translateText('zh-Hans', 'Is ShapeShiftMC free?')).toContain('ShapeShiftMC')
+    expect(translateText('it', 'Observatory — ShapeShiftMC')).toContain('ShapeShiftMC')
     expect(translateText('de', 'Open studio')).toBe('Studio öffnen')
   })
 

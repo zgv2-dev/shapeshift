@@ -1,9 +1,9 @@
 {
-  "name": "shapeshift",
+  "name": "shapeshiftmc",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Shapeshift — a Minecraft shape studio with half-slab detail, a real-time 3D viewer and schematic exports.",
+  "description": "ShapeShiftMC — a Minecraft shape studio with half-slab detail, a real-time 3D viewer and schematic exports.",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

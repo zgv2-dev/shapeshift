@@ -99,8 +99,8 @@ export async function exportModel(
     return
   }
   let raw: Uint8Array
-  if (format === 'litematic') raw = buildLitematic(model, options.name ?? 'Shapeshift build')
-  else if (format === 'schem') raw = buildSchem(model, options.name ?? 'Shapeshift build')
+  if (format === 'litematic') raw = buildLitematic(model, options.name ?? 'ShapeShiftMC build')
+  else if (format === 'schem') raw = buildSchem(model, options.name ?? 'ShapeShiftMC build')
   else raw = buildStructure(model)
   const zipped = await gzipBytes(raw)
   downloadBytes(zipped, `${base}${EXPORT_LABELS[format].ext}`)

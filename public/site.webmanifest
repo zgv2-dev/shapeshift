@@ -1,6 +1,6 @@
 {
-  "name": "Shapeshift — Minecraft Shape Studio",
-  "short_name": "Shapeshift",
+  "name": "ShapeShiftMC — Minecraft Shape Studio",
+  "short_name": "ShapeShiftMC",
   "description": "Design Minecraft shapes with slabs, textures, blueprints and schematic exports.",
   "start_url": "/studio/",
   "scope": "/",

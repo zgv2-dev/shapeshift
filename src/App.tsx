@@ -121,7 +121,7 @@ export default function App() {
     const structural = shape.category === 'structures'
     const name = translateText(language, shape.name)
     const generator = translateText(language, 'Generator')
-    document.title = structural ? `${name} — Shapeshift` : `${name} ${generator} — Shapeshift`
+    document.title = structural ? `${name} — ShapeShiftMC` : `${name} ${generator} — ShapeShiftMC`
     const description = document.querySelector('meta[name="description"]')
     if (description) {
       description.setAttribute('content', translateText(language, shape.description).slice(0, 160))
