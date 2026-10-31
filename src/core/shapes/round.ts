@@ -605,18 +605,34 @@ function heart(): ShapeDef {
         const a = xn * xn + 2.25 * yn * yn + zn * zn - 1
         return a * a * a - xn * xn * zn * zn * zn - 0.1125 * yn * yn * zn * zn * zn <= 0
       }
+      const insideAt = (gx: number, gy: number, gz: number): boolean => {
+        if (gx < 0 || gy < 0 || gz < 0 || gx >= w || gy >= h || gz >= d) return false
+        const xn = x0 + (gx / w) * (x1 - x0)
+        const yn = y0 + (gz / d) * (y1 - y0)
+        const zn = z0 + (gy / h) * (z1 - z0)
+        return inside(xn, yn, zn)
+      }
       b.rasterize((x, y, z) => {
-        const xn = x0 + (x / w) * (x1 - x0)
-        const yn = y0 + (z / d) * (y1 - y0)
-        const zn = z0 + (y / h) * (z1 - z0)
-        if (!inside(xn, yn, zn)) return 0
+        if (!insideAt(x, y, z)) return 0
         if (hollow && wall < Math.min(w, h, d) / 2) {
-          if (x > wall && x < w - wall && y > wall && y < h - wall && z > wall && z < d - wall) {
-            const ix = x0 + ((x - wall) / (w - 2 * wall)) * (x1 - x0)
-            const iy = y0 + ((z - wall) / (d - 2 * wall)) * (y1 - y0)
-            const iz = z0 + ((y - wall) / (h - 2 * wall)) * (z1 - z0)
-            if (inside(ix, iy, iz)) return 0
+          // Erosion shell: keep boundary cells instead of carving an inset
+          // implicit surface. The old inset could break through the thin top
+          // and lobes, leaving holes in an otherwise closed heart.
+          let boundary = false
+          for (const [dx, dy, dz] of [
+            [wall, 0, 0],
+            [-wall, 0, 0],
+            [0, wall, 0],
+            [0, -wall, 0],
+            [0, 0, wall],
+            [0, 0, -wall],
+          ]) {
+            if (!insideAt(x + dx, y + dy, z + dz)) {
+              boundary = true
+              break
+            }
           }
+          if (!boundary) return 0
         }
         return R_PRIMARY
       })

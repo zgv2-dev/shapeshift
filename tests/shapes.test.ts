@@ -98,6 +98,61 @@ describe('shape generators', () => {
     expect(litNames.has('minecraft:sea_lantern')).toBe(true)
   })
 
+  it('keeps the hollow heart shell watertight', () => {
+    const { model } = build('heart', true, {
+      width: 32,
+      height: 32,
+      depth: 16,
+      hollow: true,
+      wall: 1,
+    })
+    const [nx, ny, nz] = model.dims
+    const idx = (x: number, y: number, z: number) => (y * nz + z) * nx + x
+    const seen = new Uint8Array(model.data.length)
+    const queue: number[] = []
+    const visit = (x: number, y: number, z: number) => {
+      const i = idx(x, y, z)
+      if (seen[i] || model.data[i] !== 0) return
+      seen[i] = 1
+      queue.push(i)
+    }
+    for (let y = 0; y < ny; y++) {
+      for (let z = 0; z < nz; z++) {
+        visit(0, y, z)
+        visit(nx - 1, y, z)
+      }
+    }
+    for (let x = 0; x < nx; x++) {
+      for (let z = 0; z < nz; z++) {
+        visit(x, 0, z)
+        visit(x, ny - 1, z)
+      }
+    }
+    for (let x = 0; x < nx; x++) {
+      for (let y = 0; y < ny; y++) {
+        visit(x, y, 0)
+        visit(x, y, nz - 1)
+      }
+    }
+    for (let head = 0; head < queue.length; head++) {
+      const i = queue[head]
+      const x = i % nx
+      const z = Math.floor(i / nx) % nz
+      const y = Math.floor(i / (nx * nz))
+      if (x > 0) visit(x - 1, y, z)
+      if (x + 1 < nx) visit(x + 1, y, z)
+      if (y > 0) visit(x, y - 1, z)
+      if (y + 1 < ny) visit(x, y + 1, z)
+      if (z > 0) visit(x, y, z - 1)
+      if (z + 1 < nz) visit(x, y, z + 1)
+    }
+    let enclosedAir = 0
+    for (let i = 0; i < model.data.length; i++) {
+      if (model.data[i] === 0 && !seen[i]) enclosedAir += 1
+    }
+    expect(enclosedAir).toBeGreaterThan(0)
+  })
+
   it('builds the meme tower, with and without its house base', () => {
     const tower = build('dope-tower', true, { house: false }).model
     const withHouse = build('dope-tower', true, { house: true }).model
