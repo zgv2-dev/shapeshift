@@ -928,10 +928,6 @@ interface Vec3 {
   z: number
 }
 
-function normalize(v: Vec3): Vec3 {
-  const l = Math.hypot(v.x, v.y, v.z)
-  return { x: v.x / l, y: v.y / l, z: v.z / l }
-}
 
 function geodesicDome(): ShapeDef {
   return shapeMeta(
@@ -939,10 +935,10 @@ function geodesicDome(): ShapeDef {
     'Geodesic dome',
     'structures',
     'A triangulated dome with optional panel fill.',
-    'A hemispherical geodesic frame built from a subdivided icosahedron. Solid panels fill the triangles by default; turn them off for an open strut frame, and switch on the glowing nodes for lights at the joints.',
+    'A hemispherical dome built from stacked triangular rings. Solid panels fill the triangles by default; turn them off for an open strut frame, and switch on the glowing nodes for lights at the joints.',
     [
       intParam('diameter', 'Diameter', 64, 16, 200, { group: 'Dimensions' }),
-      intParam('frequency', 'Frequency', 4, 1, 6, { group: 'Style' }),
+      intParam('frequency', 'Rings', 4, 1, 6, { group: 'Style' }),
       intParam('strut', 'Strut thickness', 2, 1, 6, { group: 'Style' }),
       boolParam('panels', 'Panels', true, { group: 'Details' }),
       boolParam('nodes', 'Glowing nodes', false, { group: 'Details' }),
@@ -963,172 +959,64 @@ function geodesicDome(): ShapeDef {
       const b = builderFor(ctx, d, dimsY, d)
       const cx = d / 2
       const cz = d / 2
+      const baseY = 0.5
+      const segments = Math.max(8, f * 3)
 
-      // Glass panel shell: the struts are stamped over this, so the triangular
-      // frame stays visible through (or against) the panels.
+      // Panels sit just inside the struts so the frame stays legible.
       if (panels) {
+        const panelRadius = R - Math.max(1.0, strut * 0.7)
         b.rasterize((x, y, z) => {
           const dx = x - cx
-          const dy = y - 0.5
+          const dy = y - baseY
           const dz = z - cz
           if (dy < -0.05) return 0
-          return Math.abs(Math.hypot(dx, dy, dz) - R) <= 0.85 ? R_ACCENT : 0
+          return Math.abs(Math.hypot(dx, dy, dz) - panelRadius) <= 0.5 ? R_ACCENT : 0
         })
       }
 
-      const phi = (1 + Math.sqrt(5)) / 2
-      const base: Vec3[] = [
-        { x: 0, y: 1, z: phi },
-        { x: 0, y: -1, z: phi },
-        { x: 0, y: 1, z: -phi },
-        { x: 0, y: -1, z: -phi },
-        { x: 1, y: phi, z: 0 },
-        { x: -1, y: phi, z: 0 },
-        { x: 1, y: -phi, z: 0 },
-        { x: -1, y: -phi, z: 0 },
-        { x: phi, y: 0, z: 1 },
-        { x: phi, y: 0, z: -1 },
-        { x: -phi, y: 0, z: 1 },
-        { x: -phi, y: 0, z: -1 },
-      ].map(normalize)
-      const faces = [
-        [0, 11, 5],
-        [0, 5, 1],
-        [0, 1, 7],
-        [0, 7, 10],
-        [0, 10, 11],
-        [1, 5, 9],
-        [5, 11, 4],
-        [11, 10, 2],
-        [10, 7, 6],
-        [7, 1, 8],
-        [3, 9, 4],
-        [3, 4, 2],
-        [3, 2, 6],
-        [3, 6, 8],
-        [3, 8, 9],
-        [4, 9, 5],
-        [2, 4, 11],
-        [6, 2, 10],
-        [8, 6, 7],
-        [9, 8, 1],
-      ]
-
-      // Rotate the icosahedron so one vertex points straight up.
-      const up: Vec3 = { x: 0, y: 1, z: 0 }
-      const v0 = base[0]
-      const axis = normalize({
-        x: v0.y * up.z - v0.z * up.y,
-        y: v0.z * up.x - v0.x * up.z,
-        z: v0.x * up.y - v0.y * up.x,
-      })
-      const angle = Math.acos(Math.max(-1, Math.min(1, v0.y)))
-      const cosA = Math.cos(angle)
-      const sinA = Math.sin(angle)
-      const rotate = (v: Vec3): Vec3 => {
-        const dot = axis.x * v.x + axis.y * v.y + axis.z * v.z
-        const cross = {
-          x: axis.y * v.z - axis.z * v.y,
-          y: axis.z * v.x - axis.x * v.z,
-          z: axis.x * v.y - axis.y * v.x,
+      const apex: Vec3 = { x: cx, y: baseY + R, z: cz }
+      const rings: Vec3[][] = []
+      for (let i = 1; i <= f; i++) {
+        const theta = (Math.PI / 2) * (i / f)
+        const radius = R * Math.sin(theta)
+        const y = baseY + R * Math.cos(theta)
+        const ring: Vec3[] = []
+        for (let j = 0; j < segments; j++) {
+          const phi = (j / segments) * Math.PI * 2
+          ring.push({
+            x: cx + Math.cos(phi) * radius,
+            y,
+            z: cz + Math.sin(phi) * radius,
+          })
         }
-        return {
-          x: v.x * cosA + cross.x * sinA + axis.x * dot * (1 - cosA),
-          y: v.y * cosA + cross.y * sinA + axis.y * dot * (1 - cosA),
-          z: v.z * cosA + cross.z * sinA + axis.z * dot * (1 - cosA),
-        }
+        rings.push(ring)
       }
-      const verts = base.map(rotate)
-      const point = (a: Vec3, bb: Vec3, c: Vec3, i: number, j: number, k: number): Vec3 =>
-        normalize({
-          x: (a.x * i + bb.x * j + c.x * k) / f,
-          y: (a.y * i + bb.y * j + c.y * k) / f,
-          z: (a.z * i + bb.z * j + c.z * k) / f,
-        })
 
-      const keyOf = (v: Vec3): string => `${v.x.toFixed(5)},${v.y.toFixed(5)},${v.z.toFixed(5)}`
-      const edge = new Set<string>()
-      const boundary: Vec3[] = []
+      const edge = (a: Vec3, c: Vec3) =>
+        b.stampLine(a.x, a.y, a.z, c.x, c.y, c.z, strut / 2 + 0.02, R_PRIMARY, 0.2)
 
-      for (const [ai, bi, ci] of faces) {
-        const a = verts[ai]
-        const bb = verts[bi]
-        const c = verts[ci]
-        const local = new Map<string, Vec3>()
-        for (let i = 0; i <= f; i++) {
-          for (let j = 0; j <= f - i; j++) {
-            const k = f - i - j
-            const p = point(a, bb, c, i, j, k)
-            local.set(`${i},${j},${k}`, p)
-            if (p.y >= -0.08 && p.y <= 0.06) boundary.push(p)
-          }
-        }
-        const addEdge = (p1: Vec3, p2: Vec3): void => {
-          if (p1.y < -0.05 || p2.y < -0.05) return
-          const k1 = keyOf(p1)
-          const k2 = keyOf(p2)
-          const key = k1 < k2 ? `${k1}|${k2}` : `${k2}|${k1}`
-          edge.add(key)
-        }
-        for (let i = 0; i <= f; i++) {
-          for (let j = 0; j <= f - i; j++) {
-            const k = f - i - j
-            const p = local.get(`${i},${j},${k}`)!
-            if (j > 0) {
-              const q = local.get(`${i + 1},${j - 1},${k}`)
-              if (q) addEdge(p, q)
-            }
-            if (k > 0) {
-              const q1 = local.get(`${i},${j + 1},${k - 1}`)
-              if (q1) addEdge(p, q1)
-              const q2 = local.get(`${i + 1},${j},${k - 1}`)
-              if (q2) addEdge(p, q2)
-            }
-          }
+      // Top ring; the cap itself is a panel. At one ring this becomes a cone.
+      for (let j = 0; j < segments; j++) {
+        if (f === 1) edge(apex, rings[0][j])
+        edge(rings[0][j], rings[0][(j + 1) % segments])
+      }
+
+      // Triangular strips between rings
+      for (let i = 1; i < f; i++) {
+        const upper = rings[i - 1]
+        const lower = rings[i]
+        for (let j = 0; j < segments; j++) {
+          edge(upper[j], lower[j])
+          edge(upper[j], lower[(j + 1) % segments])
+          edge(lower[j], lower[(j + 1) % segments])
         }
       }
 
-      const toWorld = (v: Vec3): Vec3 => ({
-        x: cx + v.x * R,
-        y: 0.5 + v.y * R,
-        z: cz + v.z * R,
-      })
-      const seenVertices = new Set<string>()
-
-      for (const key of edge) {
-        const [aKey, bKey] = key.split('|')
-        const a = aKey.split(',').map(Number)
-        const bb = bKey.split(',').map(Number)
-        const p1 = toWorld({ x: a[0], y: a[1], z: a[2] })
-        const p2 = toWorld({ x: bb[0], y: bb[1], z: bb[2] })
-        b.stampLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, strut / 2, R_PRIMARY, 0.5)
-        if (nodes) {
-          for (const p of [p1, p2]) {
-            const vk = `${p.x.toFixed(3)},${p.y.toFixed(3)},${p.z.toFixed(3)}`
-            if (!seenVertices.has(vk)) {
-              seenVertices.add(vk)
-              b.stampBall(p.x, p.y, p.z, strut / 2 + 0.35, R_DETAIL)
-            }
-          }
+      if (nodes) {
+        const points = f === 1 ? [apex, ...rings.flat()] : rings.flat()
+        for (const point of points) {
+          b.stampBall(point.x, point.y, point.z, strut / 2 + 0.35, R_DETAIL)
         }
-      }
-
-      // base ring
-      const steps = Math.max(64, Math.ceil((Math.PI * 2 * R) / 0.7))
-      for (let i = 0; i < steps; i++) {
-        const a0 = (i / steps) * Math.PI * 2
-        const a1 = ((i + 1) / steps) * Math.PI * 2
-        b.stampLine(
-          cx + R * 0.995 * Math.cos(a0),
-          1,
-          cz + R * 0.995 * Math.sin(a0),
-          cx + R * 0.995 * Math.cos(a1),
-          1,
-          cz + R * 0.995 * Math.sin(a1),
-          strut / 2 + 0.2,
-          R_PRIMARY,
-          0.6,
-        )
       }
 
       return b
