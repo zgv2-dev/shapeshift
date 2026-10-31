@@ -9,7 +9,9 @@ import {
   floatParam,
   intParam,
   num,
+  selectParam,
   shapeMeta,
+  str,
 } from './util'
 
 function sphere(): ShapeDef {
@@ -147,10 +149,21 @@ function torus(): ShapeDef {
     'Torus',
     'round',
     'Doughnuts, rings and portal frames.',
-    'A ring with a round tube. Set the overall diameter and tube size, then optionally hollow the tube itself.',
+    'A ring with a round tube. Lay it flat or stand it upright on X or Z, and optionally hollow the tube itself.',
     [
       intParam('diameter', 'Overall diameter', 64, 8, 256),
       intParam('tube', 'Tube diameter', 16, 2, 128),
+      selectParam(
+        'axis',
+        'Axis',
+        'y',
+        [
+          { value: 'y', label: 'Flat · Y' },
+          { value: 'x', label: 'Upright · X' },
+          { value: 'z', label: 'Upright · Z' },
+        ],
+        { group: 'Style', hint: 'Y lies flat like a doughnut; X and Z stand it upright.' },
+      ),
       boolParam('hollow', 'Hollow tube', false),
       intParam('wall', 'Tube wall', 2, 1, 16, { showIf: { key: 'hollow', equals: true } }),
     ],
@@ -159,18 +172,33 @@ function torus(): ShapeDef {
       const d = clamp(num(ctx, 'diameter'), 8, 256)
       let tube = clamp(num(ctx, 'tube'), 2, 128)
       tube = Math.min(tube, d - 2)
+      const axis = str(ctx, 'axis')
       const hollow = flag(ctx, 'hollow')
       const wall = num(ctx, 'wall')
-      const b = builderFor(ctx, d, tube, d)
+      const b =
+        axis === 'x'
+          ? builderFor(ctx, tube, d, d)
+          : axis === 'z'
+            ? builderFor(ctx, d, d, tube)
+            : builderFor(ctx, d, tube, d)
       const c = d / 2
-      const cy = tube / 2
       const major = (d - tube) / 2
       const r = tube / 2
       const ri = Math.max(0, r - wall)
       b.rasterize((x, y, z) => {
-        const dr = Math.hypot(x - c, z - c) - major
-        const dy = y - cy
-        const q = dr * dr + dy * dy
+        let dr: number
+        let cross: number
+        if (axis === 'x') {
+          dr = Math.hypot(y - c, z - c) - major
+          cross = x - tube / 2
+        } else if (axis === 'z') {
+          dr = Math.hypot(x - c, y - c) - major
+          cross = z - tube / 2
+        } else {
+          dr = Math.hypot(x - c, z - c) - major
+          cross = y - tube / 2
+        }
+        const q = dr * dr + cross * cross
         if (q > r * r) return 0
         if (hollow && ri > 0 && q < ri * ri) return 0
         return R_PRIMARY

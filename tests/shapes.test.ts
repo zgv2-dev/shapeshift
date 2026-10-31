@@ -68,6 +68,19 @@ describe('shape generators', () => {
     expect(model.perLayer[0].items).toBe(model.perLayer[ny - 1].items)
   })
 
+  it('supports flat and upright torus axes', () => {
+    const flat = build('torus', true, { diameter: 40, tube: 10, axis: 'y' }).model
+    const uprightX = build('torus', true, { diameter: 40, tube: 10, axis: 'x' }).model
+    const uprightZ = build('torus', true, { diameter: 40, tube: 10, axis: 'z' }).model
+    expect(flat.dims).toEqual([40, 10, 40])
+    expect(uprightX.dims).toEqual([10, 40, 40])
+    expect(uprightZ.dims).toEqual([40, 40, 10])
+    for (const model of [flat, uprightX, uprightZ]) {
+      expect(model.counts.total).toBeGreaterThan(0)
+      expect(model.perLayer[0].items).toBeGreaterThan(0)
+    }
+  })
+
   it('can hollow the sphere', () => {
     const solid = build('sphere', false, { diameter: 48, hollow: false }).model
     const hollow = build('sphere', false, { diameter: 48, hollow: true }).model
