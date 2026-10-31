@@ -19,6 +19,7 @@ describe('language support', () => {
 
   it('translates UI, shape names and block units', () => {
     expect(translateText('de', 'Shape library')).toBe('Formenbibliothek')
+    expect(translateText('de', 'Mending')).toBe('Reparatur')
     expect(translateText('ja', 'Torus')).toBe('トーラス')
     expect(translateText('zh-Hans', 'Torus')).toBe('环面')
     expect(translateText('es', 'Minecraft shapes')).toBe('Formas de Minecraft')
@@ -39,6 +40,8 @@ describe('language support', () => {
     expect((landing.match(/hreflang=/g) ?? []).length).toBeGreaterThanOrEqual(9)
     expect(landing).toContain('https://enchantments.mc.zgv2.dev/')
     expect(landing).not.toContain('#aqua_affinity')
+    expect(landing).toContain('Mending: repair your gear with experience.')
+    expect(landing).not.toContain('Aqua Affinity')
     expect(landing).toContain('From the same workshop')
     expect(landing).toContain('id="language-select"')
   })

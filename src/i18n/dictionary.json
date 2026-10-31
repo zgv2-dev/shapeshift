@@ -761,7 +761,9 @@
     "Aqua Affinity · Enchantment Codex": "Рідність води · Кодекс зачарувань",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Читати про Рідність води в Кодексі зачарувань",
     "The Enchantment Codex": "Кодекс зачарувань",
-    "Explore The Enchantment Codex": "Дослідити Кодекс зачарувань"
+    "Explore The Enchantment Codex": "Дослідити Кодекс зачарувань",
+    "Mending": "Лагодження",
+    "Mending: repair your gear with experience.": "Лагодження: ремонтуйте спорядження за допомогою досвіду."
   },
   "zh-Hans": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。即使查看者剔除内部块，它们也会包含在文件中。",
@@ -1525,7 +1527,9 @@
     "Aqua Affinity · Enchantment Codex": "水下速掘 · 附魔图鉴",
     "Read the Aqua Affinity entry in The Enchantment Codex": "在附魔图鉴中阅读水下速掘条目",
     "The Enchantment Codex": "附魔图鉴",
-    "Explore The Enchantment Codex": "探索附魔图鉴"
+    "Explore The Enchantment Codex": "探索附魔图鉴",
+    "Mending": "经验修补",
+    "Mending: repair your gear with experience.": "经验修补：用经验修复你的装备。"
   },
   "zh-Hant": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。即使查看者剔除內部區塊，它們也會包含在檔案中。",
@@ -2289,7 +2293,9 @@
     "Aqua Affinity · Enchantment Codex": "親水性 · 附魔圖鑑",
     "Read the Aqua Affinity entry in The Enchantment Codex": "在附魔圖鑑中閱讀親水性條目",
     "The Enchantment Codex": "附魔圖鑑",
-    "Explore The Enchantment Codex": "探索附魔圖鑑"
+    "Explore The Enchantment Codex": "探索附魔圖鑑",
+    "Mending": "修補",
+    "Mending: repair your gear with experience.": "修補：用經驗修復你的裝備。"
   },
   "de": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Innenblöcke werden in die Datei einbezogen, auch wenn der Betrachter sie aussortiert.",
@@ -3052,7 +3058,9 @@
     "Aqua Affinity · Enchantment Codex": "Wasseraffinität · Verzauberungskodex",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Wasseraffinität im Verzauberungskodex lesen",
     "The Enchantment Codex": "Der Verzauberungskodex",
-    "Explore The Enchantment Codex": "Den Verzauberungskodex erkunden"
+    "Explore The Enchantment Codex": "Den Verzauberungskodex erkunden",
+    "Mending": "Reparatur",
+    "Mending: repair your gear with experience.": "Reparatur: Rüste deine Ausrüstung mit Erfahrung."
   },
   "fr": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Les blocs intérieurs sont inclus dans le fichier même si le spectateur les supprime.",
@@ -3815,7 +3823,9 @@
     "Aqua Affinity · Enchantment Codex": "Affinité aquatique · Codex des enchantements",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Lire l'article Affinité aquatique dans le Codex des enchantements",
     "The Enchantment Codex": "Le Codex des enchantements",
-    "Explore The Enchantment Codex": "Explorer le Codex des enchantements"
+    "Explore The Enchantment Codex": "Explorer le Codex des enchantements",
+    "Mending": "Raccommodage",
+    "Mending: repair your gear with experience.": "Raccommodage : réparez votre équipement avec de l'expérience."
   },
   "it": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". I blocchi interni sono inclusi nel file anche se lo spettatore li seleziona.",
@@ -4578,7 +4588,9 @@
     "Aqua Affinity · Enchantment Codex": "Affinità all'acqua · Codice degli incantesimi",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Leggi la voce Affinità all'acqua nel Codice degli incantesimi",
     "The Enchantment Codex": "Il Codice degli incantesimi",
-    "Explore The Enchantment Codex": "Esplora il Codice degli incantesimi"
+    "Explore The Enchantment Codex": "Esplora il Codice degli incantesimi",
+    "Mending": "Ripristino",
+    "Mending: repair your gear with experience.": "Ripristino: ripara l'equipaggiamento con l'esperienza."
   },
   "es": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Los bloques interiores se incluyen en el archivo aunque el espectador los seleccione.",
@@ -5341,7 +5353,9 @@
     "Aqua Affinity · Enchantment Codex": "Afinidad acuática · Códice de encantamientos",
     "Read the Aqua Affinity entry in The Enchantment Codex": "Leer la entrada de Afinidad acuática en el Códice de encantamientos",
     "The Enchantment Codex": "El Códice de encantamientos",
-    "Explore The Enchantment Codex": "Explorar el Códice de encantamientos"
+    "Explore The Enchantment Codex": "Explorar el Códice de encantamientos",
+    "Mending": "Reparación",
+    "Mending: repair your gear with experience.": "Reparación: repara tu equipo con experiencia."
   },
   "ja": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。内部ブロックは、ビューアがそれらをカリングしても、ファイルに含まれます。",
@@ -6105,6 +6119,8 @@
     "Aqua Affinity · Enchantment Codex": "水中採掘 · エンチャント図鑑",
     "Read the Aqua Affinity entry in The Enchantment Codex": "エンチャント図鑑で水中採掘の記事を読む",
     "The Enchantment Codex": "エンチャント図鑑",
-    "Explore The Enchantment Codex": "エンチャント図鑑を見る"
+    "Explore The Enchantment Codex": "エンチャント図鑑を見る",
+    "Mending": "修繕",
+    "Mending: repair your gear with experience.": "修繕：経験値で装備を修理。"
   }
 }
