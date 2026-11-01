@@ -87,6 +87,7 @@ export function TopBar() {
         <button
           className={`slab-toggle ${detail ? 'active' : ''}`}
           onClick={() => setDetail(!detail)}
+          disabled={freeformActive}
           aria-pressed={detail}
           title="Generate curved surfaces with half-height slabs for twice the vertical detail"
         >

@@ -789,7 +789,9 @@
     "remove block": "видалити блок",
     "Shape added above": "Форму додано зверху",
     "Generate a shape before opening the freeform editor": "Створіть форму, перш ніж відкривати редактор вільної форми.",
-    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Починає з поточної моделі. Нічого не залишає ваш браузер; результат експортується у звичайні формати Litematica, Sponge і structure block."
+    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Починає з поточної моделі. Нічого не залишає ваш браузер; результат експортується у звичайні формати Litematica, Sponge і structure block.",
+    "Freeform edits are baked into this model. Exit freeform to change shape parameters.": "Редагування у вільній формі вбудовано в цю модель. Вийдіть із вільної форми, щоб змінити параметри форми.",
+    "Exit freeform": "Вийти з вільної форми"
   },
   "zh-Hans": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。即使查看者剔除内部块，它们也会包含在文件中。",
@@ -1581,7 +1583,9 @@
     "remove block": "移除方块",
     "Shape added above": "已在上方添加形状",
     "Generate a shape before opening the freeform editor": "请先生成一个形状，再打开自由编辑。",
-    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "从当前模型开始。所有内容都留在浏览器中；结果可通过常规 Litematica、Sponge 和结构方块格式导出。"
+    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "从当前模型开始。所有内容都留在浏览器中；结果可通过常规 Litematica、Sponge 和结构方块格式导出。",
+    "Freeform edits are baked into this model. Exit freeform to change shape parameters.": "自由编辑已烘焙到该模型中。退出自由编辑以更改形状参数。",
+    "Exit freeform": "退出自由编辑"
   },
   "zh-Hant": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。即使查看者剔除內部區塊，它們也會包含在檔案中。",
@@ -2373,7 +2377,9 @@
     "remove block": "移除方塊",
     "Shape added above": "已在上方加入形狀",
     "Generate a shape before opening the freeform editor": "請先產生一個形狀，再開啟自由編輯。",
-    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "從目前模型開始。所有內容都留在瀏覽器中；結果可透過一般 Litematica、Sponge 和結構方塊格式匯出。"
+    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "從目前模型開始。所有內容都留在瀏覽器中；結果可透過一般 Litematica、Sponge 和結構方塊格式匯出。",
+    "Freeform edits are baked into this model. Exit freeform to change shape parameters.": "自由編輯已烘焙至此模型中。退出自由編輯以變更形狀參數。",
+    "Exit freeform": "退出自由編輯"
   },
   "de": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Innenblöcke werden in die Datei einbezogen, auch wenn der Betrachter sie aussortiert.",
@@ -3164,7 +3170,9 @@
     "remove block": "Block entfernen",
     "Shape added above": "Form darüber hinzugefügt",
     "Generate a shape before opening the freeform editor": "Erzeuge zuerst eine Form, bevor du den Freiform-Editor öffnest.",
-    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Startet vom aktuellen Modell. Nichts verlässt deinen Browser; das Ergebnis wird über die üblichen Litematica-, Sponge- und Strukturblock-Formate exportiert."
+    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Startet vom aktuellen Modell. Nichts verlässt deinen Browser; das Ergebnis wird über die üblichen Litematica-, Sponge- und Strukturblock-Formate exportiert.",
+    "Freeform edits are baked into this model. Exit freeform to change shape parameters.": "Freiform-Bearbeitungen sind in diesem Modell gespeichert. Beende die Freiform, um Formparameter zu ändern.",
+    "Exit freeform": "Freiform beenden"
   },
   "fr": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Les blocs intérieurs sont inclus dans le fichier même si le spectateur les supprime.",
@@ -3955,7 +3963,9 @@
     "remove block": "supprimer un bloc",
     "Shape added above": "Forme ajoutée au-dessus",
     "Generate a shape before opening the freeform editor": "Générez une forme avant d’ouvrir l’éditeur libre.",
-    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Part du modèle actuel. Rien ne quitte votre navigateur ; le résultat s’exporte via les formats Litematica, Sponge et structure block habituels."
+    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Part du modèle actuel. Rien ne quitte votre navigateur ; le résultat s’exporte via les formats Litematica, Sponge et structure block habituels.",
+    "Freeform edits are baked into this model. Exit freeform to change shape parameters.": "Les modifications libres sont intégrées à ce modèle. Quittez le mode libre pour modifier les paramètres de forme.",
+    "Exit freeform": "Quitter le mode libre"
   },
   "it": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". I blocchi interni sono inclusi nel file anche se lo spettatore li seleziona.",
@@ -4746,7 +4756,9 @@
     "remove block": "rimuovi un blocco",
     "Shape added above": "Forma aggiunta sopra",
     "Generate a shape before opening the freeform editor": "Genera una forma prima di aprire l'editor libero.",
-    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Parte dal modello corrente. Nulla lascia il browser; il risultato si esporta nei normali formati Litematica, Sponge e structure block."
+    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Parte dal modello corrente. Nulla lascia il browser; il risultato si esporta nei normali formati Litematica, Sponge e structure block.",
+    "Freeform edits are baked into this model. Exit freeform to change shape parameters.": "Le modifiche libere sono incorporate in questo modello. Esci dall'editor libero per cambiare i parametri della forma.",
+    "Exit freeform": "Esci dall'editor libero"
   },
   "es": {
     ". Interior blocks are included in the file even though the viewer culls them.": ". Los bloques interiores se incluyen en el archivo aunque el espectador los seleccione.",
@@ -5537,7 +5549,9 @@
     "remove block": "eliminar un bloque",
     "Shape added above": "Forma añadida encima",
     "Generate a shape before opening the freeform editor": "Genera una forma antes de abrir el editor libre.",
-    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Parte del modelo actual. Nada sale de tu navegador; el resultado se exporta con los formatos habituales de Litematica, Sponge y structure block."
+    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "Parte del modelo actual. Nada sale de tu navegador; el resultado se exporta con los formatos habituales de Litematica, Sponge y structure block.",
+    "Freeform edits are baked into this model. Exit freeform to change shape parameters.": "Las ediciones libres están integradas en este modelo. Sal del editor libre para cambiar los parámetros de forma.",
+    "Exit freeform": "Salir del editor libre"
   },
   "ja": {
     ". Interior blocks are included in the file even though the viewer culls them.": "。内部ブロックは、ビューアがそれらをカリングしても、ファイルに含まれます。",
@@ -6329,6 +6343,8 @@
     "remove block": "ブロックを削除",
     "Shape added above": "上にシェイプを追加しました",
     "Generate a shape before opening the freeform editor": "フリーフォームエディターを開く前にシェイプを生成してください。",
-    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "現在のモデルから開始します。データはブラウザ内に留まり、通常の Litematica、Sponge、ストラクチャーブロック形式で書き出せます。"
+    "Starts from the current model. Nothing leaves your browser; the result exports through the normal Litematica, Sponge and structure-block formats.": "現在のモデルから開始します。データはブラウザ内に留まり、通常の Litematica、Sponge、ストラクチャーブロック形式で書き出せます。",
+    "Freeform edits are baked into this model. Exit freeform to change shape parameters.": "フリーフォームの編集はこのモデルに反映されています。シェイプのパラメータを変更するにはフリーフォームを終了してください。",
+    "Exit freeform": "フリーフォームを終了"
   }
 }

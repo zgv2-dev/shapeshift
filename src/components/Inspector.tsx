@@ -1,4 +1,4 @@
-import { Download, Hammer, Paintbrush, SlidersHorizontal, Sparkles, X } from 'lucide-react'
+import { Download, Hammer, Lock, LogOut, Paintbrush, SlidersHorizontal, Sparkles, X } from 'lucide-react'
 import { getShape } from '../core/shapes'
 import { useStore } from '../state/store'
 import type { ParamDef, ParamValue } from '../core/types'
@@ -23,6 +23,8 @@ export function Inspector() {
   const status = useStore((s) => s.status)
   const error = useStore((s) => s.error)
   const shape = getShape(shapeId)
+  const freeformActive = useStore((s) => s.freeformActive)
+  const exitFreeform = useStore((s) => s.exitFreeform)
 
   const groups = GROUP_ORDER.map((group) => ({
     group,
@@ -66,6 +68,17 @@ export function Inspector() {
           <>
             <p className="shape-description">{shape.description}</p>
 
+            {freeformActive ? (
+              <div className="locked-callout">
+                <Lock size={14} />
+                <p>Freeform edits are baked into this model. Exit freeform to change shape parameters.</p>
+                <button className="btn tiny ghost" onClick={exitFreeform}>
+                  <LogOut size={12} /> Exit freeform
+                </button>
+              </div>
+            ) : null}
+
+            <fieldset className="shape-control-lock" disabled={freeformActive}>
             <div className={`slab-card ${detail ? 'on' : ''}`}>
               <div className="slab-card-icon">
                 <span className="half-cube"><i /></span>
@@ -109,6 +122,7 @@ export function Inspector() {
                 ))}
               </section>
             ))}
+            </fieldset>
 
             {status === 'error' ? (
               <div className="error-box">
